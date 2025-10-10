@@ -1,17 +1,14 @@
 <template>
     <div class="bg-gray-100 min-h-screen">
         <!-- navbar -->
-        <nav class="bg-white py-3 fixed right-0 left-0 top-0 shadow-md z-50">
+        <nav class="bg-white fixed right-0 left-0 top-0 shadow-md z-50" style="max-height: 60px;">
+
             <div class="container mx-auto w-full px-4">
                 <!-- logo and menu -->
                  <div class="flex items-center justify-between">
                     <!-- logo -->
                      <div class="flex items-center gap-2">
-                        <img src="/library.png" alt="library" width="50">
-                        <div class="">
-                            <h1 class="text-3xl text-uniscape-blue">UNISCAPE</h1>
-                            <p>-- CONSULTING --</p>
-                        </div>
+                        <img src="/uniscape-icon.png" alt="uniscape-icon" class="h-12 scale-150 object-contain -translate-y-1">
                      </div>
                      <!-- menu -->
                       <div class="hidden md:flex items-center gap-4">

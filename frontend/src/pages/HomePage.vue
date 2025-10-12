@@ -8,7 +8,7 @@
                  <div class="flex items-center justify-between">
                     <!-- logo -->
                      <div class="flex items-center gap-2">
-                        <img src="/uniscape-icon.png" alt="uniscape-icon" class="h-12 scale-150 object-contain -translate-y-1">
+                        <img src="/uniscape-logo.png" alt="uniscape-icon" class="h-20 scale-150 object-contain -translate-y-1">
                      </div>
                      <!-- menu -->
                       <div class="hidden md:flex items-center gap-4">
@@ -69,7 +69,7 @@
                  <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
                     <!-- logo -->
                      <div class="bg-gradient-to-br from-uniscape-blue to-blue-900 rounded-xl w-full md:w-1/2 flex justify-center items-center p-6 shadow-lg">
-                        <img src="/library.png" alt="library" width="300">
+                        <img src="/uniscape-icon.png" alt="library" width="300">
                      </div>
                      <!-- info -->
                       <div class="w-full md:w-1/2">

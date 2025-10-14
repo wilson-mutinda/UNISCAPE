@@ -277,22 +277,22 @@
 
                 <!-- featured courses -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div v-for="(course, index) in featured" :key="course.id" class="bg-gradient-to-b from-uniscape-yellow to-yellow-50 rounded-2xl shadow-lg p-6 hover:-translate-y-2 transition-transform duration-300">
-                        <h4 class="text-2xl font-bold text-uniscape-blue mb-3">{{ course.name }}</h4>
+                    <div v-for="(course, index) in allCourses" :key="course.id" class="bg-gradient-to-b from-uniscape-yellow to-yellow-50 rounded-2xl shadow-lg p-6 hover:-translate-y-2 transition-transform duration-300">
+                        <h4 class="text-2xl font-bold text-uniscape-blue mb-3">{{ course.course_name }}</h4>
                         <p class="text-gray-700 mb-2">
-                            <span class="font-semibold text-uniscape-blue">Duration:</span> {{ course.duration }} months
+                            <span class="font-semibold text-uniscape-blue">Duration:</span> {{ course.course_duration }}
                         </p>
 
                         <p class="text-gray-700 mb-4">
-                            <span class="font-semibold text-uniscape-blue">Fees:</span> KES {{ course.fees }}
+                            <span class="font-semibold text-uniscape-blue">Fees:</span> KES {{ course.course_fee }}
                         </p>
 
                         <p class="text-gray-600 mb-6">
-                            Learn the latest tools and skills in {{ course.name }} with hands on projects, expert mentors, and a global-ready curriculum.
+                            Learn the latest tools and skills in {{ course.course_name }} with hands on projects, expert mentors, and a global-ready curriculum.
                         </p>
 
-                        <button type="button" class="bg-uniscape-blue text-yellow-300 px-5 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
-                            Explore Course
+                        <button type="button" @click="openSingleCoursePage(course)" class="bg-uniscape-blue text-yellow-300 px-5 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                            {{loadingCourseId === course.id ? 'Loading...' : 'Explore Course'}}
                         </button>
                     </div>
                 </div>
@@ -654,95 +654,18 @@
         </section>
 
         <!-- footer -->
-        <footer class="bg-uniscape-blue text-white py-12">
-            <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-
-                <!-- Logo and description -->
-                <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <img src="/uniscape-icon.png" alt="Uniscape logo" class="h-12">
-                        <h3 class="text-2xl font-bold text-uniscape-yellow">Uniscape</h3>
-                    </div>
-                    <p class="text-gray-200 leading-relaxed text-sm">
-                        Empowering Africa's next generation of tech talent through hands-on, 
-                        project-based learning and global opportunities.
-                    </p>
-                </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-xl font-semibold text-uniscape-yellow mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="hover:text-uniscape-yellow transition">Home</a></li>
-                        <li><a href="#about" class="hover:text-uniscape-yellow transition">About Us</a></li>
-                        <li><a href="#programs" class="hover:text-uniscape-yellow transition">Programs</a></li>
-                        <li><a href="#community" class="hover:text-uniscape-yellow transition">Community</a></li>
-                        <li><a href="#contacts" class="hover:text-uniscape-yellow transition">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact Info -->
-                <div>
-                    <h4 class="text-xl font-semibold text-uniscape-yellow mb-4">Contact</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-center gap-3">
-                            <img src="/map-pin-house.png" width="28" alt="location" class="bg-uniscape-yellow rounded-full p-1">
-                            <span>Blue Violets Plaza, Kindaruma Rd, Nairobi</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <img src="/phone.png" width="28" alt="phone" class="rounded-full bg-uniscape-yellow p-1">
-                            <span>+254 700 223 222</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <img src="/mail.png" width="28" alt="email" class="rounded-full bg-uniscape-yellow p-1">
-                            <a href="mailto:info@uniscape.co.ke" class="hover:text-uniscape-yellow underline">info@uniscape.co.ke</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Socials -->
-                <div>
-                    <h4 class="text-xl font-semibold text-uniscape-yellow mb-4">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" aria-label="Facebook" class="hover:scale-110 transition transform">
-                            <img src="/facebook.png" alt="Facebook" width="28" class="bg-uniscape-yellow rounded-full p-1">
-                        </a>
-                        <a href="#" aria-label="Twitter" class="hover:scale-110 transition transform">
-                            <img src="/twitter.png" alt="Twitter" width="28" class="bg-uniscape-yellow rounded-full p-1">
-                        </a>
-                        <a href="#" aria-label="LinkedIn" class="hover:scale-110 transition transform">
-                            <img src="/linkedin.png" alt="LinkedIn" width="28" class="bg-uniscape-yellow rounded-full p-1">
-                        </a>
-                        <a href="#" aria-label="Instagram" class="hover:scale-110 transition transform">
-                            <img src="/instagram.png" alt="Instagram" width="28" class="bg-uniscape-yellow rounded-full p-1">
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="border-t border-yellow-400 my-8"></div>
-
-            <!-- Bottom Copyright -->
-            <div class="text-center text-sm text-gray-200">
-                © {{ new Date().getFullYear() }} Uniscape Consulting. All rights reserved.
-            </div>
-        </footer>
+        
     </div>
 </template>
 
 <script>
+import router from '@/router';
+import api from '@/services/api';
+
 export default {
     data() {
         return {
             showMenu: false,
-            featured: [
-                { id: 1, name: "Data Science", duration: 6, fees: "85,000" },
-                { id: 2, name: "Web Development", duration: 4, fees: "75,000" },
-                { id: 3, name: "Cyber Security", duration: 5, fees: "90,000" },
-                { id: 4, name: "Mobile Development", duration: 4, fees: "80,000" },
-                { id: 5, name: "Cloud Computing", duration: 5, fees: "95,000" }
-            ],
             partners: [
                 { image: "/ajira.png" },
                 { image: "/google.png" },
@@ -763,10 +686,56 @@ export default {
             ],
 
             currentIndex: 0,
-            interval: null
+            interval: null,
+            allCourses: [],
+            courseId: '',
+
+            courseName: '',
+            courseDuration: '',
+            courseFee: '',
+            courseDesc: '',
+            courseMoreInfo: '',
+            courseImage: '',
+            errors: {},
+
+            loadingCourseId: null
         }
     },
     methods: {
+
+        async openSingleCoursePage(course){
+            this.loadingCourseId = course.id
+            try {
+                this.courseId = course.id
+    
+                const response = await api.get(`single_course/${this.courseId}`);
+                
+                const data = response.data;
+
+                localStorage.setItem('course_name', data.course_name);
+                localStorage.setItem('course_duration', data.course_duration);
+                localStorage.setItem('course_fee', data.course_fee);
+                localStorage.setItem('course_desc', data.course_desc);
+                localStorage.setItem('course_more_info', data.course_more_info);
+                localStorage.setItem('course_image', data.course_image);
+
+                this.$router.push({ name: 'course-page'});
+
+                this.loadingCourseId = null
+
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.errors) {
+                    this.errors = error.response.data.errors
+                } else {
+                    this.errors.general = 'Something went wrong!'
+                }
+            }
+        },
+
+        async fetchAllCourses() {
+            const response = await api.get('all_courses');
+            this.allCourses = response.data;
+        },
 
         scrollToSection(id) {
             const el = document.getElementById(id)
@@ -801,6 +770,7 @@ export default {
     },
 
     mounted() {
+        this.fetchAllCourses();
         this.startAutoSlide();
     },
 

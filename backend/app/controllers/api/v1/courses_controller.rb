@@ -97,11 +97,13 @@ class Api::V1::CoursesController < ApplicationController
 
       info = course_id_search(courses, target_id)
 
-      if info.is_a?(Hash)
-        render json: info, status: :unprocessable_entity
+      if info.is_a?(Hash) && info[:errors]
+        render json: info, status: :not_found
         return
       end
-      image_url = url_for(info.course_image)
+
+      image_url = info.course_image.attached? ? url_for(info.course_image) : nil
+    
       render json: info.as_json(except: [:created_at, :updated_at]).merge({ image_url: image_url}), status: :ok
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error

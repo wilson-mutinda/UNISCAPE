@@ -8,8 +8,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div v-for="(course, index) in allCourses" :key="course.id" class="bg-gradient-to-b from-uniscape-yellow to-yellow-50 rounded-2xl shadow-lg p-6 hover:-translate-y-2 transition-transform duration-300">
                         <h4 class="text-2xl font-bold text-uniscape-blue mb-3">{{ course.course_name }}</h4>
-                        <p class="text-gray-700 mb-2">
-                            <span class="font-semibold text-uniscape-blue">Duration:</span> {{ course.course_duration }}
+                        <p class="text-gray-700 mb-2 flex items-center gap-2">
+                            <img src="/clock.png" alt="hour" width="20"> {{ course.course_duration }}
                         </p>
 
                         <p class="text-gray-700 mb-4">

@@ -116,117 +116,11 @@
         </nav>
 
         <!-- Hero Section with Background Carousel -->
-        <section
-        id="home"
-        class="relative w-full h-[90vh] flex items-center justify-center text-center text-white overflow-hidden"
-        >
-        <!-- Background Carousel -->
-        <div class="absolute inset-0 w-full h-full overflow-hidden">
-            <img
-            v-for="(image, index) in images"
-            :key="index"
-            :src="image"
-            :class="{ 'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index }"
-            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-            alt="carousel background"
-            />
-        </div>
-
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
-
-        <!-- Hero Content -->
-        <div class="relative z-10 container mx-auto px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fadeIn">
-            Empowering the Next Tech Generation
-            </h1>
-            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-            Join Uniscape and master the skills to shape tomorrow's technology today.
-            </p>
-
-            <div class="flex items-center justify-center gap-4">
-            <button
-                type="button"
-                class="bg-white text-uniscape-blue font-semibold px-6 py-3 rounded-full hover:bg-yellow-300 transition"
-                @click="scrollToSection('programs')"
-            >
-                Get Started
-            </button>
-            </div>
-        </div>
-
-        <!-- Optional Controls -->
-        <button
-            type="button"
-            @click="prevImage"
-            class="absolute left-5 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10"
-        >
-            <img src="/back.png" alt="back" width="30" />
-        </button>
-
-        <button
-            type="button"
-            @click="nextImage"
-            class="absolute right-5 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10"
-        >
-            <img src="/next.png" alt="next" width="30" />
-        </button>
-        
-        
-        </section>
+        <HeroSection />
 
 
         <!-- about section -->
-        <section id="about" class="bg-gray-50 py-16">
-            <div class="container mx-auto px-4">
-                <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">About Us</h3>
-
-                <!-- about info -->
-                <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
-                    <!-- logo -->
-                    <div class="bg-gradient-to-br from-uniscape-blue to-blue-900 rounded-xl w-full md:w-1/2 flex justify-center items-center p-6 shadow-lg">
-                        <img src="/uniscape-icon.png" alt="library" width="300">
-                    </div>
-                    <!-- info -->
-                    <div class="w-full md:w-1/2">
-                        <h3 class="font-bold text-2xl text-center mb-4 text-uniscape-blue">Why Choose UNISCAPE?</h3>
-                        <p class="text-lg text-gray-600 mb-4">Uniscape Consulting is a professional training and technology 
-                            solutions company dedicated to bridging Africa&apos;s digital skill gap. Through 
-                            hands-on bootcamps, mentorship, and project-based learning, we empower learners 
-                            to master in-demand digital skills that prepare them for the global market.
-                        </p>
-                        <div class="">
-                            <ul class="space-y-3">
-                                <li class="flex items-center gap-2">
-                                    <img src="/checked.png" alt="checked" width="20">
-                                    <span>Hands-on training</span>
-                                </li>
-
-                                <li class="flex items-center gap-2">
-                                    <img src="/checked.png" alt="checked" width="20">
-                                    <span>Project-based learning</span>
-                                </li>
-
-                                <li class="flex gap-2 items-center">
-                                    <img src="/checked.png" alt="checked" width="20">
-                                    <span>Career Mentorship</span>
-                                </li>
-
-                                <li class="flex gap-2 items-center">
-                                    <img src="/checked.png" alt="checked" width="20">
-                                    <span>Online/Physical learning</span>
-                                </li>
-
-                                <li class="flex gap-2 items-center">
-                                    <img src="/checked.png" alt="checked" width="20">
-                                    <span>Full-time/Part-time classes</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <AboutSection />
 
         <!-- Learning Experience Section -->
         <section class="py-16 bg-white">
@@ -271,33 +165,7 @@
         </section>
 
         <!-- programs section -->
-        <section id="programs" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">Our Programmes</h3>
-
-                <!-- featured courses -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div v-for="(course, index) in allCourses" :key="course.id" class="bg-gradient-to-b from-uniscape-yellow to-yellow-50 rounded-2xl shadow-lg p-6 hover:-translate-y-2 transition-transform duration-300">
-                        <h4 class="text-2xl font-bold text-uniscape-blue mb-3">{{ course.course_name }}</h4>
-                        <p class="text-gray-700 mb-2">
-                            <span class="font-semibold text-uniscape-blue">Duration:</span> {{ course.course_duration }}
-                        </p>
-
-                        <p class="text-gray-700 mb-4">
-                            <span class="font-semibold text-uniscape-blue">Fees:</span> KES {{ course.course_fee }}
-                        </p>
-
-                        <p class="text-gray-600 mb-6">
-                            Learn the latest tools and skills in {{ course.course_name }} with hands on projects, expert mentors, and a global-ready curriculum.
-                        </p>
-
-                        <button type="button" @click="openSingleCoursePage(course)" class="bg-uniscape-blue text-yellow-300 px-5 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
-                            {{loadingCourseId === course.id ? 'Loading...' : 'Explore Course'}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <ProgramSection />
 
         <!-- Student Success Stories -->
         <section class="py-16 bg-white">
@@ -375,18 +243,7 @@
         </section>
 
         <!-- our partners -->
-        <section class="bg-gray-50 py-16">
-            <div class="container mx-auto px-4">
-                <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-4">Our Partners</h3>
-
-                <!-- partners -->
-                <div class="flex items-center space-x-10 animate-marquee">
-                    <div v-for="(partner, index) in partners" :key="index" class="flex-shrink-0 flex items-center justify-center">
-                        <img :src="partner.image" :alt="partner.image" class="h-20 object-contain">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <PartnerSection />
 
         <!-- FAQ Section -->
         <section id="faqs" class="py-20 bg-white">
@@ -659,23 +516,26 @@
 </template>
 
 <script>
+import AboutSection from '@/components/AboutSection.vue';
+import HeroSection from '@/components/HeroSection.vue';
+import PartnerSection from '@/components/PartnerSection.vue';
+import ProgramSection from '@/components/ProgramSection.vue';
 import router from '@/router';
 import api from '@/services/api';
 
 export default {
+    name: 'HomePage',
+    components: {
+        AboutSection,
+        ProgramSection,
+        HeroSection,
+        PartnerSection
+    },
+
     data() {
         return {
             showMenu: false,
-            partners: [
-                { image: "/ajira.png" },
-                { image: "/google.png" },
-                { image: "/huawei.svg" },
-                { image: "/icta.png" },
-                { image: "/mastercard-foundation.png" },
-                { image: "/microsoft.png" },
-                { image: "/oracle.png" },
-                { image: "/safaricom-foundation.jpg" }
-            ],
+
             images: [
                 '/code1.jpg',
                 '/code3.jpg',

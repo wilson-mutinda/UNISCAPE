@@ -61,4 +61,45 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result.course_name).to eq('Software Engineering')
     end
   end
+
+  describe "#user_email_search" do
+    let(:users) do
+      [
+        double(email: 'aa@gmail.com'),
+        double(email: 'dd@gmail.com'),
+        double(email: 'ab@gmail.com'),
+        double(email: 'bb@gmail.com'),
+    ].sort_by(&:email)
+    end
+
+    it "returns an error if email alreay exists" do
+      result = helper.user_email_search(users, 'aa@gmail.com')
+      expect(result).to eq({ errors: { email: "Email has been taken!"}})
+    end
+
+    it "passes if email does not exist" do
+      result = helper.user_email_search(users, 'ac@gmail.com')
+      expect(result).to eq('ac@gmail.com')
+    end
+  end
+
+  describe "#user_phone_search" do
+    let(:users) do
+      [
+        double(phone: '254711111111'),
+        double(phone: '254712121212'),
+        double(phone: '254789898989')
+    ].sort_by(&:phone)
+    end
+
+    it "returns an error if phone already exists" do
+      result = helper.user_phone_search(users, '254712121212')
+      expect(result).to eq({ errors: { phone: 'Phone has been taken!'}})
+    end
+
+    it "passes if phone does not exist" do
+      result = helper.user_phone_search(users, '254777777777')
+      expect(result).to eq('254777777777')
+    end
+  end
 end

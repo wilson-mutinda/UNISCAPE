@@ -96,23 +96,26 @@ class Api::V1::CoursesController < ApplicationController
   # view single_course
   def single_course
     begin
-      courses = Course.all.order(:id).to_a
-      target_id = params[:id].to_i
+      identifier = params[:identifier]
 
-      info = course_id_search(courses, target_id)
+      # Try to find course by slug or ID
+      info = Course.find_by(slug: identifier) || Course.find_by(id: identifier)
 
-      if info.is_a?(Hash) && info[:errors]
-        render json: info, status: :not_found
+      if info.nil?
+        render json: { errors: { course: "Course not found!" } }, status: :not_found
         return
       end
 
+      # Attach image URL if available
       image_url = info.course_image.attached? ? url_for(info.course_image) : nil
-    
-      render json: info.as_json(except: [:created_at, :updated_at]).merge({ image_url: image_url}), status: :ok
+
+      render json: info.as_json(
+        except: [:created_at, :updated_at]
+      ).merge({ image_url: image_url }), status: :ok
+
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
     end
-    
   end
 
   # view all_courses

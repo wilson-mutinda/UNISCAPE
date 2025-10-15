@@ -2,6 +2,14 @@ class Course < ApplicationRecord
 
   # attach image
   has_one_attached :course_image
+
+  before_save :set_slug
+
+  def set_slug
+    if slug.blank? && course_name.present?
+      self.slug = course_name.parameterize
+    end
+  end
   
   # validations
   validates :course_name, presence: true, uniqueness: true, if: -> { new_record? || course_name.present? }

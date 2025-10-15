@@ -18,11 +18,11 @@
             <div>
                 <h4 class="text-xl font-semibold text-uniscape-yellow mb-4">Quick Links</h4>
                 <ul class="space-y-2">
-                    <li><a href="#home" class="hover:text-uniscape-yellow transition">Home</a></li>
-                    <li><a href="#about" class="hover:text-uniscape-yellow transition">About Us</a></li>
-                    <li><a href="#programs" class="hover:text-uniscape-yellow transition">Programs</a></li>
-                    <li><a href="#community" class="hover:text-uniscape-yellow transition">Community</a></li>
-                    <li><a href="#contacts" class="hover:text-uniscape-yellow transition">Contact Us</a></li>
+                    <li><a @click.prevent="goToSection('home')" href="#home" class="hover:text-uniscape-yellow transition">Home</a></li>
+                    <li><a @click.prevent="goToSection('about')" href="#about" class="hover:text-uniscape-yellow transition">About Us</a></li>
+                    <li><a @click.prevent="goToSection('programs')" href="#programs" class="hover:text-uniscape-yellow transition">Programs</a></li>
+                    <li><a @click.prevent="goToSection('community')" href="#community" class="hover:text-uniscape-yellow transition">Community</a></li>
+                    <li><a @click.prevent="goToSection('contacts')" href="#contacts" class="hover:text-uniscape-yellow transition">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -74,3 +74,27 @@
         </div>
     </footer>
 </template>
+
+<script>
+export default {
+    data() {
+        return {}
+    },
+
+    methods: {
+        goToSection(id) {
+            if (this.$route.path !== '/home' && this.$route.path !== '/')
+            this.$router.push('/home').then(() => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth'});
+                }, 500);
+        });
+        else {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth'});
+        }
+        },
+    }
+}
+</script>

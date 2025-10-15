@@ -10,7 +10,7 @@ const router = createRouter({
     { path: '/', component: MainPage, children: [
       { path: '', redirect: 'home' },
       { path: 'home', name: 'home', component: HomePage },
-      { path: 'course-page', name: 'course-page', component: CoursePage },
+      { path: 'programs/:slug', name: 'course', component: CoursePage, props: true },
     ] },
   ],
 })

@@ -75,8 +75,12 @@ class Api::V1::CoursesController < ApplicationController
         course_duration: course_duration_param,
         course_fee: course_fee_param,
         course_desc: course_desc_param,
-        course_more_info: course_more_info_param
+        course_more_info: course_more_info_param,
       )
+
+      if course_params[:course_image].present?
+        created_course.course_image.attach(course_params[:course_image])
+      end
 
       if created_course
         render json: { message: "Course '#{course_name_param}' created successfully!"}, status: :created
@@ -193,9 +197,9 @@ class Api::V1::CoursesController < ApplicationController
         updated_course_info[:course_desc] = course_desc_param
       end
 
-      # course_more_info
-      course_more_info = course_params[:course_more_info].to_s
-      if course_more_info.present?
+      # course_more_info_param
+      course_more_info_param = course_params[:course_more_info].to_s
+      if course_more_info_param.present?
         course_more_info_param = course_more_info_param
         updated_course_info[:course_more_info] = course_more_info_param
       end

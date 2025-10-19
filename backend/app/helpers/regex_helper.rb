@@ -22,4 +22,34 @@ module RegexHelper
     end
     phone
   end
+
+  def normalized_password(password, password_confirmation)
+
+    # check for blank passwords
+    if password.present? && password_confirmation.blank?
+      return { errors: { password_confirmation: "Please enter password confirmation!"}}
+    elsif password.blank? && password_confirmation.present?
+      return { errors: { password: "Please enter password!"}}
+    elsif password.blank? && password_confirmation.blank?
+      return { errors: { password: "Please enter password!", password_confirmation: "Please enter password confirmation!"}}
+    end
+
+    # length validation
+    if password.length < 8
+      return { errors: { password: "Password should have at least 8 characters!"}}
+    end
+
+    # both letters and digits
+    unless password.match?(/[A-Za-z]/) && password.match?(/\d/)
+      return { errors: { password: "Password should have both letters and digits!"}}
+    end
+
+    # password match check
+    if password != password_confirmation
+      return { errors: { password_confirmation: "Password Mismatch!"}}
+    end
+
+    # return the valid passwords
+    { password: password, password_confirmation: password_confirmation }
+  end
 end

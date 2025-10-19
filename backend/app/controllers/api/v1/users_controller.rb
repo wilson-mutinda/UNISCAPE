@@ -52,7 +52,36 @@ class Api::V1::UsersController < ApplicationController
 
       phone_param = normalized_phone
 
-      # -------------------------- PASSWORD AND PASSWORD CONFIRMATION ----------------------
+      # -------------------------- PASSWORD AND PASSWORD_CONFIRMATION ----------------------
+      password_param = user_params[:password]
+      password_confirmation_param = user_params[:password_confirmation]
+
+      normalized_password = normalized_password(password_param, password_confirmation_param)
+      
+      if normalized_password.is_a?(Hash) && normalized_password.key?(:errors)
+        # handle error case
+        render json: normalized_password, status: :unprocessable_entity
+        return
+      else
+        # handle success case
+        password_param = normalized_password[:password]
+        password_confirmation_param = normalized_password[:password_confirmation]
+      end
+
+      # create_user
+      created_user = User.create(
+        email: email_param,
+        phone: phone_param,
+        password: password_param,
+        password_confirmation: password_confirmation_param,
+        flag: 'Admin'
+      )
+
+      if created_user
+        render json: { message: "User created!"}, status: :created
+      else
+        render json: { error: "Error creating user!", info: created_user.errors.full_messages }, status: :unprocessable_entity
+      end
 
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error

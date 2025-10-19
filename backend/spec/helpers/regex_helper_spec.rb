@@ -33,4 +33,26 @@ RSpec.describe RegexHelper, type: :helper do
       expect(result).to eq({ errors: { phone: "Invalid phone format!"}})
     end
   end
+  
+  describe "#normalized_password" do
+    it "returns an error on password mismatch" do
+      result = helper.normalized_password("user1234", "user12345")
+      expect(result).to eq({ errors: { password_confirmation: "Password Mismatch!"}})
+    end
+
+    it "returns an error on <8 characters" do
+      result = helper.normalized_password("user123", "user1234")
+      expect(result).to eq({ errors: { password: "Password should have at least 8 characters!"}})
+    end
+
+    it "checks on both letters and digits" do
+      result = helper.normalized_password("12341234", "12341234")
+      expect(result).to eq({ errors: { password: "Password should have both letters and digits!"}})
+    end
+
+    it "checks for empty password and password confirmation fields" do
+      result = helper.normalized_password("", "")
+      expect(result).to eq({ errors: { password: "Please enter password!", password_confirmation: "Please enter password confirmation!"}})
+    end
+  end
 end

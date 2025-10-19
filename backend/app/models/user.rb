@@ -14,7 +14,8 @@ class User < ApplicationRecord
   private
   def set_slug
     if slug.blank? && email.present?
-      self.slug = email.parameterize
+      username = email.split('@').first
+      self.slug = username.parameterize
     end
   end
 end

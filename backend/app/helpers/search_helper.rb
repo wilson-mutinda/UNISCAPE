@@ -116,4 +116,81 @@ module SearchHelper
     target_phone
   end
 
+  def user_slug_search(users, target)
+    target = target.to_s.strip.downcase
+
+    # Try seach by ID
+    if target.match?(/^\d+$/)
+      user = users.find { |u| u.id == target.to_i }
+      if user
+        return user
+      else
+        return { errors: { user: "User with ID #{target} not found!"}}
+      end
+    end
+
+    # Try search by email
+    user = users.find { |u| u.email.to_s.downcase == target }
+    if user.present?
+      return user
+    end
+
+    # Try search by slug
+    user = users.find { |u| u.slug.to_s.downcase == target }
+    if user.present?
+      return user
+    end
+
+    # Fallback if nothing hapens
+    { errors: { user: "User not found for '#{target}'"}}
+  end
+
+  def unique_email_search(users, target_email, user_id)
+    target_email = target_email.to_s.strip.downcase
+
+    first_index = 0;
+    last_index = users.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2
+      mid_index_user = users[mid_index]
+      mid_user_email = mid_index_user.email.to_s.strip.downcase
+
+      if mid_user_email == target_email
+        if mid_index_user.id != user_id
+          return { errors: { email: "Email has been taken!"}}
+        end
+        return mid_index_user
+      elsif mid_user_email < target_email
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+  end
+
+  def unique_phone_search(users, target_phone, user_id)
+    target_phone = target_phone.to_s.strip
+
+    first_index = 0;
+    last_index = users.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_index_user = users[mid_index]
+      mid_index_phone = mid_index_user.phone
+
+      if mid_index_phone == target_phone
+        if mid_index_user.id != user_id
+          return { errors: { phone: "Phone has been taken!"}}
+        end
+        return mid_index_user
+      elsif mid_index_phone < target_phone
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+  end
+
 end

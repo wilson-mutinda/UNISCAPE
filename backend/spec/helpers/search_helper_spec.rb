@@ -102,4 +102,39 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result).to eq('254777777777')
     end
   end
+
+  describe "#user_slug_search" do
+    let(:users) do
+      [
+        double(id: 1, email: "aa@gmail.com", slug: 'aa'),
+        double(id: 2, email: 'cc@gmail.com', slug: 'cc'),
+        double(id: 3, email: 'dd@gmail.com', slug: 'dd')
+      ]
+    end
+
+    it "returns user details by searching with id" do
+      result = helper.user_slug_search(users, 3)
+      expect(result).to eq(users[2])
+    end
+
+    it "returns user object by searching with email" do
+      result = helper.user_slug_search(users, 'cc@gmail.com')
+      expect(result).to eq(users[1])
+    end
+    
+    it "returns user object by searching with slug" do
+      result = helper.user_slug_search(users, 'aa')
+      expect(result).to eq(users[0])
+    end
+
+    it "returns an error hash when user not found" do
+      result = helper.user_slug_search(users, 'Bb')
+      expect(result).to eq({ errors: { user: "User not found for '#{'bb'}'"}})
+    end
+
+    it "returns an error hash if ID was not found" do
+      result = helper.user_slug_search(users, 5)
+      expect(result).to eq({ errors: { user: "User with ID 5 not found!"}})
+    end
+  end
 end

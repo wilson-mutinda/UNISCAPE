@@ -70,6 +70,36 @@ module SearchHelper
     end
   end
 
+  # course_slug_search
+  def course_slug_search(courses, target)
+    target = target.to_s.gsub(/\s+/, '').downcase
+
+    # check if target is ad ID
+    if target.match?(/^\d+$/)
+      course = courses.find { |c| c.id == target.to_i }
+      if course
+        return course
+      else
+        return { errors: { course: "Course with ID #{target} not found!"}}
+      end
+    end
+
+    # Try search with course_name
+    course = courses.find { |c| c.course_name.to_s.downcase == target }
+    if course
+      return course
+    end
+
+    # Try search with slug
+    course = courses.find { |c| c.slug.to_s.downcase == target }
+    if course
+      return course
+    end
+
+    # Fallback if nothing happens
+    { errors: { course: "Course not found for '#{target}'"}}
+  end
+
   def user_email_search(users, target_email)
     target_email = target_email.to_s.gsub(/\s+/, '').downcase
 

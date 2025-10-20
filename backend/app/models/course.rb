@@ -1,5 +1,23 @@
 class Course < ApplicationRecord
 
+  # hide soft deleted courses by default
+  default_scope { where(deleted_at: nil)}
+
+  # soft delete
+  def soft_delete
+    update(deleted_at: Time.current)
+  end
+
+  # check if course is deleted
+  def deleted?
+    deleted_at.present?
+  end
+
+  # restore a soft deleted course
+  def restore
+    update(deleted_at: nil)
+  end
+
   # attach image
   has_one_attached :course_image
 

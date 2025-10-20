@@ -1,5 +1,6 @@
 class Country < ApplicationRecord
   before_save :generate_slug
+  has_many :students
 
   # hide soft-deleted countrys by default
   default_scope { where(deleted_at: nil)}

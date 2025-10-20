@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_174842) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_181817) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,6 +69,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_174842) do
     t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "country_id", null: false
+    t.string "slug"
+    t.datetime "deleted_at"
+    t.index ["country_id"], name: "index_students_on_country_id"
     t.index ["user_id"], name: "index_students_on_user_id"
   end
 
@@ -85,5 +89,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_174842) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "students", "countries"
   add_foreign_key "students", "users"
 end

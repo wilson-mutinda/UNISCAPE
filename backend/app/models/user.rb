@@ -1,12 +1,21 @@
 class User < ApplicationRecord
+  
+  # Hide soft-deleted users bt default
   default_scope { where(deleted_at: nil)}
 
+  # soft delete: just set deleted_at
   def soft_delete
     update(deleted_at: Time.current)
   end
 
+  # check if user is deleted
   def deleted?
     deleted_at.present?
+  end
+
+  # Restore a soft-deleted user
+  def restore
+    update(deleted_at: nil)
   end
   # secure_password
   has_secure_password

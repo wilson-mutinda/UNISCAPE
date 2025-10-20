@@ -42,6 +42,32 @@ class UserService
     end
   end
 
+  # view single_user
+  def single_user
+    @user = user_slug_search(@users, @target_param)
+    if @user.is_a?(Hash) && @user.key?(:errors)
+      return @user
+    end
+
+    info = @user
+    if info
+      { success: true, user_info: info.as_json(except: [:created_at, :updated_at, :password_digest])}
+    else
+      { success: false, errors: info.errors.full_messages }
+    end
+  end
+  # view all_users
+  def all_users
+    @sorted_users = user_email_sort(@users)
+    if @sorted_users.empty?
+      { success: false, errors: "Empty List!"}
+    else
+      { success: true, info: @sorted_users.map do |user|
+        user.as_json(except: [:created_at, :updated_at, :password_digest])
+      end }
+    end
+  end
+
   # update_user
   def update_user
 
@@ -78,6 +104,42 @@ class UserService
       { success: true, user: updated_user}
     else
       { success: false, errors: updated_user.errors.full_messages }
+    end
+  end
+
+  # delete_user
+  def delete_user
+    @user = user_slug_search(@users, @target_param)
+    if @user.is_a?(Hash) && @user.key?(:errors)
+      return @user
+    end
+
+    user_email = @user.email
+    user_delete = @user.soft_delete
+    if user_delete
+      { success: true, message: "User with '#{user_email}' deleted successfully!"}
+    else
+      { success: false, errors: @user.errors.full_messages }
+    end
+  end
+
+  # restore_user
+  def restore_user
+    @user = User.unscoped.find_by(slug: @target_param)
+
+    if @user.nil?
+      return { success: false, errors: { user: "User not found!"}}
+    end
+
+    unless @user.deleted?
+      return { success: false, errors: { user: "User is not deleted!"}}
+    end
+
+    restored_user = @user.restore
+    if restored_user
+      { success: true, message: "User '#{@user.email}' restored successfully!"}
+    else
+      { success: false, errors: @user.errors.full_messages }
     end
   end
 

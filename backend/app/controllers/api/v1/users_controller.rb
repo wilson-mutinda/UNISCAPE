@@ -25,16 +25,13 @@ class Api::V1::UsersController < ApplicationController
   # view single_user
   def single_user
     begin
-      # all_users
-      users = User.all.order(:slug).to_a
-      target_param = params[:slug]
-      info = user_slug_search(users, target_param)
-
-      if info.is_a?(Hash) && info[:errors].present?
-        render json: info, status: :unprocessable_entity
-        return
+      service = UserService.new(params.merge(slug: params[:slug]))
+      result = service.single_user
+      if result[:success]
+        render json: result[:user_info], status: :ok
+      else
+        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
       end
-      render json: info.as_json(except: [:created_at, :updated_at, :password_digest]), status: :ok
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
     end
@@ -44,17 +41,13 @@ class Api::V1::UsersController < ApplicationController
   # view all_users
   def all_users
     begin
-      users = User.all.order(:email).to_a
-      if users.empty?
-        render json: { error: "Empty List!"}, status: :not_found
-        return
+      service = UserService.new(params)
+      result = service.all_users
+      if result[:success]
+        render json: result[:info], status: :ok
+      else
+        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
       end
-
-      user_list = user_email_sort(users)
-      info = user_list.map do |user|
-        user.as_json(except: [:created_at, :updated_at, :password_digest])
-      end
-      render json: info, status: :ok
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
     end
@@ -81,19 +74,28 @@ class Api::V1::UsersController < ApplicationController
   # delete_user
   def delete_user
     begin
-      users = User.all.order(:email).to_a
-      target_param = params[:slug]
-
-      user = user_slug_search(users, target_param)
-      if user.is_a?(Hash) && user[:errors]
-        render json: user, status: :unprocessable_entity
-        return
-      end
-      user_email = user.email
-      if user.soft_delete
-        render json: { message: "User with '#{user_email}' spft deleted successfully!"}, status: :ok
+      service = UserService.new(user_params.merge(slug: params[:slug]))
+      result = service.delete_user
+      if result[:success]
+        render json: { message: result[:message]}, status: :ok
       else
-        render json: { error: "Error deleting user!", info: user.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
+      end
+    rescue => e
+      render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
+    end
+    
+  end
+
+  # restore_user
+  def restore_user
+    begin
+      service = UserService.new(params.merge(slug: params[:slug]))
+      result = service.restore_user
+      if result[:success]
+        render json: { message: result[:message]}, status: :ok
+      else
+        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
       end
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error

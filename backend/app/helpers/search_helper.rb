@@ -223,4 +223,78 @@ module SearchHelper
     end
   end
 
+  def country_name_search(countrys, target_name)
+    target_name = target_name.to_s.downcase
+    first_index = 0;
+    last_index = countrys.length - 1
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_country = countrys[mid_index]
+      mid_country_name = mid_country.name.to_s.downcase
+
+      if mid_country_name == target_name
+        return { errors: { name: "Name already exists!"}}
+      elsif mid_country_name < target_name
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    target_name
+  end
+
+  def country_slug_search(countrys, target)
+    target = target.to_s.gsub(/\s+/, '').downcase
+
+    # check id target is an ID
+    if target.match?(/^\d+$/)
+      country = countrys.find { |c| c.id == target.to_i }
+      if country
+        return country
+      else
+        return { errors: { name: "Country with ID #{target} not found!"}}
+      end
+    end
+
+    # find by name
+    country = countrys.find { |c| c.name.to_s.downcase == target }
+    if country
+      return country
+    end
+
+    # find by slug
+    country = countrys.find { |c| c.slug.to_s.downcase == target }
+    if country
+      return country
+    end
+
+    # Falback if nothing happens
+    { errors: { name: "Country not found for '#{target}'"}}
+  end
+
+  def unique_country_name(countrys, target_name, country_id)
+    target_name = target_name.to_s.downcase
+    first_index = 0;
+    last_index = countrys.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_index_country = countrys[mid_index]
+      mid_index_name = mid_index_country.name.to_s.downcase
+      
+      if mid_index_name == target_name
+        if mid_index_country.id != country_id
+          return { errors: { name: "Name already exists!"}}
+        end
+        return mid_index_country
+      elsif mid_index_name < target_name
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+
+    end
+  end
+
 end

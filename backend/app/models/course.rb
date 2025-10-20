@@ -32,7 +32,7 @@ class Course < ApplicationRecord
 
   private
   def set_slug
-    if slug.blank? && course_name.present?
+    if course_name.present?
       self.slug = course_name.parameterize
     end
   end

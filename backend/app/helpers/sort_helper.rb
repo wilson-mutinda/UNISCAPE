@@ -26,4 +26,17 @@ module SortHelper
 
     user_email_sort(left) + [pivot] + user_email_sort(right)
   end
+
+  def country_name_sort(countrys)
+    if countrys.length <= 1
+      return countrys
+    end
+
+    pivot = countrys.delete_at(rand(countrys.length))
+
+    left, right = countrys.partition do |country|
+      country.name < pivot.name
+    end
+    country_name_sort(left) + [pivot] + country_name_sort(right)
+  end
 end

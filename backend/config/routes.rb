@@ -17,6 +17,14 @@ Rails.application.routes.draw do
       patch 'update_user/:slug', to: 'users#update_user'
       delete 'delete_user/:slug', to: 'users#delete_user'
       get 'restore_user/:slug', to: 'users#restore_user'
+
+      # country
+      post 'create_country', to: 'countrys#create_country'
+      get 'single_country/:slug', to: 'countrys#single_country'
+      get 'all_countrys', to: 'countrys#all_countrys'
+      patch 'update_country/:slug', to: 'countrys#update_country'
+      delete 'delete_country/:slug', to: 'countrys#delete_country'
+      get 'restore_country/:slug', to: 'countrys#restore_country'
     end
   end
 end

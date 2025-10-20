@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  
+
+  has_one :student
+
   # Hide soft-deleted users bt default
   default_scope { where(deleted_at: nil)}
 
@@ -31,7 +33,7 @@ class User < ApplicationRecord
 
   private
   def set_slug
-    if slug.blank? && email.present?
+    if email.present?
       username = email.split('@').first
       self.slug = username.parameterize
     end

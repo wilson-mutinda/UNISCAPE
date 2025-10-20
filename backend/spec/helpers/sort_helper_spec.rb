@@ -15,4 +15,20 @@ RSpec.describe SortHelper, type: :helper do
       expect(names).to eq(['AI Engineering', 'Backend Development', 'Data Analytics'])
     end
   end
+
+  describe "#country_name_sort" do
+    let(:countrys) do
+      [
+        double(name: 'Kenya'),
+        double(name: 'Uganda'),
+        double(name: 'China')
+      ]
+    end
+
+    it "returns an array of countrys sorted in an ascending order" do
+      result = helper.country_name_sort(countrys)
+      names = result.map(&:name)
+      expect(names).to eq(['China', 'Kenya', 'Uganda'])
+    end
+  end
 end

@@ -137,4 +137,53 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result).to eq({ errors: { user: "User with ID 5 not found!"}})
     end
   end
+
+  describe "#country_name_search" do
+    let(:countrys) do
+      [
+        double(id: 1, name: 'Kenya'),
+        double(id: 2, name: 'Lagos'),
+        double(id: 3, name: 'China')
+      ]
+    end
+    it "returns an error if name exists!" do
+      result = helper.country_name_search(countrys, 'kenya')
+      expect(result).to eq({ errors: { name: 'Name already exists!'}})
+    end
+
+    it "passes when a name does not exist" do
+      result = helper.country_name_search(countrys, 'Uganda')
+      expect(result).to eq('uganda')
+    end
+  end
+
+  describe "#course_slug_search" do
+    let(:countrys) do
+      [
+        double(id: 1, name: 'Kenya', slug: 'kenya'),
+        double(id: 2, name: 'Lagos', slug: 'lagos'),
+        double(id: 3, name: 'China', slug: 'china')
+      ]
+    end
+
+    it "returns an  error if ID is not found" do
+      result = helper.country_slug_search(countrys, 5)
+      expect(result).to eq({ errors: { name: 'Country with ID 5 not found!'}})
+    end
+
+    it "returns country object if id passes" do
+      result = helper.country_slug_search(countrys, 2)
+      expect(result).to eq(countrys[1])
+    end
+
+    it "returns country object if name passes" do
+      result = helper.country_slug_search(countrys, 'Lagos')
+      expect(result).to eq(countrys[1])
+    end
+
+    it 'returns country object if slug passes' do
+      result = helper.country_slug_search(countrys, 'lagos')
+      expect(result).to eq(countrys[1])
+    end
+  end
 end

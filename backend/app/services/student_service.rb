@@ -1,7 +1,11 @@
 class StudentService
 
+  include SearchHelper
+
   def initialize(params)
     @params = params
+    @students = Student.unscoped.order(:first_name).to_a
+    @target_param = params[:slug]
   end
 
   # create_student
@@ -67,6 +71,20 @@ class StudentService
     # any unexpected exception
     { success: false, errors: e.message }
 
+  end
+
+  # view single_student
+  def single_student
+    @student = student_slug_search(@students, @target_param)
+    if @student.is_a?(Hash) && @student.key?(:errors)
+      return @student
+    end
+    student = @student
+    if student
+      { success: true, student: student}
+    else
+      { success: false, errors: @student.errors.full_messages }
+    end
   end
 
   private

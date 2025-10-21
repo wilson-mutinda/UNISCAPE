@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
       # student
       post 'create_student', to: 'students#create_student'
+      get 'single_student/:slug', to: 'students#single_student'
     end
   end
 end

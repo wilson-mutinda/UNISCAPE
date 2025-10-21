@@ -297,4 +297,57 @@ module SearchHelper
     end
   end
 
+  def student_slug_search(students, target)
+    target = target.to_s.gsub(/\s+/, '').downcase
+
+    # check if target is an ID
+    if target.match?(/^\d+$/) && target.length < 7
+      student = students.find { |s| s.id == target.to_i }
+      if student
+        return student
+      else
+        return { errors: { student: "Student with ID #{target} not found!"}}
+      end
+    end
+
+    # find with slug
+    student = students.find { |s| s.slug.to_s.gsub(/\s+/, '').downcase == target }
+    if student
+      return student
+    end
+
+    # find with first_name
+    student = students.find { |s| s.first_name.to_s.strip.downcase == target }
+    if student
+      return student
+    end
+
+    # find with last_name
+    student = students.find { |s| s.last_name.to_s.strip.downcase == target }
+    if student
+      return student
+    end
+
+    # find with user.slug (if user exists)
+    student = students.find { |s| s.user && s.user.slug.to_s.strip.downcase == target }
+    if student
+      return student
+    end
+
+    # find with user.email (if user exists)
+    student = students.find { |s| s.user && s.user.email.to_s.gsub(/\s+/, '').downcase == target }
+    if student
+      return student
+    end
+
+    # find with user.phone (if user exists) 
+    student = students.find { |s| s.user && s.user.phone.to_s.gsub(/\s+/, '') == target }
+    if student
+      return student
+    end
+
+    # Fallback if nothing happens
+    { errors: { student: "Student not found for '#{target}'"}}
+  end
+
 end

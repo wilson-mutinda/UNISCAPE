@@ -17,6 +17,15 @@ class CountryService
       return name_param
     end
 
+    # check if country exists (not soft deleted)
+    existing_country = Country.unscoped.find_by(name: name_param)
+    if existing_country
+      if existing_country.deleted?
+        existing_country.restore
+      end
+      return { success:true, country: existing_country }
+    end
+
     # create_country
     created_country = Country.create(
       name: name_param
@@ -125,11 +134,11 @@ class CountryService
       return { errors: { name: "Please enter name!"}}
     end
 
-    # name should not exist
-    existing = country_name_search(@countrys, country_name)
-    if existing.is_a?(Hash) && existing.key?(:errors)
-      return existing
-    end
+    # # name should not exist
+    # existing = country_name_search(@countrys, country_name)
+    # if existing.is_a?(Hash) && existing.key?(:errors)
+    #   return existing
+    # end
     country_name.to_s.titleize
   end
 

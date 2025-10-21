@@ -25,6 +25,9 @@ Rails.application.routes.draw do
       patch 'update_country/:slug', to: 'countrys#update_country'
       delete 'delete_country/:slug', to: 'countrys#delete_country'
       get 'restore_country/:slug', to: 'countrys#restore_country'
+
+      # student
+      post 'create_student', to: 'students#create_student'
     end
   end
 end

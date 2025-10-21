@@ -7,7 +7,7 @@ class Api::V1::CountrysController < ApplicationController
       result = service.create_country
 
       if result[:success]
-        render json: result[:message], status: :created
+        render json: result[:country], status: :created
       else
         render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
       end

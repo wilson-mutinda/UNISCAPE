@@ -23,7 +23,7 @@ class CountryService
     )
 
     if created_country
-      { success: true, message: "Country '#{name_param}' created successfully!" }
+      { success: true, country: created_country }
     else
       { success: false, errors: created_country.errors.full_messages }
     end

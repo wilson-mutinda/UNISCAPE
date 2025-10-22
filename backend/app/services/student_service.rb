@@ -3,9 +3,9 @@ class StudentService
   include SearchHelper
   include SortHelper
 
-  def initialize(params)
-    @params = params
-    @students = Student.unscoped.order(:first_name).to_a
+  def initialize(params = {})
+    @params = params || {}
+    @students = Student.all.order(:first_name).to_a
     @target_param = params[:slug]
   end
 
@@ -92,11 +92,10 @@ class StudentService
   def all_students
     @sorted_students = student_first_name_sort(@students)
     
-    info = @sorted_students
-    if info
-      { success: true, students: @sorted_students }
+    if @sorted_students.empty?
+      { success: false, errors: "Empty List!"}
     else
-      { success: false, errors: @sorted_students.errors.full_messages }
+      { success: true, students: @sorted_students }
     end
   end
 
@@ -109,33 +108,41 @@ class StudentService
 
     errors = nil
 
-    # updated_attributes = {}
-
     # start transaction for atomic update
     ActiveRecord::Base.transaction do
-      # Update user if user params provided
+      # --- Update user if provided ---
       if @params[:user].present?
+        puts "DEBUG: Updating user with params: #{@params[:user]}"
         user_service = UserService.new(@params[:user].merge(slug: @student.user.slug))
         user_result = user_service.update_user
+        puts "DEBUG: User update result: #{user_result}"
 
         unless user_result[:success]
           errors = user_result[:errors]
+          puts "DEBUG: User update failed: #{errors}"
           raise ActiveRecord::Rollback
         end
       end
 
-      # update country if country params provided
+      # --- Update country if provided ---
       if @params[:country].present?
-        country_service = CountryService.new(@params[:country].merge(slug: @student.country.slug))
-        country_result = country_service.update_country
+        puts "DEBUG: Updating country with params: #{@params[:country]}"
 
-        unless country_result[:success]
-          errors = country_result[:errors]
-          raise ActiveRecord::Rollback
-        end
-      end
+        # include soft-deleted countries
+        # current_country = Country.unscoped.find_by(id: @student.country_id)
+        requested_country_name = @params[:country][:name].downcase.strip
 
-      # Update student attributes
+        new_country = Country.find_by("LOWER(name) = ?", requested_country_name)
+
+        new_country ||= Country.create!(name: requested_country_name.titleize)
+        puts "DEBUG: Country '#{new_country.name}' created or found."
+
+        # update student with the new cpuntry id
+        @student.update!(country_id: new_country.id)
+        puts "DEBUG: Student eassigned to country '#{new_country.name}'"
+      end  
+
+      # --- Update student name attributes ---
       if @params[:first_name].present? || @params[:last_name].present?
         student_attrs = {}
         student_attrs[:first_name] = normalize_update_first_name if @params[:first_name].present?
@@ -147,14 +154,15 @@ class StudentService
         end
       end
 
-      # Reload student with associations
+      # --- Reload associations and return success ---
       @student.reload
       return { success: true, student: @student }
     end
 
-    # If transaction rolled back
+    # --- If transaction rolled back ---
     { success: false, errors: errors || "Student update failed!" }
   end
+
 
   # delete_student
   def delete_student
@@ -178,17 +186,6 @@ class StudentService
         end
       end
 
-      # soft delete associated country
-      if @student.country.present? && !@student.country.deleted?
-        country_service = CountryService.new(slug: @student.country.slug)
-        country_result = country_service.delete_country
-
-        unless country_result[:success]
-          errors = country_result[:errors]
-          raise ActiveRecord::Rollback
-        end
-      end
-
       # soft delete student resord
       unless @student.soft_delete
         errors = @student.errors.full_messages
@@ -201,6 +198,56 @@ class StudentService
 
     # if transaction rolled back
     { success: false, errors: errors || "Student soft delete failed!"}
+  end
+
+  # restore_student
+  def restore_student
+    @student = Student.unscoped.find_by(slug: @target_param)
+    
+    # handle case where student is not found
+    unless @student
+      return { success: false, errors: "Student not found!" }
+    end
+
+    errors = nil
+
+    # transaction to ensure all related records are restored together
+    ActiveRecord::Base.transaction do
+      # restore associated user
+      user = User.unscoped.find_by(id: @student.user_id)
+
+      if user.present? && user.deleted?
+        user_service = UserService.new(slug: user.slug)
+        user_result = user_service.restore_user
+
+        unless user_result[:success]
+          errors = user_result[:errors]
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      # # Restore associated country
+      # if @student.country.present? && @student.country.deleted?
+      #   country_service = CountryService.new(slug: @student.country.slug)
+      #   country_result = country_service.restore_country
+
+      #   unless country_result[:success]
+      #     errors = country_result[:errors]
+      #     raise ActiveRecord::Rollback
+      #   end
+      # end
+
+      # Restore associated student record
+      unless @student.restore
+        errors = @student.errors.full_messages
+        raise ActiveRecord::Rollback
+      end
+
+      # Return success after full restoration
+      return { success: true, message: "Student restored successfully!", student: @student }
+    end
+    # if rollback happened
+    { success: false, errors: errors || "Student restoration failed!"}
   end
 
   private

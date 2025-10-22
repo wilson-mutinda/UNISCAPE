@@ -92,7 +92,7 @@ class Api::V1::CountrysController < ApplicationController
   # restore_country
   def restore_country
     begin
-      service = CountryService.new(country_params.merge(slug: params[:slug]))
+      service = CountryService.new(slug: params[:slug])
       result = service.restore_country
 
       if result[:success]

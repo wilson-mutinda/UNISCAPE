@@ -37,13 +37,14 @@ class Api::V1::StudentsController < ApplicationController
   # view all_students
   def all_students
     begin
-      service = StudentService.new(student_params)
+      service = StudentService.new
       result = service.all_students
 
       if result[:success]
-        render json: result[:students], status: :ok
+        students = result[:students]
+        render json: students, status: :ok
       else
-        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
+        render json: { errors: result[:errors] }, status: :unprocessable_entity
       end
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
@@ -59,7 +60,31 @@ class Api::V1::StudentsController < ApplicationController
       if result[:success]
         render json: { message: "Student updated successfully!", info: result[:student]}, status: :ok
       else
-        render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
+        render json: { errors: result[:errors]}, status: :unprocessable_entity
+      end
+    rescue => e
+      render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
+    end
+    
+  end
+
+  # restore_student
+  def restore_student
+    begin
+      service = StudentService.new(student_params.merge(slug: params[:slug]))
+      result = service.restore_student
+      if result[:success]
+        country_name = result[:student].country.name
+        student_email = result[:student].user.email
+        student_phone = result[:student].user.phone
+        student = result[:student].as_json(except: [:created_at, :updated_at, :deleted_at]).merge({ 
+          country: country_name,
+          email: student_email,
+          phone: student_phone
+        })
+        render json: { message: result[:message], student: student }, status: :ok
+      else
+        render json: { errors: result[:errors]}, status: :unprocessable_entity
       end
     rescue => e
       render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error

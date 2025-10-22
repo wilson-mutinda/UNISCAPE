@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get 'all_students', to: 'students#all_students'
       patch 'update_student/:slug', to: 'students#update_student'
       delete 'delete_student/:slug', to: 'students#delete_student'
+      get 'restore_student/:slug', to: 'students#restore_student'
     end
   end
 end

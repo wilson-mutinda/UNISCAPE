@@ -1,5 +1,5 @@
 class Country < ApplicationRecord
-  before_save :generate_slug
+  before_save :generate_slug, :normalize_name
   has_many :students
 
   # hide soft-deleted countrys by default
@@ -29,5 +29,9 @@ class Country < ApplicationRecord
     if name.present?
       self.slug = name.parameterize
     end
+  end
+
+  def normalize_name
+    self.name = name.to_s.titleize
   end
 end

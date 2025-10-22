@@ -101,9 +101,9 @@ class UserService
     # update_user
     updated_user = @user.update(updated_user_params)
     if updated_user
-      { success: true, user: updated_user}
+      { success: true, user: @user }
     else
-      { success: false, errors: updated_user.errors.full_messages }
+      { success: false, errors: @user.errors.full_messages }
     end
   end
 
@@ -131,12 +131,13 @@ class UserService
       return { success: false, errors: { user: "User not found!"}}
     end
 
-    unless @user.deleted?
-      return { success: false, errors: { user: "User is not deleted!"}}
+    # only restore if soft-deleted, otherwise skip
+    if !@user.deleted?
+      puts "DEBUG: USer '#{@user.email}' is already active - no need to restore."
+      return  {success: true, message: "User '#{@user.email}' is already active!"}
     end
 
-    restored_user = @user.restore
-    if restored_user
+    if @user.restore
       { success: true, message: "User '#{@user.email}' restored successfully!"}
     else
       { success: false, errors: @user.errors.full_messages }

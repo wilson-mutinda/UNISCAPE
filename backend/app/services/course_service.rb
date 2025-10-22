@@ -127,7 +127,7 @@ class CourseService
     if updated_course
       { success: true, message: "Course updated successfully!"}
     else
-      { success: false, errors: updated_course.errors.full_messages }
+      { success: false, errors: @course.errors.full_messages }
     end
 
   end

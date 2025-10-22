@@ -4,8 +4,8 @@ class CourseService
   include SearchHelper
   include RegexHelper
 
-  def initialize(params)
-    @params = params
+  def initialize(params = {})
+    @params = params || {}
     @courses = Course.all.order(:course_name).to_a
     @target_param = params[:slug]
   end
@@ -68,9 +68,9 @@ class CourseService
 
     info = @course
     if info
-      { success: true, course_info: info }
+      { success: true, course_info: @course }
     else
-      { success: false, errors: info.errors.full_messages }
+      { success: false, errors: @course.errors.full_messages }
     end
   end
 

@@ -28,7 +28,7 @@ class Api::V1::CoursesController < ApplicationController
   # view single_course
   def single_course
     begin
-      service = CourseService.new(course_params.merge(slug: params[:slug]))
+      service = CourseService.new(slug: params[:slug])
       result = service.single_course
 
       if result[:success]
@@ -48,7 +48,7 @@ class Api::V1::CoursesController < ApplicationController
   # view all_courses
   def all_courses
     begin
-      service = CourseService.new(course_params)
+      service = CourseService.new
       result = service.all_courses
 
       if result[:success]
@@ -71,7 +71,7 @@ class Api::V1::CoursesController < ApplicationController
   # update_course
   def update_course
     begin
-      service = CourseService.new(course_params.merge(slug: params[:slug]))
+      service = CourseService.new(slug: params[:slug])
       result = service.update_course
       if result[:success]
         render json: result[:message], status: :ok
@@ -88,7 +88,7 @@ class Api::V1::CoursesController < ApplicationController
   # delete_course
   def delete_course
     begin
-      service = CourseService.new(course_params.merge(slug: params[:slug]))
+      service = CourseService.new(slug: params[:slug])
       result = service.delete_course
 
       if result[:success]
@@ -105,7 +105,7 @@ class Api::V1::CoursesController < ApplicationController
   # restore_course
   def restore_course
     begin
-      service = CourseService.new(course_params.merge(slug: params[:slug]))
+      service = CourseService.new(slug: params[:slug])
       result = service.restore_course
 
       if result[:success]

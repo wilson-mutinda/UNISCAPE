@@ -144,6 +144,33 @@ class UserService
     end
   end
 
+  # user_login
+  def user_login
+    # email_param
+    email_param = normalize_login_email
+    if email_param.is_a?(Hash) && email_param.key?(:errors)
+      return email_param
+    end
+    
+    # password_param
+    password_param = normalize_login_password
+    if password_param.is_a?(Hash) && password_param.key?(:errors)
+      return password_param
+    end
+
+    user = User.find_by(email: email_param)
+    puts "DEBUG: Find the user: #{user}"
+    if user
+      # authentication
+      auth = user.authenticate(password_param)
+      if auth
+        { success: true, message: "Login Successful!", user: user}
+      else
+        { success: false, errors: auth.errors.full_messages }
+      end
+    end
+  end
+
   private
   # normalize_email
   def normalize_email
@@ -227,6 +254,30 @@ class UserService
       end
     end
     normalized
+  end
+
+  # normalize_login_email
+  def normalize_login_email
+    email_param = @params[:email].to_s.gsub(/\s+/, '').downcase
+
+    if email_param.blank?
+      return { errors: { errors: "Please input email"}}
+    end
+
+    # check if email is existing
+    existing = login_email_search(@users, email_param)
+    if existing.is_a?(Hash) && existing.key?(:errors)
+      return existing
+    end
+    existing
+  end
+
+  def normalize_login_password
+    password_param = @params[:password].to_s
+    if password_param.blank?
+      return { errors: { errors: "Please input password"}}
+    end
+    password_param
   end
 
   # normalize_password

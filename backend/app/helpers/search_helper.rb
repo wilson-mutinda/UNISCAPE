@@ -350,4 +350,25 @@ module SearchHelper
     { errors: { student: "Student not found for '#{target}'"}}
   end
 
+  def login_email_search(users, target_email)
+    target_email = target_email.to_s.gsub(/\s+/, '').downcase
+    first_index = 0;
+    last_index = users.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_user = users[mid_index]
+      mid_user_email = mid_user.email
+
+      if mid_user_email == target_email
+        return mid_user_email
+      elsif mid_user_email < target_email
+        first_index = mid_index + 1        
+      else
+        last_index = mid_index - 1
+      end
+    end
+    { errors: { email: "Email '#{target_email}' not found!"}}
+  end
+
 end

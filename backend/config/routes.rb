@@ -29,6 +29,9 @@ Rails.application.routes.draw do
       # student
       post 'create_student', to: 'students#create_student'
       get 'single_student/:slug', to: 'students#single_student'
+      get 'all_students', to: 'students#all_students'
+      patch 'update_student/:slug', to: 'students#update_student'
+      delete 'delete_student/:slug', to: 'students#delete_student'
     end
   end
 end

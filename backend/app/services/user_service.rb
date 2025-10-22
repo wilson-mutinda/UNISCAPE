@@ -33,7 +33,7 @@ class UserService
       phone: phone_param,
       password: password_data[:password],
       password_confirmation: password_data[:password_confirmation],
-      flag: 'Admin'
+      flag: @params[:flag] || 'Admin'
     )
     if user
       { success: true, user: user}

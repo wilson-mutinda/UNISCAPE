@@ -1,5 +1,23 @@
 class Student < ApplicationRecord
 
+  # hide soft-deleted students by default
+  default_scope { where(deleted_at: nil)}
+
+  # soft delete
+  def soft_delete
+    update(deleted_at: Time.current)
+  end
+
+  # check if student is deleted
+  def deleted?
+    deleted_at.present?
+  end
+
+  # restore a soft deleted_student
+  def restore
+    update(deleted_at: nil)
+  end
+
   before_save :generate_slug
 
   belongs_to :user

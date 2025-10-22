@@ -39,4 +39,17 @@ module SortHelper
     end
     country_name_sort(left) + [pivot] + country_name_sort(right)
   end
+
+  def student_first_name_sort(students)
+    if students.length <= 1
+      return students
+    end
+
+    pivot = students.delete_at(rand(students.length))
+
+    left, right = students.partition do |student|
+      student.first_name < pivot.first_name
+    end
+    student_first_name_sort(left) + [pivot] + student_first_name_sort(right)
+  end
 end

@@ -1,6 +1,6 @@
 <template>
     <!-- program-section -->
-     <section id="programs" class="py-16 bg-gray-50">
+     <section id="programs" class="py-16 pt-28 bg-gray-50">
             <div class="container mx-auto px-4">
                 <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">Our Programmes</h3>
 

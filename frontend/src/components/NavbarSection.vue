@@ -16,36 +16,36 @@
                     <!-- menu -->
                     <div class="hidden md:flex items-center gap-4">
                         <a @click.prevent="goToSection('home')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
                             href="#home"
                             >Home</a
                         >
                         <a @click.prevent="goToSection('about')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
                             href="#about"
                             >About Us</a
                         >
                         <a @click.prevent="goToSection('programs')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
                             href="#programs"
                             >Programs</a
                         >
                         <a @click.prevent="goToSection('community')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
                             href="#community"
                             >Community</a
                         >
                         <a @click.prevent="goToSection('contacts')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
                             href="#contacts"
                             >Contact Us</a
                         >
                         <a @click.prevent="goToSection('faqs')"
-                         class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition" 
+                         class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition" 
                          href="#faqs">FAQS</a>
-                        <a @click="goToSection('#')"
-                            class="text-lg text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
-                            href="#"
+                        <a @click="goToSection('programs')"
+                            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
+                            href="#programs"
                             >Get Started</a
                         >
                     </div>
@@ -74,43 +74,43 @@
 
                         <a
                             @click.prevent="goToMobileSection('home')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
                             href="#home"
                             >Home</a
                         >
                         <a
                             @click.prevent="goToMobileSection('about')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
                             href="#about"
                             >About Us</a
                         >
                         <a
                             @click.prevent="goToMobileSection('programs')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
                             href="#programs"
                             >Programs</a
                         >
                         <a
                             @click.prevent="goToMobileSection('community')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
                             href="#community"
                             >Community</a
                         >
                         <a
                             @click.prevent="goToMobileSection('contacts')"
-                            class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+                            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
                             href="#contacts"
                             >Contact Us</a
                         >
                         <a
                          @click.prevent="goToMobileSection('faqs')" 
                          href="#faqs" 
-                         class="text-uniscape-blue text-lg hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">
+                         class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">
                          FAQS</a>
                         <a
-                            @click.prevent="goToMobileSection('#')"
-                            class="text-lg text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 w-full text-center"
-                            href="#"
+                            @click.prevent="goToMobileSection('programs')"
+                            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 w-full text-center"
+                            href="#programs"
                             >Get Started</a
                         >
                     </div>

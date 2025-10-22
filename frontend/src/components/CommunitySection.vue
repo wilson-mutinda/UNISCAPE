@@ -1,5 +1,5 @@
 <template>
-    <section id="community" class="bg-gray-50 py-16">
+    <section id="community" class="bg-gray-50 py-16 pt-28">
         <div class="container mx-auto px-4">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">Join Our Community</h3>
             

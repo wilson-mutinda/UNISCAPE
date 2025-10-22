@@ -1,6 +1,6 @@
 <template>
     <!-- about section -->
-    <section id="about" class="bg-gray-50 py-16">
+    <section id="about" class="bg-gray-50 py-16 pt-28">
         <div class="container mx-auto px-4">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">About Us</h3>
 

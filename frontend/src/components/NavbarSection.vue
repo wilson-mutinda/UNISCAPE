@@ -46,7 +46,7 @@
                         <a @click="goToSection('programs')"
                             class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
                             href="#programs"
-                            >Get Started</a
+                            >Login</a
                         >
                     </div>
 
@@ -111,7 +111,7 @@
                             @click.prevent="goToMobileSection('programs')"
                             class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 w-full text-center"
                             href="#programs"
-                            >Get Started</a
+                            >Login</a
                         >
                     </div>
                 </transition>

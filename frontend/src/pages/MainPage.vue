@@ -4,7 +4,7 @@
         <NavbarSection />
 
         <!-- router-view -->
-         <router-view/>
+         <router-view :key="$route.params.slug"/>
 
         <!-- footer -->
         <FooterSection />

@@ -28,7 +28,7 @@
             Join Uniscape and master the skills to shape tomorrow's technology today.
             </p>
 
-            <div class="flex items-center justify-center gap-4 md:hidden">
+            <div class="flex items-center justify-center gap-4">
             <button
                 type="button"
                 class="bg-white text-uniscape-blue font-semibold px-6 py-3 rounded-full hover:bg-yellow-300 transition"

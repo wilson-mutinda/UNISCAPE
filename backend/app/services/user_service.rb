@@ -1,3 +1,5 @@
+require_relative 'json_web_token_service'
+
 class UserService
 
   include RegexHelper
@@ -164,7 +166,10 @@ class UserService
       # authentication
       auth = user.authenticate(password_param)
       if auth
-        { success: true, message: "Login Successful!", user: user}
+        token = JsonWebToken.new
+        access_token = token.encode_token(user.id, user.flag, 30.minutes.from_now)
+        refresh_token = token.encode_token(user.id, user.flag, 24.hours.from_now)
+        { success: true, message: "Login Successful!", user: user, access_token: access_token, refresh_token: refresh_token }
       else
         { success: false, errors: auth.errors.full_messages }
       end

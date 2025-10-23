@@ -109,7 +109,7 @@ class Api::V1::UsersController < ApplicationController
       service = UserService.new(params)
       result = service.user_login
       if result[:success]
-        user_info = result[:user].as_json(except: [:created_at, :updated_at, :password_digest, :deleted_at])
+        user_info = result[:user].as_json(except: [:created_at, :updated_at, :password_digest, :deleted_at]).merge({ access_token: result[:access_token], refresh_token: result[:refresh_token]})
         render json: { message: result[:message], user: user_info}, status: :ok
       else
         render json: { errors: result[:errors]}, status: :unprocessable_entity

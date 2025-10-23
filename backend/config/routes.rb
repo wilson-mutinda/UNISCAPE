@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       delete 'delete_user/:slug', to: 'users#delete_user'
       get 'restore_user/:slug', to: 'users#restore_user'
       post 'user_login', to: 'users#user_login'
+      get 'refresh_token', to: 'users#refresh_token'
 
       # country
       post 'create_country', to: 'countrys#create_country'

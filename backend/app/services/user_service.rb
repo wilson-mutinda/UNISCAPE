@@ -176,6 +176,22 @@ class UserService
     end
   end
 
+  # refresh_token
+  def refresh_token(token)
+
+    jwt = JsonWebToken.new
+    decoded = jwt.decode_token(token)
+
+    user_id = decoded[:user_id]
+    user_flag = decoded[:user_flag]
+
+    new_access_token = jwt.encode_token(user_id, user_flag, 30.minutes.from_now)
+    { success: true, new_access_token: new_access_token }
+  rescue JWT::DecodeError => e
+    { success: false, errors: e.message }
+
+  end
+
   private
   # normalize_email
   def normalize_email

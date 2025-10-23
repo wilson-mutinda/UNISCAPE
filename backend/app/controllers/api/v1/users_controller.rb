@@ -120,6 +120,32 @@ class Api::V1::UsersController < ApplicationController
     
   end
 
+  # refresh_token
+  def refresh_token
+    begin
+      auth_headers = request.headers["Authorization"]
+      token = auth_headers.split(' ').last if auth_headers.present?
+
+      unless token
+        render json: { error: "Please provide a refresh token!"}, status: :unprocessable_entity
+        return
+      end
+
+      service = UserService.new(params)
+      result = service.refresh_token(token)
+
+      if result[:success]
+        render json: { new_access_token: result[:new_access_token]}, status: :ok
+      else
+        render json: { error: result[:errors]}, status: :unprocessable_entity
+      end
+    rescue => e
+      render json: { errors: "Something went wrong!", message: e.message }, status: :internal_server_error
+    end
+    
+  end
+  
+
   # privately hold user_params
   private
   def user_params

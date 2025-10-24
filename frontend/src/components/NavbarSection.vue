@@ -102,12 +102,9 @@
             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
             href="#faqs"
           >FAQS</a>
-
-          <a
-            @click="goToSection('programs')"
-            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
-            href="#programs"
-          >Login</a>
+          <router-link to="login" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
+            Login
+        </router-link>
         </div>
 
         <!-- mobile menu toggle -->

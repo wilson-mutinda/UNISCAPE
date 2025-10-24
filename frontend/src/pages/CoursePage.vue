@@ -11,7 +11,7 @@
             </button>
 
             <div v-if="course" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8">
-                <img v-if="course.image_url" :src="course.image_url" alt="course image" class="w-full h-64 object-cover rounded-lg mb-6">
+                <img v-if="course.course_image" :src="course.course_image" alt="course image" class="w-full h-64 object-cover rounded-lg mb-6">
                 <h2 class="text-3xl font-bold text-uniscape-blue mb-4">{{ course.course_name }}</h2>
 
                 <p class="text-gray-700 mb-2">
@@ -26,10 +26,21 @@
 
                 <div v-if="course.course_more_info" class="text-gray-700 mb-6 whitespace-pre-line leading-relaxed" v-html="formattedMoreInfo"></div>
 
-                <button @click="$router.back()" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
-                    Back to Programs
-                </button>
+                <div class="flex items-center justify-between">
+                    <button type="button" @click="$router.back()" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                        Back to Programs
+                    </button>
+                    <button @click="showFlyer = true" type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                        View Flyer
+                    </button>
+
+                    <!-- enroll button -->
+                     <button type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                        Enroll
+                     </button>
+                </div>
             </div>
+
             
             <!-- Loading State -->
             <div v-else-if="loading" class="text-center text-gray-500">
@@ -45,6 +56,19 @@
                 </button>
                 <p class="mt-2 text-sm text-gray-600">Course ID: {{ id }}</p>
             </div>
+
+            <!-- Flyer modal -->
+             <transition name="fade">
+                <div v-if="showFlyer && course.course_flyer" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+                    <div class="relative max-w-3xl w-full mx-4">
+                        <!-- close button -->
+                         <button type="button" @click="closeFlyer" class="absolute right-3 top-3 rounded-full bg-white p-2">
+                            <img src="/close.png" alt="close" width="20">
+                         </button>
+                        <img :src="course.course_flyer" alt="course_flyer" class="w-full h-auto rounded-lg object-contain">
+                    </div>
+                </div>
+             </transition>
         </div>
     </section>
 </template>
@@ -58,7 +82,9 @@ export default {
         return {
             course: null,
             error: null,
-            loading: true
+            loading: true,
+
+            showFlyer: false
         }
     },
     methods: {
@@ -72,6 +98,10 @@ export default {
                 const response = await api.get(`single_course/${this.slug}`);
                 console.log('Course API response:', response);
                 this.course = response.data;
+
+                if (this.course.course_flyer) {
+                    this.showFlyer = true;
+                }
             } catch (err) {
                 console.error('Error loading course:', err);
                 this.error = 'Failed to load course details. Please try again.';
@@ -92,6 +122,10 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+
+        closeFlyer() {
+            this.showFlyer = false;
         }
     },
 
@@ -134,3 +168,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.4s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+</style>

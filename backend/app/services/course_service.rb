@@ -51,6 +51,10 @@ class CourseService
       created_course.course_image.attach(@params[:course_image])
     end
 
+    if @params[:course_flyer].present?
+      created_course.course_flyer.attach(@params[:course_flyer])
+    end
+
     if created_course
       { success: true, message: "Course '#{course_name_param}' created successfully!"}
     else
@@ -122,9 +126,14 @@ class CourseService
     course_image_param = normalized_update_course_image
     updated_course_params[:course_image] = course_image_param
 
+    # course_flyer_param
+    course_flyer_param = normalized_update_course_flyer
+    updated_course_params[:course_flyer] = course_flyer_param
+
     # update_course
     updated_course = @course.update(updated_course_params)
     if updated_course
+      puts "DEBUG: See what's being updated: #{updated_course_params}"
       { success: true, message: "Course updated successfully!"}
     else
       { success: false, errors: @course.errors.full_messages }
@@ -239,7 +248,6 @@ class CourseService
     # course_name
      course_name = @params[:course_name].to_s.downcase
      if course_name.present?
-
       # course_name should not exist
       existing = course_name_search(@courses, course_name, @course.id)
       if existing.is_a?(Hash) && existing.key?(:errors)
@@ -291,6 +299,15 @@ class CourseService
     course_image = @params[:course_image]
     if course_image.present?
       course_image
+    end
+  end
+
+  # normalized_update_course_flyer
+  def normalized_update_course_flyer
+    # course_flyer
+    course_flyer = @params[:course_flyer]
+    if course_flyer.present?
+      course_flyer
     end
   end
 end

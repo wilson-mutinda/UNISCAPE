@@ -21,6 +21,9 @@ class Course < ApplicationRecord
   # attach image
   has_one_attached :course_image
 
+  # attach flyer
+  has_one_attached :course_flyer
+
   before_save :set_slug
   
   # validations

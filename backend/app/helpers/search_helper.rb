@@ -244,6 +244,27 @@ module SearchHelper
     target_name
   end
 
+  def country_id_search(countrys, target_id)
+    target_id = target_id.to_i
+    first_index = 0;
+    last_index = countrys.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_country = countrys[mid_index]
+      mid_country_id = mid_country.id
+
+      if mid_country_id == target_id
+        return target_id
+      elsif mid_country_id < target_id
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    { errors: { country_id: "Country not found!"}}
+  end
+
   def country_slug_search(countrys, target)
     target = target.to_s.gsub(/\s+/, '').downcase
 
@@ -369,6 +390,72 @@ module SearchHelper
       end
     end
     { errors: { email: "Email '#{target_email}' not found!"}}
+  end
+
+  def student_email_search(students, target_email)
+    target_email = target_email.to_s.gsub(/\s+/, '').downcase
+    first_index = 0;
+    last_index = students.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_student = students[mid_index]
+      mid_student_email = mid_student.email
+
+      if mid_student_email == target_email
+        return { errors: { email: "Email already exists!"}}
+      elsif mid_student_email < target_email
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    target_email
+  end
+
+  def student_phone_search(students, target_phone)
+    target_phone = target_phone.to_s.gsub(/\s+/, '')
+    first_index = 0;
+    last_index = students.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_student = students[mid_index]
+      mid_student_phone = mid_student.phone
+
+      if mid_student_phone == target_phone
+        return { errors: { phone: "Phone already exists!"}}
+      elsif mid_student_phone < target_phone
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    target_phone
+  end
+
+  def single_application_search(applications, target)
+    target = target.to_s.gsub(/\s+/, '').downcase
+
+    # check if target is an ID
+    if target.match?(/^\d+$/)
+      appl = applications.find { |a| a.id == target.to_i }
+      if appl
+        return appl
+      else
+        return { errors: { application: "Application of ID #{target} not found!"}}
+      end
+    end
+
+    # find by first_name
+    appl = applications.find { |a| a.first_name == target }
+    if appl
+      return appl
+    end
+
+    # Fallback if nothing happens
+    { errors: { application: "Application not found for #{target}"}}
+
   end
 
 end

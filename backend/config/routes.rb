@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       patch 'update_course/:slug', to: 'courses#update_course'
       delete 'delete_course/:slug', to: 'courses#delete_course'
       get 'restore_course/:slug', to: 'courses#restore_course'
+      get 'download_flyer/:slug', to: 'courses#download_flyer'
 
       # user
       post 'create_user', to: 'users#create_user'
@@ -19,6 +20,8 @@ Rails.application.routes.draw do
       get 'restore_user/:slug', to: 'users#restore_user'
       post 'user_login', to: 'users#user_login'
       get 'refresh_token', to: 'users#refresh_token'
+      post 'forgot_password', to: 'users#forgot_password'
+      post 'reset_password', to: 'users#reset_password'
 
       # country
       post 'create_country', to: 'countrys#create_country'
@@ -35,6 +38,9 @@ Rails.application.routes.draw do
       patch 'update_student/:slug', to: 'students#update_student'
       delete 'delete_student/:slug', to: 'students#delete_student'
       get 'restore_student/:slug', to: 'students#restore_student'
+
+      # application
+      post 'create_application', to: 'applications#create_application'
     end
   end
 end

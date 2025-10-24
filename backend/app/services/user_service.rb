@@ -6,8 +6,8 @@ class UserService
   include SearchHelper
   include SortHelper
 
-  def initialize(params)
-    @params = params
+  def initialize(params = {})
+    @params = params || {}
     @users = User.all.order(:email).to_a
     @target_param = params[:slug]
   end
@@ -188,6 +188,53 @@ class UserService
     new_access_token = jwt.encode_token(user_id, user_flag, 30.minutes.from_now)
     { success: true, new_access_token: new_access_token }
   rescue JWT::DecodeError => e
+    { success: false, errors: e.message }
+
+  end
+
+  # forgot_password
+  def forgot_password(params)
+    user = User.find_by(email: params[:email])
+
+    unless user
+      return { success: false, errors: "Email not found!" }
+    end
+
+    token = user.generate_password_reset_token!
+    
+    if token.present?
+      { success: true, token: token}
+    else
+      { success: false, errors: 'Error generating token!'}
+    end
+
+  end
+
+  # reset_password
+  def reset_password(params)
+    token = params[:token]
+    password = params[:password]
+    password_confirmation = params[:password_confirmation]
+
+    # find user by token
+    user = User.find_by(reset_password_token: token)
+    unless user
+      return { success: false, errors: "Invalid or expired token!" }
+    end
+
+    # check if token is still valid
+    unless user.password_token_valid?
+      return { success: false, errors: "Token has expired!" }
+    end
+
+    if password != password_confirmation
+      return { success: false, errors: { password_confirmation: "Password mismatch!"} }
+    end
+
+    # reset_password
+    user.reset_password!(password, password_confirmation)
+    { success: true, message: "Password successfully updated!"}
+  rescue => e
     { success: false, errors: e.message }
 
   end

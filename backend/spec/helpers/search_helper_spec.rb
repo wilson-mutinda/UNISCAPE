@@ -204,4 +204,80 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result).to eq('aa@gmail.com')
     end
   end
+
+  describe "#student_email_search" do
+    let(:students) do
+      [
+        double(id: 1, email: "aa@gmail.com"),
+        double(id: 2, email: "dd@gmail.com")
+      ]
+    end
+    it "returns an error if email already exists" do
+      result = helper.student_email_search(students, 'aa@gmail.com')
+      expect(result).to eq({ errors: { email: "Email already exists!"}})
+    end
+
+    it "returns an email of it does not exist" do
+      result = helper.student_email_search(students, 'ab@gmail.com')
+      expect(result).to eq('ab@gmail.com')
+    end
+  end
+
+  describe "#student_phone_search" do
+    let(:students) do
+      [
+        double(id: 1, phone: '254791738418'),
+        double(id: 2, phone: '254748929891')
+      ]
+    end
+
+    it "returns an error if phone aleady exists" do
+      result = helper.student_phone_search(students, '254791738418')
+      expect(result).to eq({ errors: { phone: "Phone already exists!"}})
+    end
+
+    it "returns a phone which does not exist!" do
+      result = helper.student_phone_search(students, '254790738418')
+      expect(result).to eq('254790738418')
+    end
+  end
+
+  describe "#country_id_search" do
+    let(:countrys) do
+      [
+        double(id: 1, country_id: 1),
+        double(id: 2, country_id: 2),
+        double(id: 3, country_id: 3)
+      ]
+    end
+
+    it "returns an error id id is not found" do
+      result = helper.country_id_search(countrys, 4)
+      expect(result).to eq({ errors: { country_id: "Country not found!"}})
+    end
+
+    it "returns country id if its found" do
+      result = helper.country_id_search(countrys, 3)
+      expect(result).to eq(3)
+    end
+  end
+
+  describe "#single_application_search" do
+    let(:applications) do
+      [
+        double(id: 1, first_name: "aa", last_name: "bb", email: "aa@gmail.com", phone: "254791738418", course_id: 4, country_id: 6),
+        double(id: 2, first_name: "cc", last_name: "dd", email: "cc@gmail.com", phone: "254748929891", course_id: 5, country_id: 7)
+      ]
+    end
+
+    it "returns an error if application not found!" do
+      result = helper.single_application_search(applications, 3)
+      expect(result).to eq({ errors: { application: "Application of ID 3 not found!"}})
+    end
+
+    it "returns an error if application first_name was not found" do
+      result = helper.single_application_search(applications, 'dd')
+      expect(result).to eq({ errors: { application: "Application not found for dd"}})
+    end
+  end
 end

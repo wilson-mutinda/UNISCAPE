@@ -144,6 +144,39 @@ class Api::V1::UsersController < ApplicationController
     end
     
   end
+
+  # forgot_password
+  def forgot_password
+    begin
+      service = UserService.new
+      result = service.forgot_password(params)
+      if result[:success]
+        render json: result[:token], status: :ok
+      else
+        render json: { errors: result[:errors]}, status: :unprocessable_entity
+      end
+    rescue => e
+      render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
+    end
+    
+  end
+
+  # reset_password
+  def reset_password
+    begin
+      service = UserService.new
+      result = service.reset_password(params)
+      if result[:success]
+        render json: { message: result[:message]}, status: :ok
+      else
+        render json: { errors: result[:errors]}, status: :unprocessable_entity
+      end
+
+    rescue => e
+      render json: { error: "Something went wrong!", message: e.message }, status: :internal_server_error
+    end
+    
+  end
   
 
   # privately hold user_params

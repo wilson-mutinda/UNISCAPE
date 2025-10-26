@@ -20,7 +20,7 @@ class Api::V1::CountrysController < ApplicationController
   # view single_country
   def single_country
     begin
-      service = CountryService.new(country_params.merge(slug: params[:slug]))
+      service = CountryService.new(slug: params[:slug])
       result = service.single_country
 
       if result[:success]
@@ -38,7 +38,7 @@ class Api::V1::CountrysController < ApplicationController
   # view all_countrys
   def all_countrys
     begin
-      service = CountryService.new(country_params.merge(slug: params[:slug]))
+      service = CountryService.new
       result = service.all_countrys
 
       if result[:success]
@@ -75,7 +75,7 @@ class Api::V1::CountrysController < ApplicationController
   # delete_country
   def delete_country
     begin
-      service = CountryService.new(country_params.merge(slug: params[:slug]))
+      service = CountryService.new(slug: params[:slug])
       result = service.delete_country
 
       if result[:success]

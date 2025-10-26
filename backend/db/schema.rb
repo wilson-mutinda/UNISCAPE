@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_26_052035) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_26_153348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_26_052035) do
     t.datetime "deleted_at"
     t.index ["country_id"], name: "index_applications_on_country_id"
     t.index ["course_id"], name: "index_applications_on_course_id"
+  end
+
+  create_table "blog_posts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.text "excerpt"
+    t.text "content"
+    t.string "slug"
+    t.boolean "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -108,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_26_052035) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "applications", "countries"
   add_foreign_key "applications", "courses"
+  add_foreign_key "blog_posts", "users"
   add_foreign_key "students", "countries"
   add_foreign_key "students", "users"
 end

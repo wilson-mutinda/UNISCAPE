@@ -3,8 +3,8 @@ class CountryService
   include SearchHelper
   include SortHelper
 
-  def initialize(params)
-    @params = params
+  def initialize(params = {} )
+    @params = params || {}
     @countrys = Country.all.order(:name).to_a
     @target_param = params[:slug]
   end

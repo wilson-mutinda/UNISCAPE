@@ -4,6 +4,24 @@ class Application < ApplicationRecord
 
   before_save :generate_slug
 
+  # hide soft deleted applications by default
+  default_scope { where(deleted_at: nil)}
+
+  # soft_delete
+  def soft_delete
+    update(deleted_at: Time.current)
+  end
+
+  # check if application is deleted
+  def application_deleted?
+    deleted_at.present?
+  end
+
+  # restore a soft_deleted application
+  def restore_application
+    update(deleted_at: nil)
+  end
+
   # validations
   validates :first_name, presence: true, if: -> { new_record? || first_name.present? }
   validates :last_name, presence: true, if: -> { new_record? || last_name.present? }

@@ -41,6 +41,11 @@ Rails.application.routes.draw do
 
       # application
       post 'create_application', to: 'applications#create_application'
+      get 'single_application/:slug', to: 'applications#single_application'
+      get 'all_applications', to: 'applications#all_applications'
+      patch 'update_application/:slug', to: 'applications#update_application'
+      delete 'delete_application/:slug', to: 'applications#delete_application'
+      get 'restore_application/:slug', to: 'applications#restore_application'
     end
   end
 end

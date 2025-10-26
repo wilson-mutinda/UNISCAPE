@@ -265,8 +265,8 @@ RSpec.describe SearchHelper, type: :helper do
   describe "#single_application_search" do
     let(:applications) do
       [
-        double(id: 1, first_name: "aa", last_name: "bb", email: "aa@gmail.com", phone: "254791738418", course_id: 4, country_id: 6),
-        double(id: 2, first_name: "cc", last_name: "dd", email: "cc@gmail.com", phone: "254748929891", course_id: 5, country_id: 7)
+        double(id: 1, first_name: "aa", last_name: "bb", email: "aa@gmail.com", phone: "254791738418", course_id: 4, country_id: 6, slug: 'aa-bb'),
+        double(id: 2, first_name: "cc", last_name: "dd", email: "cc@gmail.com", phone: "254748929891", course_id: 5, country_id: 7, slug: 'cc-dd')
       ]
     end
 
@@ -276,8 +276,32 @@ RSpec.describe SearchHelper, type: :helper do
     end
 
     it "returns an error if application first_name was not found" do
-      result = helper.single_application_search(applications, 'dd')
-      expect(result).to eq({ errors: { application: "Application not found for dd"}})
+      result = helper.single_application_search(applications, 'zz')
+      expect(result).to eq({ errors: { application: "Application not found for zz"}})
+    end
+  end
+
+  describe "#application_email_search" do
+    let(:applications) do
+      [
+        double(id: 1, email: 'aa@gmail.com'),
+        double(id: 2, email: 'bb@gmail.com'),
+        double(id: 3, email: 'cc@gmail.com')
+      ]
+    end
+    it "returns an error if email already exists" do
+      result = helper.application_email_search(applications, 'bb@gmail.com', 4)
+      expect(result).to eq({ errors: { email: "Student with this email exists!"}})
+    end
+
+    it "returns an email if not found" do
+      result = helper.application_email_search(applications, 'bb@gmail.com', 2)
+      expect(result).to eq('bb@gmail.com')
+    end
+
+    it "returns an email if it does not exist on the array" do
+      result = helper.application_email_search(applications, 'dd@gmail.com', 1)
+      expect(result).to eq('dd@gmail.com')
     end
   end
 end

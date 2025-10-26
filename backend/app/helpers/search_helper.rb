@@ -448,14 +448,119 @@ module SearchHelper
     end
 
     # find by first_name
-    appl = applications.find { |a| a.first_name == target }
+    appl = applications.find { |a| a.first_name.to_s.downcase == target }
     if appl
       return appl
     end
 
+    # find by last_name
+    appl = applications.find { |a| a.last_name.to_s.downcase ==target }
+    return appl if appl
+
+    # find by email
+    appl = applications.find { |a| a.email.to_s.downcase == target }
+    return appl if appl
+
+    # find by phone
+    appl = applications.find { |a| a.phone.to_s.gsub(/\s+/, '') == target }
+    return appl if appl
+
+    # fnd by slug
+    appl = applications.find { |a| a.slug.to_s.downcase == target }
+    return appl if appl
+
     # Fallback if nothing happens
     { errors: { application: "Application not found for #{target}"}}
 
+  end
+
+  def application_email_search(applications, target_email, current_id)
+    target_email = target_email.to_s.gsub(/\s+/, '').downcase
+    first_index = 0;
+    last_index = applications.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_appl = applications[mid_index]
+      mid_appl_email = mid_appl.email
+
+      if mid_appl_email == target_email
+        if mid_appl.id != current_id
+          return { errors: { email: "Student with this email exists!"}}
+        end
+        return target_email
+      elsif mid_appl_email < target_email
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    target_email
+  end
+
+  def application_phone_search(applications, target_phone, current_id)
+    target_phone = target_phone.to_s.gsub(/\s+/, '')
+    first_index = 0;
+    last_index = applications.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_appl = applications[mid_index]
+      mid_appl_phone = mid_appl.phone
+
+      if mid_appl_phone == target_phone
+        if mid_appl.id != current_id
+          return { errors: { phone: "Student with this phone exists!"}}
+        end
+        return target_phone
+      elsif mid_appl_phone < target_phone
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    target_phone
+  end
+
+  def application_course_id_search(courses, target_id)
+    first_index = 0;
+    last_index = courses.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_course = courses[mid_index]
+      mid_course_id = mid_course.id
+
+      if mid_course_id == target_id
+        return target_id
+      elsif mid_course_id < target_id
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    { errors: { target_id: "Course not found!"}}
+
+  end
+
+  def application_country_id_search(countrys, target_id)
+    first_index = 0;
+    last_index = countrys.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2;
+      mid_country = countrys[mid_index]
+      mid_country_id = mid_country.id
+
+      if mid_country_id == target_id
+        return target_id
+      elsif mid_country_id < target_id
+        first_index = mid_index + 1;
+      else
+        last_index = mid_index - 1;
+      end
+    end
+    { errors: { target_id: "Country not found!"}}
   end
 
 end

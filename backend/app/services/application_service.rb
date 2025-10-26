@@ -5,71 +5,250 @@ class ApplicationService
 
   def initialize(params = {})
     @params = params || {}
-    @students = Application.all.order(:email).to_a
-    @courses = Course.all.order(:course_name).to_a
-    @countrys = Country.all.order(:name).to_a
+    @students = Application.unscoped.order(:email).to_a
+    @courses = Course.unscoped.order(:id).to_a
+    @countrys = Country.unscoped.order(:id).to_a
+    @applications = Application.unscoped.order(:slug).to_a
+    @target_param = params[:slug]
   end
 
   # create_application
   def create_application
-    # first_name_param
-    first_name_param = normalize_first_name
-    if first_name_param.is_a?(Hash) && first_name_param.key?(:errors)
-      return first_name_param
-    end
+    Application.transaction do
+      # first_name_param
+      first_name_param = normalize_first_name
+      return first_name_param if first_name_param.is_a?(Hash) && first_name_param.key?(:errors)
 
-    # last_name_param
-    last_name_param = normalize_last_name
-    if last_name_param.is_a?(Hash) && last_name_param.key?(:errors)
-      return last_name_param
-    end
+      # last_name_param
+      last_name_param = normalize_last_name
+      return last_name_param if last_name_param.is_a?(Hash) && last_name_param.key?(:errors)
 
-    # email_param
-    email_param = normalize_email
-    if email_param.is_a?(Hash) && email_param.key?(:errors)
-      return email_param
-    end
+      # email_param
+      email_param = normalize_email
+      return email_param if email_param.is_a?(Hash) && email_param.key?(:errors)
 
-    # phone_param
-    phone_param = normalize_phone
-    if phone_param.is_a?(Hash) && phone_param.key?(:errors)
-      return phone_param
-    end
+      # phone_param
+      phone_param = normalize_phone
+      return phone_param if phone_param.is_a?(Hash) && phone_param.key?(:errors)
 
-    # course_param_id
-    course_param_id = normalize_course_param_id
-    if course_param_id.is_a?(Hash) && course_param_id.key?(:errors)
-      return course_param_id
-    end
+      # course_param_id
+      course_param_id = normalize_course_param_id
+      return course_param_id if course_param_id.is_a?(Hash) && course_param_id.key?(:errors)
 
-    # country_param_id
-    country_param_id = normalize_country_param_id
-    if country_param_id.is_a?(Hash) && country_param_id.key?(:errors)
-      return country_param_id
-    end
+      # country_param_id
+      country_param_id = normalize_country_param_id
+      return country_param_id if country_param_id.is_a?(Hash) && country_param_id.key?(:errors)
 
-    # create_application
-    created_application = Application.create(
-      first_name: first_name_param,
-      last_name: last_name_param,
-      email: email_param,
-      phone: phone_param,
-      course_id: course_param_id,
-      country_id: country_param_id
-    )
-    if created_application.persisted?
+      created_application = Application.create!(
+        first_name: first_name_param,
+        last_name: last_name_param,
+        email: email_param,
+        phone: phone_param,
+        course_id: course_param_id,
+        country_id: country_param_id
+      )
       { success: true, info: created_application }
-    else
-      { success: false, errors: created_application.errors.full_messages }
     end
+  rescue ActiveRecord::RecordInvalid => e
+    { success: false, errors: e.record.errors.full_messages }
+  rescue StandardError => e
+    { success: false, errors: [e.message] }
   end
 
   # view single_appplication
-  def single_appplication
-    appl
+  def single_application
+    Application.transaction do
+      appl = single_application_search(@applications, @target_param)
+      if appl.is_a?(Hash) && appl.key?(:errors)
+        return { success: false, errors: appl[:errors] }
+      else
+        { success: true, info: appl}
+      end
+    end
+  rescue StandardError => e
+    { success: false, errors: [e.message]}
+  end
+
+  # view all_applications
+  def all_applications
+    all_apps = @applications
+    if all_apps.empty?
+      return { success: false, errors: "Empty List!"}
+    else
+      { success: true, info: all_apps}
+    end
+  end
+
+  # update_application
+  def update_application
+    result = nil
+
+    # initialize a transaction
+    ActiveRecord::Base.transaction do
+
+      updated_application_params = {}
+
+      @appl = single_application_search(@applications, @target_param)
+      if @appl.is_a?(Hash) && @appl.key?(:errors)
+        return { success: false, errors: @appl[:errors]}
+      end
+
+      # first_name_param
+      first_name_param = normalize_update_first_name
+      updated_application_params[:first_name] = first_name_param
+
+      # last_name_param
+      last_name_param = normalize_update_last_name
+      updated_application_params[:last_name] = last_name_param
+
+      # email_param
+      email_param = normalize_update_email
+      if email_param.is_a?(Hash) && email_param.key?(:errors)
+        result = { success: false, errors: email_param[:errors]}
+        raise ActiveRecord::Rollback
+      end
+      updated_application_params[:email] = email_param
+
+      # phone_param
+      phone_param = normalize_update_phone
+      if phone_param.is_a?(Hash) && phone_param.key?(:errors)
+        result = { success: false, errors: phone_param[:errors]}
+        raise ActiveRecord::Rollback
+      end
+      updated_application_params[:phone] = phone_param
+
+      # country_param
+      country_param = normalize_update_country
+      if country_param.is_a?(Hash) && country_param.key?(:errors)
+        result = { success: false, errors: country_param[:errors]}
+        raise ActiveRecord::Rollback
+      end
+      updated_application_params[:country_id] = country_param
+
+      # course_param
+      course_param = normalize_update_course
+      if course_param.is_a?(Hash) && course_param.key?(:errors)
+        result = { success: false, errors: course_param[:errors]}
+        raise ActiveRecord::Rollback
+      end
+      updated_application_params[:course_id] = course_param
+
+      puts "DEBUG: See what passes in the body: #{updated_application_params}"
+
+      @appl.update!(updated_application_params)
+      puts "DEBUG: See what passes in the body: #{updated_application_params}"
+      result = { success: true, info: @appl}
+    end
+    result
+  rescue ActiveRecord::RecordInvalid => e
+    { success: false, errors: e.record.errors.full_messages }
+  rescue StandardError => e
+    { success: false, errors: [e.message] }
+  end
+
+  # delete_application
+  def delete_application
+    @appl = single_application_search(@applications, @target_param)
+    if @appl.is_a?(Hash) && @appl.key?(:errors)
+      return { success: false, errors: @appl[:errors]}
+    end
+
+    appl_slug = @appl.slug
+    appl_delete = @appl.soft_delete
+    return { success: true, message: "Application '#{appl_slug}' soft deleted succesfully!"} if appl_delete
+    return { success: false, errors: @appl.errors.full_messages }
+  end
+
+  # restore_application
+  def restore_application
+    @appl = Application.unscoped.find_by(slug: @target_param)
+
+    puts "DEBUG: Target param is #{@target_param}"
+
+    return { success: false, errors: { application: "Application not found!"}} if @appl.nil?
+
+    return { success: false, errors: { application: "Application is not deleted!"}} unless @appl.application_deleted?
+
+    if @appl.restore_application
+      return { success: true, message: "Application '#{@appl.slug}' restored successfully!" }
+    else
+      return { success: false, errors: @appl.errors.full_messages }
+    end
   end
 
   private
+
+  # normalize_update_first_name
+  def normalize_update_first_name
+    first_name = @params[:first_name].to_s.gsub(/\s+/, '').downcase
+    if first_name.present?
+      first_name.to_s.titleize
+    end
+  end
+
+  # normalize_update_last_name
+  def normalize_update_last_name
+    last_name = @params[:last_name].to_s.gsub(/\s+/, '').downcase
+    if last_name.present?
+      last_name.to_s.titleize
+    end
+  end
+
+  # normalize_update_email
+  def normalize_update_email
+    email = @params[:email].to_s.gsub(/\s+/, '').downcase
+    if email.present?
+
+      normalized = normalized_email(email)
+      return normalized if normalized.is_a?(Hash) && normalized.key?(:errors)
+
+      # should not be existing
+      existing = application_email_search(@applications, normalized, @appl.id)
+      return existing if existing.is_a?(Hash) && existing.key?(:errors)
+
+      normalized
+    end
+  end
+
+  # normalize_phone_param
+  def normalize_update_phone
+    phone = @params[:phone].to_s.gsub(/\s+/, '')
+
+    if phone.present?
+      normalized = normalized_phone(phone)
+      return normalized if normalized.is_a?(Hash) && normalized.key?(:errors)
+    end
+
+    # should not be existing
+    existing = application_phone_search(@applications, normalized, @appl.id)
+    return existing if existing.is_a?(Hash) && existing.key?(:errors)
+
+    normalized
+  end
+
+  # normalize_update_country
+  def normalize_update_country
+    country_id = @params[:country_id].to_i
+    if country_id.present?
+      # check if country exists
+      existing = application_country_id_search(@countrys, country_id)
+      return existing if existing.is_a?(Hash) && existing.key?(:errors)
+
+      existing
+    end
+  end
+
+  # normalize_update_course
+  def normalize_update_course
+    course_id = @params[:course_id].to_i
+    if course_id.present?
+      # check if course exists
+      existing = application_course_id_search(@courses, course_id)
+      return existing if existing.is_a?(Hash) && existing.key?(:errors)
+
+      existing
+    end
+  end
 
   # normalize_first_name
   def normalize_first_name

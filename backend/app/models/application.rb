@@ -2,7 +2,7 @@ class Application < ApplicationRecord
   belongs_to :country
   belongs_to :course
 
-  before_save :generate_slug
+  before_create :generate_slug
 
   # hide soft deleted applications by default
   default_scope { where(deleted_at: nil)}

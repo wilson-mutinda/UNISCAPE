@@ -39,6 +39,7 @@ class ApplicationService
       country_param_id = normalize_country_param_id
       return country_param_id if country_param_id.is_a?(Hash) && country_param_id.key?(:errors)
 
+      # create the application
       created_application = Application.create!(
         first_name: first_name_param,
         last_name: last_name_param,
@@ -47,7 +48,14 @@ class ApplicationService
         course_id: course_param_id,
         country_id: country_param_id
       )
-      { success: true, info: created_application }
+
+      # convert application User and student
+      conversion_result = ApplicationToUserService.new(created_application).convert_to_user_and_student
+      if conversion_result[:success]
+        { success: true, info: { application: created_application, user: conversion_result[:user], student: conversion_result[:student]}}
+      else
+        { success: false, errors: conversion_result[:errors]}
+      end
     end
   rescue ActiveRecord::RecordInvalid => e
     { success: false, errors: e.record.errors.full_messages }
@@ -136,8 +144,14 @@ class ApplicationService
       puts "DEBUG: See what passes in the body: #{updated_application_params}"
 
       @appl.update!(updated_application_params)
-      puts "DEBUG: See what passes in the body: #{updated_application_params}"
-      result = { success: true, info: @appl}
+      # sync user and student after update
+      conversion_result = ApplicationToUserService.new(@appl).update_user_and_student
+      if conversion_result[:success]
+        result = { success: true, info: { application: @appl, user: conversion_result[:user], student: conversion_result[:student]}}
+      else
+        result = { success: false, errors: conversion_result[:errors]}
+        raise ActiveRecord::Rollback
+      end
     end
     result
   rescue ActiveRecord::RecordInvalid => e
@@ -155,8 +169,16 @@ class ApplicationService
 
     appl_slug = @appl.slug
     appl_delete = @appl.soft_delete
-    return { success: true, message: "Application '#{appl_slug}' soft deleted succesfully!"} if appl_delete
-    return { success: false, errors: @appl.errors.full_messages }
+    if appl_delete
+      conversion_result = ApplicationToUserService.new(@appl).soft_delete_user_and_student
+      if conversion_result[:success]
+        { success: true, message: "Application '#{appl_slug}' and linked user/student soft deleted successfully!" }
+      else
+        { success: false, errors: conversion_result[:errors] }
+      end
+    else
+      { success: false, errors: @appl.errors.full_messages }
+    end
   end
 
   # restore_application
@@ -170,9 +192,14 @@ class ApplicationService
     return { success: false, errors: { application: "Application is not deleted!"}} unless @appl.application_deleted?
 
     if @appl.restore_application
-      return { success: true, message: "Application '#{@appl.slug}' restored successfully!" }
+      conversion_result = ApplicationToUserService.new(@appl).restore_user_and_student
+      if conversion_result[:success]
+        { success: true, message: "Application '#{@appl.slug}' and linked user/student restored successfully!" }
+      else
+        { success: false, errors: conversion_result[:errors] }
+      end
     else
-      return { success: false, errors: @appl.errors.full_messages }
+      { success: false, errors: @appl.errors.full_messages }
     end
   end
 

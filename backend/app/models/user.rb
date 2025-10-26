@@ -47,11 +47,13 @@ class User < ApplicationRecord
   before_save :set_slug
 
   # validations
-  validates :email, presence: true, uniqueness: true, if: -> { new_record? || email.present? }
-  validates :phone, presence: true, uniqueness: true, if: -> { new_record? || phone.present? }
-  validates :password, presence: true, confirmation: true, if: -> { new_record? || password.present? }
-  validates :password_confirmation, presence: true, if: -> { new_record? || password.present? }
-  validates :flag, presence: true, if: -> { new_record? || flag.present? }
+  validates :email, presence: true, uniqueness: true
+  validates :phone, presence: true, uniqueness: true
+
+  validates :password, presence: true, confirmation: true, on: :create
+  validates :password_confirmation, presence: true, on: :create
+
+  validates :flag, presence: true
 
   private
   def set_slug

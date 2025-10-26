@@ -12,8 +12,22 @@ const router = createRouter({
     { path: '/', component: MainPage, children: [
       { path: '', redirect: 'home' },
       { path: 'home', name: 'home', component: HomePage },
-      { path: 'programs/:slug', name: 'course', component: CoursePage, props: true },
-      { path: 'apply', name: 'apply', component: StudentApplicationForm },
+      // single course page
+      {
+        path: 'programs/:slug',
+        name: 'course',
+        component: CoursePage,
+        props: true,
+      },
+
+      // standalone application form
+      {
+        path: '/programs/:slug/apply',
+        name: 'course-apply',
+        component: StudentApplicationForm,
+        props: true
+      },
+
       { path: 'login', name: 'login', component: LoginForm }
     ] },
   ],

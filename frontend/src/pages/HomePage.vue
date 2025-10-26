@@ -66,6 +66,9 @@
         <!-- FAQ Section -->
         <FAQSection />
 
+        <!-- Blog Section -->
+         <BlogSection />
+
         <!-- community section -->
         <CommunitySection />
 
@@ -79,6 +82,7 @@
 
 <script>
 import AboutSection from '@/components/AboutSection.vue';
+import BlogSection from '@/components/BlogSection.vue';
 import CommunitySection from '@/components/CommunitySection.vue';
 import ContactSection from '@/components/ContactSection.vue';
 import FAQSection from '@/components/FAQSection.vue';
@@ -102,7 +106,8 @@ export default {
         FAQSection,
         CommunitySection,
         UpcomingCohortSection,
-        LearnExperienceSection
+        LearnExperienceSection,
+        BlogSection
     },
     
 };

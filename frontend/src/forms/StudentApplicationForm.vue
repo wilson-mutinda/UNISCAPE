@@ -1,92 +1,192 @@
 <template>
-  <div class="pt-32 px-8 min-h-screen bg-gray-50">
-    <form @submit.prevent="submitApplication" class="max-w-xl mx-auto bg-white shadow-lg p-6 rounded-2xl">
-      <h2 class="text-2xl font-bold mb-4 text-center text-blue-700">Course Application Form</h2>
+  <div class="bg-gray-50 min-h-screen pt-32 px-4 flex items-center justify-center">
+    <div class="bg-uniscape-yellow rounded-md w-full max-w-4xl mb-4">
+      <div class="p-6">
+        <form @submit.prevent="createApplication" action="" method="post">
+        <h3 class="text-center mt-4 mb-4 text-3xl">Apply Now</h3>
+        <span v-if="errors.general" class="text-red-500 text-center text-sm">{{ errors.general }}</span>
 
-      <p class="text-gray-500 mb-4">Fill in your personal details below</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-2 rounded-2xl ring-2 ring-uniscape-blue mb-2">
+          <!-- fname -->
+          <div class="">
+            <label class="block text-xl mb-2" for="first_name">First name</label>
+            <input v-model="first_name" class="rounded-md p-2 w-full mb-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="text" name="first_name" id="first_name">
+            <span v-if="errors.first_name" class="text-red-500 text-center text-sm">{{ errors.first_name }}</span>
+          </div>
 
-      <!-- Names -->
-      <div class="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label for="first_name" class="block text-sm text-gray-700">First Name</label>
-          <input v-model="form.first_name" id="first_name" name="first_name" type="text" required class="w-full border px-3 py-2 rounded-md">
+          <!-- lname -->
+            <div class="">
+              <label class="block text-xl mb-2" for="last_name">Last name</label>
+              <input v-model="last_name" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="text" name="last_name" id="last_name">
+              <span v-if="errors.last_name" class="text-red-500 text-center text-sm">{{ errors.last_name }}</span>
+            </div>
         </div>
-        <div>
-          <label for="last_name" class="block text-sm text-gray-700">Last Name</label>
-          <input v-model="form.last_name" id="last_name" name="last_name" type="text" required class="w-full border px-3 py-2 rounded-md">
-        </div>
-      </div>
 
-      <!-- Contact -->
-      <div class="mb-4">
-        <label for="phone" class="block text-sm text-gray-700">Phone</label>
-        <input v-model="form.phone" id="phone" name="phone" type="tel" required class="w-full border px-3 py-2 rounded-md">
-      </div>
+        <!-- email -->
+         <div class="bg-white p-2 rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12">
+          <div class="">
+            <label class="block text-xl mb-2" for="email">Email</label>
+            <input v-model="email" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="email" name="email" id="email">
+            <span v-if="errors.email" class="text-red-500 text-center text-sm">{{ errors.email }}</span>
+          </div>
+         </div>
 
-      <div class="mb-4">
-        <label for="email" class="block text-sm text-gray-700">Email</label>
-        <input v-model="form.email" id="email" name="email" type="email" required class="w-full border px-3 py-2 rounded-md">
-      </div>
+         <!-- phone -->
+          <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
+            <div class="">
+              <label class="block text-xl mb-2" for="phone">Phone</label>
+              <input v-model="phone" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="tel" name="phone" id="phone">
+              <span v-if="errors.phone" class="text-red-500 text-center text-sm">{{ errors.phone }}</span>
+            </div>
+          </div>
 
-      <!-- Country -->
-      <div class="mb-4">
-        <label for="country" class="block text-sm text-gray-700">Country</label>
-        <select v-model="form.country_id" id="country" name="country" required class="w-full border px-3 py-2 rounded-md">
-          <option value="">-- Select Country --</option>
-          <option v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
-        </select>
-      </div>
+          <!-- country -->
+           <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
+            <div class="">
+              <label for="country" class="block text-xl mb-2">Country</label>
+              <select
+               name="country" 
+               id="country" 
+               v-model="country" 
+               class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300">
+               <option disabled value="">-- Select Country --</option>
+               <option v-for="c in countrys" :value="c.id" :key="c.id">
+                {{ c.name }}
+               </option>
+              </select>
+              <span v-if="errors.country" class="text-red-500 text-center text-sm">{{ errors.country }}</span>
+            </div>
+           </div>
 
-      <!-- Course -->
-      <div class="mb-4">
-        <label for="course" class="block text-sm text-gray-700">Course</label>
-        <select v-model="form.course_id" id="course" name="course" required class="w-full border px-3 py-2 rounded-md">
-          <option value="">-- Select Course --</option>
-          <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
-        </select>
-      </div>
+           <!-- program -->
+            <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
+              <div class="">
+                <label class="block text-xl mb-2" for="program">Program</label>
+                <select
+                 v-model="program"
+                 class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300"
+                 name="program" 
+                 id="program"
+                 >
+                 <option disabled value="">-- Select Program --</option>
+                 <option
+                  v-for="p in programs"
+                  :key="p.id"
+                  :value="p.id">
+                  {{ p.course_name }}
+                </option>
+                </select>
+                <span v-if="errors.program" class="text-red-500 text-center text-sm">{{ errors.program }}</span>
+              </div>
+            </div>
 
-      <!-- Submit -->
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Submit Application</button>
-    </form>
+            <!-- submit button -->
+             <div class="flex items-center justify-center mt-4">
+              <button class="bg-uniscape-blue rounded-md px-4 py-2 text-white font-bold">
+                Submit
+              </button>
+             </div>
+      </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import api from '@/services/api';
+
 export default {
   data() {
     return {
-      form: {
-        first_name: '',
-        last_name: '',
-        phone: '',
-        email: '',
-        country_id: '',
-        course_id: '',
-      },
-      countries: [],
-      courses: []
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      country: '',
+      program: '',
+
+      countrys: [],
+      programs: [],
+
+      errors: {}
     }
   },
+
   methods: {
-    async submitApplication() {
-      try {
-        const res = await fetch('http://localhost:3000/api/students', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(this.form)
-        })
-        const data = await res.json()
-        alert('Application submitted successfully!')
-      } catch (err) {
-        console.error(err)
+
+    async createApplication() {
+      this.errors = {}
+      const payload = {
+        application: {
+          first_name: this.first_name,
+          last_name: this.last_name,
+          email: this.email,
+          phone: this.phone,
+          country_id: this.country,
+          course_id: this.program
+
+        }
       }
-    }
+      try {
+        const response = await api.post('create_application', payload)
+        console.log("Application ceated successfully!", response.data)
+        alert('Your application has been submited successfully!')
+  
+        this.resetForm();
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors
+        } else {
+          this.errors.general = "Something went wrong while submitting!"
+        }
+      }
+
+    },
+
+    resetForm() {
+      this.first_name = '',
+      this.last_name = '',
+      this.email = '',
+      this.phone = '',
+      this.country = '',
+      this.program = ''
+    },
+
+    async fetchCountrys() {
+      this.errors = {}
+      try {
+        const response = await api.get('all_countrys');
+        this.countrys = response.data
+        console.log('Coutrys fethed sccessfuly!')
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors
+        }else {
+          this.errors.general = "Something went wrong!"
+        }
+      }
+    },
+
+    async fetchCourses() {
+      this.errors = {}
+      try {
+        const response = await api.get('all_courses');
+        this.programs = response.data
+        console.log('Programs fethed sccessfuly!')
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors
+        }else {
+          this.errors.general = "Something went wrong!"
+        }
+      }
+    },
+
   },
+
   mounted() {
-    // Fetch country and course options
-    fetch('http://localhost:3000/api/countries').then(res => res.json()).then(data => this.countries = data)
-    fetch('http://localhost:3000/api/courses').then(res => res.json()).then(data => this.courses = data)
+    this.fetchCountrys();
+    this.fetchCourses();
   }
 }
 </script>

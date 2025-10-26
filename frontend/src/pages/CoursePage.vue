@@ -30,17 +30,17 @@
                     <button type="button" @click="$router.back()" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
                         Back to Programs
                     </button>
-                    <button @click="showFlyer = true" type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
-                        View Flyer
+                    <button @click="downloadBronchure(course)" type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                        Download Bronchure
                     </button>
 
                     <!-- enroll button -->
-                     <button type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                     <router-link :to="`/programs/${course.slug}/apply`" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">Enroll</router-link>
+                     <!-- <button type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
                         Enroll
-                     </button>
+                     </button> -->
                 </div>
             </div>
-
             
             <!-- Loading State -->
             <div v-else-if="loading" class="text-center text-gray-500">
@@ -69,6 +69,7 @@
                     </div>
                 </div>
              </transition>
+             <router-view/>
         </div>
     </section>
 </template>
@@ -84,7 +85,12 @@ export default {
             error: null,
             loading: true,
 
-            showFlyer: false
+            courseId: '',
+            courseSlug: '',
+
+            showFlyer: false,
+
+            errors: []
         }
     },
     methods: {
@@ -126,6 +132,34 @@ export default {
 
         closeFlyer() {
             this.showFlyer = false;
+        },
+
+        async downloadBronchure(course) {
+            this.courseId = course.id
+            this.courseSlug = course.slug
+            
+            try {
+                const response = await api.get(`download_flyer/${this.courseSlug}`)
+    
+                // create a temporary anchor tag to trigger download
+                const downloadUrl = response.data.download_url;
+                const fileName = response.data.filename;
+    
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+                console.log("Course downloaded successfully!")
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.errors) {
+                    this.errors = error.response.data.errors
+                } else {
+                    this.errors.general = "Sowmthing went wrong!"
+                }
+            }
         }
     },
 

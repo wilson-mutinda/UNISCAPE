@@ -1,5 +1,6 @@
 class Country < ApplicationRecord
-  before_save :generate_slug, :normalize_name
+  before_save :normalize_name
+  before_create :generate_slug
   has_many :students
 
   # hide soft-deleted countrys by default

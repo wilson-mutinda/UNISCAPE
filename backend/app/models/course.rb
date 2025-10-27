@@ -24,7 +24,7 @@ class Course < ApplicationRecord
   # attach flyer
   has_one_attached :course_flyer
 
-  before_save :set_slug
+  before_create :set_slug
   
   # validations
   validates :course_name, presence: true, uniqueness: true, if: -> { new_record? || course_name.present? }

@@ -18,7 +18,7 @@ class Student < ApplicationRecord
     update(deleted_at: nil)
   end
 
-  before_save :generate_slug
+  before_create :generate_slug
 
   belongs_to :user
   belongs_to :country

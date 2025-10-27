@@ -44,7 +44,7 @@ class User < ApplicationRecord
     )
   end
 
-  before_save :set_slug
+  before_create :set_slug
 
   # validations
   validates :email, presence: true, uniqueness: true

@@ -88,47 +88,66 @@ class CourseService
     end
   end
 
-  # update_course
   def update_course
-
     @course = course_slug_search(@courses, @target_param)
     if @course.is_a?(Hash) && @course.key?(:errors)
       return @course
     end
 
     updated_course_params = {}
+    has_updates = false
 
-    # course_name_param
-    course_name_param = normalized_update_course_name
-    if course_name_param.is_a?(Hash)
-      return course_name_param
+    # course_name_param - check if param exists in request (not just if present)
+    if @params.key?(:course_name)
+      course_name_param = normalized_update_course_name
+      return course_name_param if course_name_param.is_a?(Hash)
+      updated_course_params[:course_name] = course_name_param
+      has_updates = true
     end
 
-    updated_course_params[:course_name] = course_name_param
-
     # course_duration_param
-    course_duration_param = normalized_update_course_duration
-    updated_course_params[:course_duration] = course_duration_param
+    if @params.key?(:course_duration)
+      course_duration_param = normalized_update_course_duration
+      updated_course_params[:course_duration] = course_duration_param
+      has_updates = true
+    end
 
     # course_fee_param
-    course_fee_param = normalized_update_course_fee
-    updated_course_params[:course_fee] = course_fee_param
+    if @params.key?(:course_fee)
+      course_fee_param = normalized_update_course_fee
+      updated_course_params[:course_fee] = course_fee_param
+      has_updates = true
+    end
 
     # course_desc_param
-    course_desc_param = normalized_update_course_desc
-    updated_course_params[:course_desc] = course_desc_param
+    if @params.key?(:course_desc)
+      course_desc_param = normalized_update_course_desc
+      updated_course_params[:course_desc] = course_desc_param
+      has_updates = true
+    end
 
     # course_more_info_param
-    course_more_info_param = normalized_update_course_more_info
-    updated_course_params[:course_more_info] = course_more_info_param
+    if @params.key?(:course_more_info)
+      course_more_info_param = normalized_update_course_more_info
+      updated_course_params[:course_more_info] = course_more_info_param
+      has_updates = true
+    end
 
-    # course_image_param
-    course_image_param = normalized_update_course_image
-    updated_course_params[:course_image] = course_image_param
+    # course_image_param - handle file uploads separately if needed
+    if @params.key?(:course_image)
+      course_image_param = normalized_update_course_image
+      updated_course_params[:course_image] = course_image_param
+      has_updates = true
+    end
 
-    # course_flyer_param
-    course_flyer_param = normalized_update_course_flyer
-    updated_course_params[:course_flyer] = course_flyer_param
+    # course_flyer_param - handle file uploads separately if needed
+    if @params.key?(:course_flyer)
+      course_flyer_param = normalized_update_course_flyer
+      updated_course_params[:course_flyer] = course_flyer_param
+      has_updates = true
+    end
+
+    return { success: false, errors: "No valid update parameters provided!" } unless has_updates
 
     # update_course
     updated_course = @course.update(updated_course_params)
@@ -138,7 +157,6 @@ class CourseService
     else
       { success: false, errors: @course.errors.full_messages }
     end
-
   end
 
   # delete_course
@@ -180,69 +198,6 @@ class CourseService
   end
 
   private
-  # normalize_course_name
-  def normalize_course_name
-    # course_name
-    course_name = @params[:course_name].to_s.downcase
-
-    if course_name.blank?
-      return { errors: { course_name: "Please input course name!"}}
-    end
-
-    # course name should not exist
-    existing = unique_course_name(@courses, course_name)
-    if existing.is_a?(Hash) && existing.key?(:errors)
-      return existing
-    end
-    course_name.to_s.titleize
-  end
-
-  # normalize_course_duration
-  def normalize_course_duration
-    # course_duration
-    course_duration = @params[:course_duration].to_s
-
-    if course_duration.blank?
-      return { errors: { course_duration: "Please input course duration!"}}
-    end
-
-    course_duration.to_s.titleize
-  end
-
-  # normalize_course_fee
-  def normalize_course_fee
-    # course_fee
-    course_fee = @params[:course_fee].to_s
-
-    if course_fee.blank?
-      return { errors: { course_fee: "Please input course fee!"}}
-    end
-
-    course_fee
-  end
-
-  # normalize_course_desc
-  def normalize_course_desc
-    course_desc = @params[:course_desc].to_s
-
-    if course_desc.blank?
-      return { errors: { course_desc: "Please input course description!"}}
-    end
-
-    course_desc
-  end
-
-  # normalize_course_more_info
-  def normalize_course_more_info
-    course_more_info = @params[:course_more_info].to_s
-
-    if course_more_info.blank?
-      return { errors: { course_more_info: "Please input more info!"}}
-    end
-
-    course_more_info
-  end
-
   # normalized_update_course_name
   def normalized_update_course_name
     # course_name
@@ -310,4 +265,68 @@ class CourseService
       course_flyer
     end
   end
+
+  # normalize_course_name
+  def normalize_course_name
+    # course_name
+    course_name = @params[:course_name].to_s.downcase
+
+    if course_name.blank?
+      return { errors: { course_name: "Please input course name!"}}
+    end
+
+    # course name should not exist
+    existing = unique_course_name(@courses, course_name)
+    if existing.is_a?(Hash) && existing.key?(:errors)
+      return existing
+    end
+    course_name.to_s.titleize
+  end
+
+  # normalize_course_duration
+  def normalize_course_duration
+    # course_duration
+    course_duration = @params[:course_duration].to_s
+
+    if course_duration.blank?
+      return { errors: { course_duration: "Please input course duration!"}}
+    end
+
+    course_duration.to_s.titleize
+  end
+
+  # normalize_course_fee
+  def normalize_course_fee
+    # course_fee
+    course_fee = @params[:course_fee].to_s
+
+    if course_fee.blank?
+      return { errors: { course_fee: "Please input course fee!"}}
+    end
+
+    course_fee
+  end
+
+  # normalize_course_desc
+  def normalize_course_desc
+    course_desc = @params[:course_desc].to_s
+
+    if course_desc.blank?
+      return { errors: { course_desc: "Please input course description!"}}
+    end
+
+    course_desc
+  end
+
+  # normalize_course_more_info
+  def normalize_course_more_info
+    course_more_info = @params[:course_more_info].to_s
+
+    if course_more_info.blank?
+      return { errors: { course_more_info: "Please input more info!"}}
+    end
+
+    course_more_info
+  end
+
 end

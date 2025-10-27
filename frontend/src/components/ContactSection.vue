@@ -12,7 +12,7 @@
                         Send us a message
                     </h3>
 
-                    <form action="" method="post" class="space-y-4">
+                    <form @submit.prevent="createContact" action="" method="post" class="space-y-4">
                         <!-- name -->
                         <div>
                             <label class="block text-lg mb-1 font-medium" for="name">Name</label>
@@ -22,6 +22,7 @@
                                 name="name"
                                 id="name"
                                 placeholder="Your full name"
+                                v-model="name"
                             />
                         </div>
 
@@ -34,6 +35,7 @@
                                 name="email"
                                 id="email"
                                 placeholder="you@example.com"
+                                v-model="email"
                             />
                         </div>
 
@@ -46,6 +48,7 @@
                                 id="message"
                                 rows="4"
                                 placeholder="Write your message here..."
+                                v-model="message"
                             ></textarea>
                         </div>
 
@@ -69,7 +72,8 @@
                             <div>
                                 <h4 class="font-semibold text-lg text-uniscape-blue mb-1">Address</h4>
                                 <p class="text-gray-700 leading-relaxed">
-                                    Blue Violets Plaza, Ground Floor, Kindaruma Road (off Ngong Road)<br />
+                                    Blue Violets Plaza, Ground Floor, <br />
+                                    Kindaruma Road (off Ngong Road)<br />
                                     P.O. Box 56936 - 00200, Nairobi, Kenya
                                 </p>
                             </div>
@@ -84,6 +88,20 @@
                                 <p class="text-gray-700">+254 729 146 152</p>
                             </div>
                         </div>
+
+                        <!-- Whatsapp -->
+                         <div class="flex gap-4 items-start">
+                            <img src="/whatsapp.png" alt="whatsapp" width="30" class="mt-1" />
+                            <div class="">
+                                <h4 class="font-semibold text-lg text-uniscape-blue mb-1">WhatsApp</h4>
+                                <a
+                                href="https://wa.me/254729146152"
+                                target="_blank"
+                                class="text-gray-700 hover:text-uniscape-yellow">
+                                +254 729 146 152
+                                </a>
+                            </div>
+                         </div>
 
                         <!-- Email -->
                         <div class="flex gap-4 items-start">
@@ -115,3 +133,51 @@
         </div>
     </section>
 </template>
+
+<script>
+import api from '@/services/api';
+
+export default {
+    data() {
+        return {
+            email: '',
+            name: '',
+            message: '',
+
+            errors: {}
+        }
+    },
+
+    methods: {
+        async createContact() {
+            this.errors = {};
+            try {
+                const payload = {
+                    contact: {
+                        email: this.email,
+                        name: this.name,
+                        message: this.message
+                    }
+                };
+                const response = await api.post('create_contact', payload);
+                console.log("Contact created successfully!");
+                alert("Contact created!");
+                this.clearForm();
+                this.errors = {}
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.errors) {
+                    this.errors = error.response.data.errors
+                } else {
+                    this.errors.general = "Something went wrong!"
+                }
+            }
+        },
+
+        clearForm() {
+            this.name = '',
+            this.email = '',
+            this.message = ''
+        }
+    }
+}
+</script>

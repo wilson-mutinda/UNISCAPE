@@ -1,121 +1,175 @@
 <template>
-  <div class="bg-gray-50 min-h-screen pt-32 px-4 flex items-center justify-center">
-    <div class="bg-uniscape-yellow rounded-md w-full max-w-4xl mb-4">
-      <div class="p-6">
-        <form @submit.prevent="createApplication" action="" method="post">
-        <h3 class="text-center mt-4 mb-4 text-3xl">Apply Now</h3>
-        <span v-if="errors.general" class="text-red-500 text-center text-sm">{{ errors.general }}</span>
+  <div class="bg-gray-50 min-h-screen pt-28 flex justify-center items-center px-4">
+    <div class="bg-white shadow-lg rounded-3xl w-full max-w-3xl border border-gray-100 overflow-hidden">
+      <!-- Header -->
+      <div class="bg-uniscape-blue text-white py-6 text-center">
+        <h2 class="text-3xl font-bold tracking-wide">Apply to Uniscape</h2>
+        <p class="text-lg opacity-80">Join our global learning community today</p>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-2 rounded-2xl ring-2 ring-uniscape-blue mb-2">
-          <!-- fname -->
-          <div class="">
-            <label class="block text-xl mb-2" for="first_name">First name</label>
-            <input v-model="first_name" class="rounded-md p-2 w-full mb-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="text" name="first_name" id="first_name">
-            <span v-if="errors.first_name" class="text-red-500 text-center text-sm">{{ errors.first_name }}</span>
+      <!-- Form -->
+      <form @submit.prevent="createApplication" class="p-8 space-y-10">
+        <!-- General error -->
+        <p v-if="errors.general" class="text-red-500 text-center text-sm">{{ errors.general }}</p>
+
+        <!-- Name fields -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="relative">
+            <input
+              v-model="first_name"
+              id="first_name"
+              type="text"
+              placeholder=" "
+              class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
+            />
+            <label
+              for="first_name"
+              class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-uniscape-blue"
+            >
+              First Name
+            </label>
+            <p v-if="errors.first_name" class="text-red-500 text-sm mt-1">{{ errors.first_name }}</p>
           </div>
 
-          <!-- lname -->
-            <div class="">
-              <label class="block text-xl mb-2" for="last_name">Last name</label>
-              <input v-model="last_name" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="text" name="last_name" id="last_name">
-              <span v-if="errors.last_name" class="text-red-500 text-center text-sm">{{ errors.last_name }}</span>
-            </div>
+          <div class="relative">
+            <input
+              v-model="last_name"
+              id="last_name"
+              type="text"
+              placeholder=" "
+              class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
+            />
+            <label
+              for="last_name"
+              class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-uniscape-blue"
+            >
+              Last Name
+            </label>
+            <p v-if="errors.last_name" class="text-red-500 text-sm mt-1">{{ errors.last_name }}</p>
+          </div>
         </div>
 
-        <!-- email -->
-         <div class="bg-white p-2 rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12">
-          <div class="">
-            <label class="block text-xl mb-2" for="email">Email</label>
-            <input v-model="email" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="email" name="email" id="email">
-            <span v-if="errors.email" class="text-red-500 text-center text-sm">{{ errors.email }}</span>
+        <!-- Email -->
+        <div class="relative">
+          <input
+            v-model="email"
+            id="email"
+            type="email"
+            placeholder=" "
+            class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
+          />
+          <label
+            for="email"
+            class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-uniscape-blue"
+          >
+            Email
+          </label>
+          <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="relative">
+          <input
+            v-model="phone"
+            id="phone"
+            type="tel"
+            placeholder=" "
+            class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
+          />
+          <label
+            for="phone"
+            class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-uniscape-blue"
+          >
+            Phone Number
+          </label>
+          <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
+        </div>
+
+        <!-- Country and Program -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label for="country" class="block mb-2 font-medium text-gray-700">Country</label>
+            <select
+              v-model="country"
+              id="country"
+              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none"
+            >
+              <option disabled value="">-- Select Country --</option>
+              <option v-for="c in countrys" :key="c.id" :value="c.id">{{ c.name }}</option>
+            </select>
+            <p v-if="errors.country" class="text-red-500 text-sm mt-1">{{ errors.country }}</p>
           </div>
-         </div>
 
-         <!-- phone -->
-          <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
-            <div class="">
-              <label class="block text-xl mb-2" for="phone">Phone</label>
-              <input v-model="phone" class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300" type="tel" name="phone" id="phone">
-              <span v-if="errors.phone" class="text-red-500 text-center text-sm">{{ errors.phone }}</span>
-            </div>
+          <div>
+            <label for="program" class="block mb-2 font-medium text-gray-700">Program</label>
+            <select
+              v-model="program"
+              id="program"
+              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none"
+            >
+              <option disabled value="">-- Select Program --</option>
+              <option v-for="p in programs" :key="p.id" :value="p.id">{{ p.course_name }}</option>
+            </select>
+            <p v-if="errors.program" class="text-red-500 text-sm mt-1">{{ errors.program }}</p>
           </div>
+        </div>
 
-          <!-- country -->
-           <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
-            <div class="">
-              <label for="country" class="block text-xl mb-2">Country</label>
-              <select
-               name="country" 
-               id="country" 
-               v-model="country" 
-               class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300">
-               <option disabled value="">-- Select Country --</option>
-               <option v-for="c in countrys" :value="c.id" :key="c.id">
-                {{ c.name }}
-               </option>
-              </select>
-              <span v-if="errors.country" class="text-red-500 text-center text-sm">{{ errors.country }}</span>
-            </div>
-           </div>
+        <!-- Buttons -->
+        <div class="flex justify-between items-center pt-6">
+          <button
+            type="button"
+            class="text-gray-600 hover:text-gray-800 transition font-medium"
+            @click="resetForm"
+          >
+            Cancel
+          </button>
 
-           <!-- program -->
-            <div class="bg-white rounded-2xl ring-2 ring-uniscape-blue mb-2 mt-12 p-2">
-              <div class="">
-                <label class="block text-xl mb-2" for="program">Program</label>
-                <select
-                 v-model="program"
-                 class="rounded-md w-full mb-2 p-2 bg-transparent ring-1 ring-uniscape-blue hover:ring-blue-300"
-                 name="program" 
-                 id="program"
-                 >
-                 <option disabled value="">-- Select Program --</option>
-                 <option
-                  v-for="p in programs"
-                  :key="p.id"
-                  :value="p.id">
-                  {{ p.course_name }}
-                </option>
-                </select>
-                <span v-if="errors.program" class="text-red-500 text-center text-sm">{{ errors.program }}</span>
-              </div>
-            </div>
+          <button
+            type="submit"
+            class="bg-uniscape-blue hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition"
+          >
+            <span v-if="!isSubmitting">Submit</span>
+            <span v-else>Submitting...</span>
+          </button>
+        </div>
 
-            <!-- submit button -->
-             <div class="flex items-center justify-center mt-4">
-              <button class="bg-uniscape-blue rounded-md px-4 py-2 text-white font-bold">
-                Submit
-              </button>
-             </div>
+        <!-- Success message -->
+        <transition name="fade">
+          <p v-if="successMessage" class="text-green-600 text-center mt-4 font-medium">
+            {{ successMessage }}
+          </p>
+        </transition>
       </form>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import api from '@/services/api';
+import api from "@/services/api";
 
 export default {
   data() {
     return {
-      first_name: '',
-      last_name: '',
-      email: '',
-      phone: '',
-      country: '',
-      program: '',
-
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      country: "",
+      program: "",
       countrys: [],
       programs: [],
-
-      errors: {}
-    }
+      errors: {},
+      successMessage: "",
+      isSubmitting: false,
+    };
   },
 
   methods: {
-
     async createApplication() {
-      this.errors = {}
+      this.errors = {};
+      this.successMessage = "";
+      this.isSubmitting = true;
+
       const payload = {
         application: {
           first_name: this.first_name,
@@ -123,70 +177,66 @@ export default {
           email: this.email,
           phone: this.phone,
           country_id: this.country,
-          course_id: this.program
+          course_id: this.program,
+        },
+      };
 
-        }
-      }
       try {
-        const response = await api.post('create_application', payload)
-        console.log("Application ceated successfully!", response.data)
-        alert('Your application has been submited successfully!')
-  
+        const response = await api.post("create_application", payload);
+        this.successMessage = "✅ Application submitted successfully!";
+        console.log("Application created:", response.data);
         this.resetForm();
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors
+        if (error.response?.data?.errors) {
+          this.errors = error.response.data.errors;
         } else {
-          this.errors.general = "Something went wrong while submitting!"
+          this.errors.general = "Something went wrong while submitting!";
         }
+      } finally {
+        this.isSubmitting = false;
       }
-
     },
 
     resetForm() {
-      this.first_name = '',
-      this.last_name = '',
-      this.email = '',
-      this.phone = '',
-      this.country = '',
-      this.program = ''
+      this.first_name = "";
+      this.last_name = "";
+      this.email = "";
+      this.phone = "";
+      this.country = "";
+      this.program = "";
     },
 
     async fetchCountrys() {
-      this.errors = {}
       try {
-        const response = await api.get('all_countrys');
-        this.countrys = response.data
-        console.log('Coutrys fethed sccessfuly!')
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors
-        }else {
-          this.errors.general = "Something went wrong!"
-        }
+        const response = await api.get("all_countrys");
+        this.countrys = response.data;
+      } catch {
+        this.errors.general = "Failed to fetch countries.";
       }
     },
 
     async fetchCourses() {
-      this.errors = {}
       try {
-        const response = await api.get('all_courses');
-        this.programs = response.data
-        console.log('Programs fethed sccessfuly!')
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors
-        }else {
-          this.errors.general = "Something went wrong!"
-        }
+        const response = await api.get("all_courses");
+        this.programs = response.data;
+      } catch {
+        this.errors.general = "Failed to fetch programs.";
       }
     },
-
   },
 
   mounted() {
     this.fetchCountrys();
     this.fetchCourses();
-  }
-}
+  },
+};
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>

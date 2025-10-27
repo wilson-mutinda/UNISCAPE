@@ -13,8 +13,8 @@
                 <!-- info -->
                 <div class="w-full md:w-1/2">
                     <h3 class="font-bold text-2xl text-center mb-4 text-uniscape-blue">Why Choose UNISCAPE?</h3>
-                    <p class="text-lg text-gray-600 mb-4">Uniscape Consulting is a professional training and technology 
-                        solutions company dedicated to bridging Africa&apos;s digital skill gap. Through 
+                    <p class="text-lg text-gray-600 mb-4"><b>Uniscape Technology</b> is a division of <b>Uniscape Consulting Ltd</b>, which offers training and technology 
+                        solutions dedicated to bridging Africa&apos;s digital skill gap. Through 
                         hands-on bootcamps, mentorship, and project-based learning, we empower learners 
                         to master in-demand digital skills that prepare them for the global market.
                     </p>
@@ -22,12 +22,12 @@
                         <ul class="space-y-3">
                             <li class="flex items-center gap-2">
                                 <img src="/checked.png" alt="checked" width="20">
-                                <span>Hands-on training</span>
+                                <span>Hands-on Training</span>
                             </li>
 
                             <li class="flex items-center gap-2">
                                 <img src="/checked.png" alt="checked" width="20">
-                                <span>Project-based learning</span>
+                                <span>Project-based Learning</span>
                             </li>
 
                             <li class="flex gap-2 items-center">
@@ -37,12 +37,12 @@
 
                             <li class="flex gap-2 items-center">
                                 <img src="/checked.png" alt="checked" width="20">
-                                <span>Online/Physical learning</span>
+                                <span>Online/Physical Learning</span>
                             </li>
 
                             <li class="flex gap-2 items-center">
                                 <img src="/checked.png" alt="checked" width="20">
-                                <span>Full-time/Part-time classes</span>
+                                <span>Full-time/Part-time Classes</span>
                             </li>
                         </ul>
                     </div>

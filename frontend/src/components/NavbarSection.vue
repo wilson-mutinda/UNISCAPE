@@ -85,11 +85,11 @@
                 </div>
             </transition>
             </div>
-          <a
+          <!-- <a
             @click.prevent="goToSection('community')"
             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
             href="#community"
-          >Community</a>
+          >Community</a> -->
 
           <a
             @click.prevent="goToSection('blog')"
@@ -108,9 +108,9 @@
             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
             href="#faqs"
           >FAQS</a>
-          <!-- <router-link to="login" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
-            Login
-        </router-link> -->
+          <router-link to="/apply" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
+            Get Started
+        </router-link>
         </div>
 
         <!-- mobile menu toggle -->
@@ -190,11 +190,7 @@
             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
           >FAQS</a>
 
-          <a
-            @click.prevent="goToMobileSection('programs')"
-            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 w-full text-center"
-            href="#programs"
-          >Login</a>
+          <router-link to="/apply" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">Get Started</router-link>
         </div>
       </transition>
     </div>

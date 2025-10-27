@@ -7,7 +7,10 @@
                 <!-- partners -->
                 <div class="flex items-center space-x-10 animate-marquee">
                     <div v-for="(partner, index) in partners" :key="index" class="flex-shrink-0 flex items-center justify-center">
-                        <img :src="partner.image" :alt="partner.image" class="h-20 object-contain">
+                        <img :src="partner.image" :alt="partner.image" :class="[
+                            'object-contain',
+                            partner.image.includes('safaricom') || partner.image.includes('kcb') ? 'h-36': 'h-20'
+                        ]">
                     </div>
                 </div>
             </div>
@@ -26,7 +29,8 @@ export default {
                 { image: "/mastercard-foundation.png" },
                 { image: "/microsoft.png" },
                 { image: "/oracle.png" },
-                { image: "/safaricom-foundation.jpg" }
+                { image: "/safaricom-foundation.jpg" },
+                { image: "/kcb-foundation.png" }
             ],
         }
     }

@@ -43,59 +43,12 @@
 </template>
 
 <script>
+import { blogPosts } from '@/data/BlogPost';
+
 export default {
   data() {
     return {
-      blogPosts: [
-        {
-          id: 1,
-          title: "Exploring the Future of AI in Education",
-          excerpt:
-            "Artificial Intelligence is transforming the way we learn and teach. Discover the latest trends and how AI is shaping education.",
-          slug: "future-of-ai-education",
-          image: "https://source.unsplash.com/600x400/?education,ai"
-        },
-        {
-          id: 2,
-          title: "Top 10 Programming Languages to Learn in 2025",
-          excerpt:
-            "Stay ahead in the tech world! We cover the most in-demand programming languages you should consider learning this year.",
-          slug: "top-programming-languages-2025",
-          image: "https://source.unsplash.com/600x400/?programming,code"
-        },
-        {
-          id: 3,
-          title: "How to Balance University and Personal Projects",
-          excerpt:
-            "Managing your time effectively is key to success. Learn practical tips to balance academic life with personal projects.",
-          slug: "balance-university-projects",
-          image: "https://source.unsplash.com/600x400/?student,study"
-        },
-        {
-          id: 4,
-          title: "The Importance of Cybersecurity Awareness",
-          excerpt:
-            "Cyber threats are increasing every day. Discover why staying informed about cybersecurity is crucial for students and professionals.",
-          slug: "importance-cybersecurity-awareness",
-          image: "https://source.unsplash.com/600x400/?cybersecurity,tech"
-        },
-        {
-          id: 5,
-          title: "Design Thinking: Innovation in Problem Solving",
-          excerpt:
-            "Learn how design thinking can help you approach problems creatively and come up with innovative solutions.",
-          slug: "design-thinking-innovation",
-          image: "https://source.unsplash.com/600x400/?design,innovation"
-        },
-        {
-          id: 6,
-          title: "Remote Learning: Tips for Staying Motivated",
-          excerpt:
-            "Remote learning has its challenges. Here are practical tips to stay motivated and productive while studying online.",
-          slug: "remote-learning-tips",
-          image: "https://source.unsplash.com/600x400/?remote,learning"
-        }
-      ]
+      blogPosts
     };
   }
 };

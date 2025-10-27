@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-gray-50 rounded-xl p-6 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <img src="" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                            <img src="/user.png" alt="Student" class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-bold text-uniscape-blue">Sarah K.</h4>
                                 <p class="text-sm text-gray-600">Data Science Graduate</p>
@@ -34,7 +34,7 @@
                     
                     <div class="bg-gray-50 rounded-xl p-6 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <img src="" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                            <img src="/user.png" alt="Student" class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-bold text-uniscape-blue">James M.</h4>
                                 <p class="text-sm text-gray-600">Full-Stack Developer</p>
@@ -45,7 +45,7 @@
                     
                     <div class="bg-gray-50 rounded-xl p-6 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <img src="" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                            <img src="/user.png" alt="Student" class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-bold text-uniscape-blue">Grace W.</h4>
                                 <p class="text-sm text-gray-600">Cyber Security Analyst</p>
@@ -58,7 +58,7 @@
         </section>
 
         <!-- Upcoming Cohorts -->
-        <UpcomingCohortSection />
+        <!-- <UpcomingCohortSection /> -->
 
         <!-- our partners -->
         <PartnerSection />
@@ -70,7 +70,7 @@
          <BlogSection />
 
         <!-- community section -->
-        <CommunitySection />
+        <!-- <CommunitySection /> -->
 
         <!-- contact section -->
         <ContactSection />

@@ -29,13 +29,19 @@
             </p>
 
             <div class="flex items-center justify-center gap-4">
-            <button
+            <!-- <button
                 type="button"
                 class="bg-white text-uniscape-blue font-semibold px-6 py-3 rounded-full hover:bg-yellow-300 transition"
                 @click="scrollToSection('programs')"
             >
                 Get Started
-            </button>
+            </button> -->
+            <router-link
+             to="apply" 
+             class="bg-white text-uniscape-blue font-semibold px-6 py-3 rounded-full hover:bg-yellow-300 transition"
+             >
+             Get Started
+            </router-link>
             </div>
         </div>
 

@@ -46,6 +46,14 @@ Rails.application.routes.draw do
       patch 'update_application/:slug', to: 'applications#update_application'
       delete 'delete_application/:slug', to: 'applications#delete_application'
       get 'restore_application/:slug', to: 'applications#restore_application'
+
+      # contact
+      post 'create_contact', to: 'contacts#create_contact'
+      get 'single_contact/:slug', to: 'contacts#single_contact'
+      get 'all_contacts', to: 'contacts#all_contacts'
+      patch 'update_contact/:slug', to: 'contacts#update_contact'
+      delete 'delete_contact/:slug', to: 'contacts#delete_contact'
+      get 'restore_contact/:slug', to: 'contacts#restore_contact'
     end
   end
 end

@@ -563,4 +563,26 @@ module SearchHelper
     { errors: { target_id: "Country not found!"}}
   end
 
+  def contact_search_by_id(contacts, target_param)
+    target_param = target_param.to_s.gsub(/\s+/, '').downcase
+
+    # check if target_param is an ID
+    if target_param.match?(/\d/)
+      contact = contacts.find { |c| c.id == target_param.to_i }
+      if contact
+        return contact
+      else
+        return { errors: { contact: "Contact of ID #{target_param} not found!"}}
+      end
+    end
+
+    # find by slug
+    contact = contacts.find { |c| c.slug == target_param }
+    if contact
+      return contact
+    end
+
+    { errors: { contact: "Contact not found for #{target_param}"}}
+  end
+
 end

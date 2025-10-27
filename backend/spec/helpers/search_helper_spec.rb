@@ -304,4 +304,23 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result).to eq('dd@gmail.com')
     end
   end
+
+  describe "#contact_search_by_id" do
+    let(:contacts) do
+      [
+        double(id: 1, name: 'aa mm', email: 'aa@gmail.com', message: 'Good job!'),
+        double(id: 2, name: 'gg nn', email: 'gg@email.com', message: 'Good job!')
+      ]
+    end
+
+    it "returns an error if id is not found" do
+      result = helper.contact_search_by_id(contacts, 4)
+      expect(result).to eq({ errors: { target_id: "Contact not found!"}})
+    end
+
+    it "returns an object if id is found" do
+      result = helper.contact_search_by_id(contacts, 2)
+      expect(result).to eq(contacts[1])
+    end
+  end
 end

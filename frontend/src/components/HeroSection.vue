@@ -2,7 +2,7 @@
     <!-- Hero Section with Background Carousel -->
         <section
         id="home"
-        class="relative w-full h-[90vh] flex items-center justify-center text-center text-white overflow-hidden"
+        class="relative w-full font-futura h-[90vh] flex items-center justify-center text-center text-white overflow-hidden"
         >
         <!-- Background Carousel -->
         <div class="absolute inset-0 w-full h-full overflow-hidden">
@@ -21,7 +21,7 @@
 
         <!-- Hero Content -->
         <div class="relative z-10 container mx-auto px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fadeIn">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fadeIn font-futura">
             Empowering the Next Tech Generation
             </h1>
             <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
@@ -90,7 +90,7 @@ export default {
                 // '/code4.jpg',
                 '/code5.jpg',
                 '/code6.jpg',
-                '/code7.jpg'
+                '/uniscape-about-us-2.jpg'
             ],
 
             currentIndex: 0,

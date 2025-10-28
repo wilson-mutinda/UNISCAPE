@@ -1,6 +1,6 @@
 <template>
     <!-- our partners -->
-        <section class="bg-gray-50 py-16">
+        <section class="bg-gray-50 py-16 font-futura">
             <div class="container mx-auto px-4">
                 <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-4">Our Partners</h3>
 

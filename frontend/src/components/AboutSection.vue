@@ -1,6 +1,6 @@
 <template>
     <!-- about section -->
-    <section id="about" class="bg-gray-50 py-16 pt-28">
+    <section id="about" class="bg-gray-50 py-16 pt-28 font-futura">
         <div class="container mx-auto px-4">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">About Us</h3>
 
@@ -13,7 +13,7 @@
       <div class="w-full md:w-1/2 flex justify-center">
         <div class="rounded overflow-hidden shadow-lg transform hover:scale-105 transition duration-300">
           <img
-            src="/uniscape-about-us-2.jpg"
+            src="/uniscape-about-us-1.jpg"
             alt="Uniscape Training"
             class="w-full h-96 object-cover"
           />

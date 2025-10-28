@@ -1,5 +1,5 @@
 <template>
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white font-roboto">
         <div class="container mx-auto px-4">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">How You'll Learn</h3>
             

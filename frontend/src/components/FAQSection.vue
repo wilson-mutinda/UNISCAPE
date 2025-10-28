@@ -1,5 +1,5 @@
 <template>
-    <section id="faqs" class="py-20 bg-white pt-28">
+    <section id="faqs" class="py-20 bg-white pt-28 font-futura">
         <div class="container mx-auto px-4 max-w-7xl">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">
             Frequently Asked Questions

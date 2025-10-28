@@ -1,5 +1,5 @@
 <template>
-    <section id="contacts" class="bg-gray-50 py-20 pt-28">
+    <section id="contacts" class="bg-gray-50 py-20 pt-28 font-futura">
         <div class="container mx-auto px-4">
             <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">
                 Contact Us

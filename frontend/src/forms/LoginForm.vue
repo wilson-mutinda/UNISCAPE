@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-32 min-h-screen bg-gray-50 px-8 flex items-center justify-center">
+    <div class="pt-32 min-h-screen bg-gray-50 px-8 flex items-center justify-center font-futura">
         <div class="p-8 bg-uniscape-yellow rounded-md w-full max-w-md">
             <form @submit.prevent="userLogin" action="" method="post">
 

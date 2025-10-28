@@ -1,5 +1,5 @@
 <template>
-  <section class="pt-28 py-20 bg-gray-50">
+  <section class="pt-28 py-20 bg-gray-50 font-futura">
     <div class="container mx-auto px-4">
       <router-link to="/blog" class="text-uniscape-yellow font-semibold hover:underline mb-5 inline-block">
         ← Back to Blog

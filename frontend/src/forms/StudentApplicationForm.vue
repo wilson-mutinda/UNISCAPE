@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 min-h-screen pt-28 flex items-center justify-center px-4">
+  <div class="bg-gray-50 min-h-screen pt-28 flex items-center justify-center px-4 font-futura">
     <!-- form div -->
      <div class="bg-white shadow-lg rounded-3xl w-full max-w-3xl border border-gray-100 overflow-hidden">
 

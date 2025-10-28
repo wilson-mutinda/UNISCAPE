@@ -1,5 +1,5 @@
 <template>
-    <footer class="bg-uniscape-blue text-white py-12">
+    <footer class="bg-uniscape-blue text-white py-12 font-futura">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
 
             <!-- Logo and description -->
@@ -18,11 +18,11 @@
             <div>
                 <h4 class="text-xl font-semibold text-uniscape-yellow mb-4">Quick Links</h4>
                 <ul class="space-y-2">
-                    <li><a @click.prevent="goToSection('home')" href="#home" class="hover:text-uniscape-yellow transition">Home</a></li>
-                    <li><a @click.prevent="goToSection('about')" href="#about" class="hover:text-uniscape-yellow transition">About Us</a></li>
-                    <li><a @click.prevent="goToSection('programs')" href="#programs" class="hover:text-uniscape-yellow transition">Programs</a></li>
-                    <li><a @click.prevent="goToSection('community')" href="#community" class="hover:text-uniscape-yellow transition">Community</a></li>
-                    <li><a @click.prevent="goToSection('contacts')" href="#contacts" class="hover:text-uniscape-yellow transition">Contact Us</a></li>
+                    <li><router-link to="/welcome-page" class="hover:text-uniscape-yellow transition">Home</router-link></li>
+                    <li><router-link to="/about" class="hover:text-uniscape-yellow transition">About Us</router-link></li>
+                    <li><router-link to="/courses" class="hover:text-uniscape-yellow transition">Programs</router-link></li>
+                    <li><router-link to="/faqs" class="hover:text-uniscape-yellow transition">FAQS</router-link></li>
+                    <li><router-link to="/contact" class="hover:text-uniscape-yellow transition">Contact Us</router-link></li>
                 </ul>
             </div>
 

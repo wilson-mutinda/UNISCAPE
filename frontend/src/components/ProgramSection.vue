@@ -1,6 +1,6 @@
 <template>
     <!-- program-section -->
-     <section id="programs" class="py-16 pt-28 bg-gray-50">
+     <section id="programs" class="py-16 pt-28 bg-gray-50 font-futura">
             <div class="container mx-auto px-4">
                 <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">Our Programmes</h3>
 
@@ -22,7 +22,7 @@
 
                      <!-- button -->
                       <span class="bg-uniscape-blue text-yellow-300 px-5 py-2 rounded-md font-semibold hover:bg-blue-900 transition block text-center">
-                        Explore Course
+                        Explore Program
                       </span>
                 </router-link>
                 </div>

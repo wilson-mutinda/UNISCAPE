@@ -11,7 +11,7 @@ import ProgramSection from '@/components/ProgramSection.vue';
         <ProgramSection />
         <PartnerSection />
         <!-- Student Success Stories -->
-        <section class="py-16 bg-white">
+        <section class="py-16 bg-white font-futura">
             <div class="container mx-auto px-4">
                 <h3 class="text-3xl text-center font-semibold text-uniscape-blue mb-12">Our Success Stories</h3>
                 

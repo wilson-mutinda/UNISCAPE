@@ -16,11 +16,16 @@
         <!-- desktop menu -->
         <div class="hidden md:flex items-center gap-4">
 
-          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">Home</router-link>
+          <router-link
+           to="/welcome-page" 
+           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+           >
+           Home
+          </router-link>
 
           <router-link
            to="/about" 
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
            >
            About
           </router-link>
@@ -35,7 +40,7 @@
 
             <router-link
              to="/courses" 
-             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition flex items-center gap-2 cursor-pointer"
+             class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition flex items-center gap-2 cursor-pointer"
              >
             Programs
             <img
@@ -55,7 +60,7 @@
                 >
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-3">
-                    <h4 class="text-uniscape-blue text-lg font-semibold">
+                    <h4 class="text-uniscape-blue text-lg font-roboto font-semibold">
                     Available Programs
                     </h4>
                 </div>
@@ -66,18 +71,18 @@
                     v-for="(course, index) in courses"
                     :key="course.id"
                     :to="`/programs/${course.slug}`"
-                    class="block px-3 py-2 text-gray-700 hover:bg-uniscape-blue hover:text-yellow-300 rounded-lg transition"
+                    class="block px-3 py-2 text-gray-700 font-roboto hover:bg-uniscape-blue hover:text-yellow-300 rounded-lg transition"
                     @click="showPrograms = false"
                     >
                     <div class="font-semibold">{{ course.course_name }}</div>
-                    <p class="text-sm text-gray-500 truncate">
+                    <p class="text-sm font-roboto text-gray-500 truncate">
                         {{ course.course_duration }}
                     </p>
                     </router-link>
                 </div>
 
                 <!-- Loading state -->
-                <div v-else class="px-4 py-3 text-gray-500 text-center">
+                <div v-else class="px-4 py-3 text-gray-500 font-roboto text-center">
                     Loading courses...
                 </div>
                 </div>
@@ -86,27 +91,27 @@
 
             <router-link
              to="/blog"
-             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+             class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
              >
             Blog
           </router-link>
 
           <router-link
            to="/contact"
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
            >
           Contact US
         </router-link>
 
           <router-link
            to="/faqs"
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">
+           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">
            FAQS
           </router-link>
 
           <router-link
            to="/apply" 
-           class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
+           class="text-lg font-roboto font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
             Get Started
           </router-link>
 
@@ -124,7 +129,7 @@
       <transition name="slide">
         <div
           v-if="showMenu"
-          class="fixed inset-0 left-0 w-72 bg-uniscape-yellow shadow-lg z-40 flex flex-col items-start p-6 space-y-3 md:hidden"
+          class="fixed font-futura inset-0 left-0 w-72 bg-uniscape-yellow shadow-lg z-40 flex flex-col items-start p-6 space-y-3 md:hidden"
         >
           <button
             @click.prevent="toggleMenu"

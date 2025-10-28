@@ -9,6 +9,10 @@ export default {
       colors: {
         'uniscape-blue': '#1B325E',
         'uniscape-yellow': '#E5A233'
+      },
+      fontFamily: {
+        futura: ['Futura', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       }
     },
   },

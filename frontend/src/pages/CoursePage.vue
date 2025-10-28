@@ -1,5 +1,5 @@
 <template>
-    <section class="py-20 bg-gray-50 pt-24">
+    <section class="py-20 bg-gray-50 pt-24 font-futura">
         
         <div class="container mx-auto px-4">
             <!-- go back button -->

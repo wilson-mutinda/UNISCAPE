@@ -1,5 +1,5 @@
 <template>
-  <section id="blog" class="pt-28 py-20 bg-gray-50">
+  <section id="blog" class="pt-28 py-20 bg-gray-50 font-futura">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-bold text-uniscape-blue mb-8 text-center">
         Uniscape Blog

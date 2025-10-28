@@ -15,17 +15,15 @@
 
         <!-- desktop menu -->
         <div class="hidden md:flex items-center gap-4">
-          <a
-            @click.prevent="goToSection('home')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#home"
-          >Home</a>
 
-          <a
-            @click.prevent="goToSection('about')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#about"
-          >About Us</a>
+          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">Home</router-link>
+
+          <router-link
+           to="/about" 
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+           >
+           About
+          </router-link>
 
           <!-- Programs dropdown -->
             <div
@@ -34,20 +32,20 @@
             @mouseleave="showPrograms = false"
             >
             <!-- Main Programs link -->
-            <a
-                @click.prevent="goToSection('programs')"
-                class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition flex items-center gap-2 cursor-pointer"
-                href="#programs"
-            >
-                Programs
-                <img
-                src="/down.png"
-                alt="down"
-                width="18"
-                class="ml-1 transition-transform duration-200"
-                :class="{ 'rotate-180': showPrograms }"
-                />
-            </a>
+
+            <router-link
+             to="/courses" 
+             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition flex items-center gap-2 cursor-pointer"
+             >
+            Programs
+            <img
+             src="/down.png" 
+             alt="down"
+             width="18"
+             class="ml-1 transition-transform duration-200"
+             :class="{ 'rotate-180' : showPrograms }"
+             >
+          </router-link>
 
             <!-- Dropdown -->
             <transition name="fade">
@@ -85,32 +83,33 @@
                 </div>
             </transition>
             </div>
-          <!-- <a
-            @click.prevent="goToSection('community')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#community"
-          >Community</a> -->
 
-          <a
-            @click.prevent="goToSection('blog')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#blog"
-          >Blog</a>
+            <router-link
+             to="/blog"
+             class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+             >
+            Blog
+          </router-link>
 
-          <a
-            @click.prevent="goToSection('contacts')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#contacts"
-          >Contact Us</a>
-
-          <a
-            @click.prevent="goToSection('faqs')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-            href="#faqs"
-          >FAQS</a>
-          <router-link to="/apply" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
-            Get Started
+          <router-link
+           to="/contact"
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
+           >
+          Contact US
         </router-link>
+
+          <router-link
+           to="/faqs"
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">
+           FAQS
+          </router-link>
+
+          <router-link
+           to="/apply" 
+           class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
+            Get Started
+          </router-link>
+
         </div>
 
         <!-- mobile menu toggle -->
@@ -135,17 +134,18 @@
             <img src="/close.png" alt="close" width="30" />
           </button>
 
-          <a
-            @click.prevent="goToMobileSection('home')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-            href="#home"
-          >Home</a>
+          <router-link
+           to="/welcome-page" 
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">
+          Home
+        </router-link>
 
-          <a
-            @click.prevent="goToMobileSection('about')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-            href="#about"
-          >About Us</a>
+          <router-link
+           to="/about" 
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+           >
+           About Us
+          </router-link>
 
           <!-- Programs dropdown (mobile) -->
           <div class="w-full">
@@ -172,25 +172,26 @@
             </transition>
           </div>
 
-          <a
-            @click.prevent="goToMobileSection('community')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-            href="#community"
-          >Community</a>
+          <router-link
+           to="/contact" 
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+           >
+           Contact Us
+          </router-link>
 
-          <a
-            @click.prevent="goToMobileSection('contacts')"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-            href="#contacts"
-          >Contact Us</a>
+          <router-link
+           to="/faqs" 
+           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+           >
+           FAQS
+          </router-link>
 
-          <a
-            @click.prevent="goToMobileSection('faqs')"
-            href="#faqs"
-            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-          >FAQS</a>
-
-          <router-link to="/apply" class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">Get Started</router-link>
+          <router-link
+           to="/apply" 
+           class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
+           >
+           Get Started
+          </router-link>
         </div>
       </transition>
     </div>

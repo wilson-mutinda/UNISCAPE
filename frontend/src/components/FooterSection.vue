@@ -39,6 +39,21 @@
                         <span>+254 700 223 222</span>
                     </li>
                     <li class="flex items-center gap-3">
+                        <a
+                         href="https://wa.me/254729146152"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         class="flex items-center gap-3 hover:text-uniscape-yellow transition"
+                         >
+                         <img
+                          src="/whatsapp.png" 
+                          width="20"
+                          alt="whatsapp"
+                          class="rounded-full bg-uniscape-blue p-1" />
+                          <span>+254 729 146 152</span>
+                        </a>
+                    </li>
+                    <li class="flex items-center gap-3">
                         <img src="/mail.png" width="28" alt="email" class="rounded-full bg-uniscape-yellow p-1">
                         <a href="mailto:info@uniscape.co.ke" class="hover:text-uniscape-yellow underline">info@uniscape.co.ke</a>
                     </li>

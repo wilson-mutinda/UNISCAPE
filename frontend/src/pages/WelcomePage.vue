@@ -1,20 +1,15 @@
+<script setup lang="ts">
+import HeroSection from '@/components/HeroSection.vue';
+import PartnerSection from '@/components/PartnerSection.vue';
+import ProgramSection from '@/components/ProgramSection.vue';
+
+</script>
+
 <template>
-    <div class="bg-gray-100 min-h-screen">
-        <!-- navbar -->
-
-        <!-- Hero Section with Background Carousel -->
+    <section>
         <HeroSection />
-
-
-        <!-- about section -->
-        <AboutSection />
-
-        <!-- Learning Experience Section -->
-        <LearnExperienceSection />
-
-        <!-- programs section -->
         <ProgramSection />
-
+        <PartnerSection />
         <!-- Student Success Stories -->
         <section class="py-16 bg-white">
             <div class="container mx-auto px-4">
@@ -56,61 +51,5 @@
                 </div>
             </div>
         </section>
-
-        <!-- Upcoming Cohorts -->
-        <!-- <UpcomingCohortSection /> -->
-
-        <!-- our partners -->
-        <PartnerSection />
-
-        <!-- FAQ Section -->
-        <FAQSection />
-
-        <!-- Blog Section -->
-         <BlogSection />
-
-        <!-- community section -->
-        <!-- <CommunitySection /> -->
-
-        <!-- contact section -->
-        <ContactSection />
-
-        <!-- footer -->
-        
-    </div>
+    </section>
 </template>
-
-<script>
-import AboutSection from '@/components/AboutSection.vue';
-import BlogSection from '@/components/BlogSection.vue';
-import CommunitySection from '@/components/CommunitySection.vue';
-import ContactSection from '@/components/ContactSection.vue';
-import FAQSection from '@/components/FAQSection.vue';
-import HeroSection from '@/components/HeroSection.vue';
-import LearnExperienceSection from '@/components/LearnExperienceSection.vue';
-import NavbarSection from '@/components/NavbarSection.vue';
-import PartnerSection from '@/components/PartnerSection.vue';
-import ProgramSection from '@/components/ProgramSection.vue';
-import UpcomingCohortSection from '@/components/UpcomingCohortSection.vue';
-import router from '@/router';
-import api from '@/services/api';
-
-export default {
-    name: 'HomePage',
-    components: {
-        AboutSection,
-        ProgramSection,
-        HeroSection,
-        PartnerSection,
-        ContactSection,
-        FAQSection,
-        CommunitySection,
-        UpcomingCohortSection,
-        LearnExperienceSection,
-        BlogSection
-    },
-    
-};
-
-</script>
-

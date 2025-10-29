@@ -5,7 +5,7 @@
             <!-- Logo and description -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    <img src="/uniscape-icon.png" alt="Uniscape logo" class="h-12">
+                    <img src="/uniscape-tech-logo.png" alt="Uniscape logo" class="h-12">
                     <h3 class="text-2xl font-bold text-uniscape-yellow">Uniscape</h3>
                 </div>
                 <p class="text-gray-200 leading-relaxed text-sm">

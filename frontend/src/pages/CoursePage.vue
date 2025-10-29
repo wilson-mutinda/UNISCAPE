@@ -30,8 +30,8 @@
                     <button type="button" @click="$router.back()" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
                         Back to Programs
                     </button>
-                    <button @click="downloadBronchure(course)" type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
-                        Download Bronchure
+                    <button @click="showFlyer = true" type="button" class="bg-uniscape-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-900 transition">
+                        View Bronchure
                     </button>
 
                     <!-- enroll button -->
@@ -58,17 +58,45 @@
             </div>
 
             <!-- Flyer modal -->
-             <transition name="fade">
-                <div v-if="showFlyer && course.course_flyer" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-                    <div class="relative max-w-3xl w-full mx-4">
-                        <!-- close button -->
-                         <button type="button" @click="closeFlyer" class="absolute right-3 top-3 rounded-full bg-white p-2">
-                            <img src="/close.png" alt="close" width="20">
-                         </button>
-                        <img :src="course.course_flyer" alt="course_flyer" class="w-full h-auto rounded-lg object-contain">
+             <!-- Flyer modal -->
+            <transition name="fade">
+            <div
+                v-if="showFlyer && course.course_flyer"
+                class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+            >
+                <div class="relative max-w-3xl w-full mx-4">
+                <!-- Flyer container -->
+                <div class="relative">
+                    <!-- Flyer image -->
+                    <img
+                    :src="course.course_flyer"
+                    alt="course_flyer"
+                    class="w-full h-auto rounded-lg object-contain"
+                    />
+
+                    <!-- Button container (top-right) -->
+                    <div class="absolute top-4 right-4 flex items-center gap-3">
+                    <!-- Download button -->
+                    <button
+                        @click="downloadBronchure(course)"
+                        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition"
+                    >
+                        <img src="/download.png" alt="download" width="28" />
+                    </button>
+
+                    <!-- Close button -->
+                    <button
+                        type="button"
+                        @click="closeFlyer"
+                        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition"
+                    >
+                        <img src="/close.png" alt="close" width="24" />
+                    </button>
                     </div>
                 </div>
-             </transition>
+                </div>
+            </div>
+            </transition>
              <router-view/>
         </div>
     </section>
@@ -105,9 +133,9 @@ export default {
                 console.log('Course API response:', response);
                 this.course = response.data;
 
-                if (this.course.course_flyer) {
-                    this.showFlyer = true;
-                }
+                // if (this.course.course_flyer) {
+                //     this.showFlyer = true;
+                // }
             } catch (err) {
                 console.error('Error loading course:', err);
                 this.error = 'Failed to load course details. Please try again.';
@@ -153,6 +181,7 @@ export default {
                 document.body.removeChild(link);
     
                 console.log("Course downloaded successfully!")
+                this.closeFlyer();
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.errors) {
                     this.errors = error.response.data.errors

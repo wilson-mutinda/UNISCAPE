@@ -27,6 +27,7 @@
            <div class="grid md:grid-cols-2 gap-6">
             <div class="relative">
               <input
+               @input="clearError('first_name')"
                v-model="first_name"
                class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent" 
                type="text" 
@@ -46,6 +47,7 @@
 
             <div class="relative">
               <input 
+               @input="clearError('last_name')"
                v-model="last_name"
                class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
                type="text" 
@@ -67,6 +69,7 @@
            <!-- Email -->
             <div class="relative">
               <input
+               @input="clearError('email')"
                v-model="email"
                class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
                type="email" 
@@ -84,59 +87,74 @@
               <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
             </div>
 
+            <!-- country and phone -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="">
+                <label for="country" class="block mb-2 font-medium text-gray-700"> Country </label>
+                <div class="flex items-center gap-3">
+                  <!-- image -->
+                  <img
+                    v-if="selectedCountryFlag"
+                    :src="selectedCountryFlag" 
+                    alt="flag" 
+                    class="w-8 h-5 rounded border"
+                    />
+
+                  <select
+                  @input="clearError('country')"
+                  v-model="country"
+                  @change="updatePhonePrefix"
+                  name="country" 
+                  id="country"
+                  class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none">
+                    <option disabled value="">-- Select Country --</option>
+                    <option v-for="country in countrys" :key="country.id" :value="country.id">{{ country.name }}</option>
+                  </select>
+                </div>
+
+                <!-- error -->
+                  <p v-if="errors.country" class="text-red-500 text-sm mt-1">{{ errors.country }}</p>
+              </div>
+
             <!-- Phone -->
-             <div class="relative">
+            <div class="relative">
 
               <input 
-               v-model="phone"
-               class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
-               type="tel" 
-               name="phone" 
-               id="phone"
-               placeholder=" " />
+                @input="clearError('phone')"
+                v-model="phone"
+                :disabled="!country"
+                class="peer w-full border-b-2 border-gray-300 focus:border-uniscape-blue outline-none py-2 bg-transparent"
+                type="tel" 
+                name="phone" 
+                id="phone"
+                placeholder=" " />
 
-               <label
+              <label
                 class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-uniscape-blue"
                 for="phone">
                 Phone
               </label>
 
               <!-- error -->
-               <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
-             </div>
+              <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
+            </div>
+          </div>
 
-             <!-- country and program -->
-              <div class="grid md:grid-cols-2 gap-6">
-                <div class="">
-                  <label for="country" class="block mb-2 font-medium text-gray-700"> Country </label>
-                  <select
-                   v-model="country"
-                   name="country" 
-                   id="country"
-                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none">
-                    <option disabled value="">-- Select Country --</option>
-                    <option v-for="country in countrys" :key="country.id" :value="country.id">{{ country.name }}</option>
-                  </select>
+            <div class="">
+              <label class="block mb-2 font-medium text-gray-700" for="program">Program </label>
+              <select
+                @input="clearError('program')"
+                v-model="program"
+                name="program" 
+                id="program"
+                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none">
+                <option disabled value="">-- Select Program --</option>
+                <option v-for="course in programs" :key="course.id" :value="course.id">{{ course.course_name }}</option>
+              </select>
 
-                  <!-- error -->
-                   <p v-if="errors.country" class="text-red-500 text-sm mt-1">{{ errors.country }}</p>
-                </div>
-
-                <div class="">
-                  <label class="block mb-2 font-medium text-gray-700" for="program">Program </label>
-                  <select
-                   v-model="program"
-                   name="program" 
-                   id="program"
-                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-uniscape-blue focus:outline-none">
-                    <option disabled value="">-- Select Program --</option>
-                    <option v-for="course in programs" :key="course.id" :value="course.id">{{ course.course_name }}</option>
-                  </select>
-
-                  <!-- error -->
-                   <p v-if="errors.program" class="text-red-500 text-sm mt-1">{{ errors.program }}</p>
-                </div>
-              </div>
+              <!-- error -->
+                <p v-if="errors.program" class="text-red-500 text-sm mt-1">{{ errors.program }}</p>
+            </div>
 
               <!-- Buttons -->
                <div class="flex justify-between items-center pt-6">
@@ -167,6 +185,8 @@ export default {
       countrys: [],
       programs: [],
 
+      selectedCountryFlag: '',
+
       errors: {},
       isSubmitting: false,
     }
@@ -185,9 +205,10 @@ export default {
           email: this.email,
           phone: this.phone,
           country_id: this.country,
-          program_id: this.program
+          course_id: this.program
         },
       };
+
       try {
         const response = await api.post('create_application', payload);
         console.log("Application created:", response.data);
@@ -210,6 +231,7 @@ export default {
       this.phone = "";
       this.country = "";
       this.program = "";
+      this.selectedCountryFlag = "";
     },
 
     async fetchCountrys() {
@@ -230,6 +252,20 @@ export default {
         this.errors.general = "Failed to fetch programs!"
       }
     },
+
+    updatePhonePrefix() {
+      const selected = this.countrys.find(c => c.id === this.country);
+      if (selected) {
+        this.phone = selected.phone_code + ' ';
+        this.selectedCountryFlag = selected.flag_url;
+      }
+    },
+
+    clearError(field) {
+      if (this.errors[field]) {
+        this.errors = ''
+      }
+    }
   },
 
   mounted() {

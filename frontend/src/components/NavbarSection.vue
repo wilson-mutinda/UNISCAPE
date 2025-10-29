@@ -7,7 +7,7 @@
         <!-- logo -->
         <div class="flex items-center gap-2">
           <img
-            src="/uniscape-logo.png"
+            src="/uniscape-tech-logo2.png"
             alt="uniscape-icon"
             class="w-auto h-20 object-contain"
           />

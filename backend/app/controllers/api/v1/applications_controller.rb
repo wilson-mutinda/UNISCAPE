@@ -61,8 +61,8 @@ class Api::V1::ApplicationsController < ApplicationController
       result = service.all_applications
       if result[:success]
         appl = result[:info].map do |a|
-          country_name = a.country.name
-          course_name = a.course.course_name
+          country_name = a.country&.name || "Unknown"
+          course_name = a.course&.course_name || "Unknown"
           a.as_json(except: [:created_at, :updated_at]).merge({ country_name: country_name, course_name: course_name})
         end
         render json: appl, status: :ok

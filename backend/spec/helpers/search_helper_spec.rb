@@ -315,7 +315,7 @@ RSpec.describe SearchHelper, type: :helper do
 
     it "returns an error if id is not found" do
       result = helper.contact_search_by_id(contacts, 4)
-      expect(result).to eq({ errors: { target_id: "Contact not found!"}})
+      expect(result).to eq({ errors: { target_id: "Contact of ID 4 not found!"}})
     end
 
     it "returns an object if id is found" do

@@ -572,7 +572,7 @@ module SearchHelper
       if contact
         return contact
       else
-        return { errors: { contact: "Contact of ID #{target_param} not found!"}}
+        return { errors: { target_id: "Contact of ID #{target_param} not found!"}}
       end
     end
 

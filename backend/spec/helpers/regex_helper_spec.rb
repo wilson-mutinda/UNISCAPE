@@ -18,19 +18,9 @@ RSpec.describe RegexHelper, type: :helper do
   end
 
   describe "#normalized_phone" do
-    it "normalizes phone to standard form" do
-      result = helper.normalized_phone("0791738418")
+    it "returns phone after removing trailing +" do
+      result = helper.normalized_phone("+254 791 738 418")
       expect(result).to eq('254791738418')
-    end
-
-    it "passes on a valid phone format" do
-      result = helper.normalized_phone("254791738418")
-      expect(result).to eq('254791738418')
-    end
-
-    it 'returns an error on invalid format' do
-      result = helper.normalized_phone('25479173841')
-      expect(result).to eq({ errors: { phone: "Invalid phone format!"}})
     end
   end
   

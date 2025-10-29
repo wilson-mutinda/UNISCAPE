@@ -10,12 +10,11 @@ module RegexHelper
   end
 
   def normalized_phone(phone)
-    phone = phone.to_s.gsub(/\s+/, '')
-    if phone.match?(/\A01\d{8}\z/)
-      phone = phone.sub(/\A01/, '2541')
-    elsif phone.match?(/\A07\d{8}\z/)
-      phone = phone.sub(/\A07/, '2547')
-    elsif phone.match?(/\A(2541|2547)\d{8}\z/)
+    # convert to string, remove spaces, dashes, parentheses, and leading +
+    phone = phone.to_s.gsub(/[\s\-\(\)\+]/, '')
+
+    # Accept any number that starts with a country code (1-3 digits) followed by at least 6 more digits
+    if phone.match?(/\A\d{7,15}\z/)
       phone = phone
     else
       return { errors: { phone: "Invalid phone format!"}}

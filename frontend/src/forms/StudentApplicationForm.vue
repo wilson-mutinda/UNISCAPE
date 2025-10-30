@@ -1,5 +1,8 @@
 <template>
   <div class="bg-gray-50 min-h-screen pt-28 flex items-center justify-center px-4 font-futura">
+    <!-- toast -->
+     <Toast ref="toast" :message="toastMessage" :icon="true" />
+
     <!-- form div -->
      <div class="bg-white shadow-lg rounded-3xl w-full max-w-3xl border border-gray-100 overflow-hidden">
 
@@ -170,9 +173,16 @@
 </template>
 
 <script>
+import Toast from '@/components/Toast.vue';
+import router from '@/router';
 import api from '@/services/api';
 
 export default {
+
+  components: {
+    Toast
+  },
+
   data() {
     return {
       first_name: '',
@@ -189,6 +199,9 @@ export default {
 
       errors: {},
       isSubmitting: false,
+
+      showToast: false,
+      toastMessage: '',
     }
   },
 
@@ -212,7 +225,13 @@ export default {
       try {
         const response = await api.post('create_application', payload);
         console.log("Application created:", response.data);
+        this.toastMessage = `Thanks @${this.first_name} for applying to Uniscape. We'll get to you in 24 hours`
+        this.$refs.toast.show()
+        this.showToast = true
         this.resetForm();
+
+        // redirect to programs
+        // this.$router.push('/courses')
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
           this.errors = error.response.data.errors

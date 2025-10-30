@@ -131,18 +131,26 @@
                 </div>
             </div>
         </div>
+        <Toast ref="toast" :message="toastMessage" :icon="true"></Toast>
     </section>
 </template>
 
 <script>
 import api from '@/services/api';
+import Toast from './Toast.vue';
 
 export default {
+
+    components: {Toast},
+
     data() {
         return {
             email: '',
             name: '',
             message: '',
+
+            showToast: false,
+            toastMessage: '',
 
             errors: {}
         }
@@ -161,7 +169,9 @@ export default {
                 };
                 const response = await api.post('create_contact', payload);
                 console.log("Contact created successfully!");
-                alert("Contact created!");
+                this.toastMessage = "Thank you for contacting us! We'll get back to you shortly."
+                this.showToast = true
+                this.$refs.toast.show()
                 this.clearForm();
                 this.errors = {}
             } catch (error) {

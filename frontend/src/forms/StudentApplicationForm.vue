@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-gray-50 min-h-screen pt-28 flex items-center justify-center px-4 font-futura">
+  <div class="bg-gray-50 min-h-screen pt-28 flex items-center flex-col px-4 font-futura">
     <!-- toast -->
      <Toast ref="toast" :message="toastMessage" :icon="true" />
 
     <!-- form div -->
-     <div class="bg-white shadow-lg rounded-3xl w-full max-w-3xl border border-gray-100 overflow-hidden">
+     <div class="bg-white shadow-lg rounded-3xl w-full max-w-3xl border border-gray-100 overflow-hidden mb-20">
 
       <!-- header -->
        <div class="bg-uniscape-blue text-white py-6 text-center">
@@ -169,6 +169,45 @@
                </div>
          </form>
      </div>
+
+     <!-- Featured Course Section -->
+    <section
+      v-if="featuredCourse"
+      class="w-full max-w-5xl relative rounded-3xl overflow-hidden shadow-2xl"
+    >
+      <img
+        :src="featuredCourse.course_image"
+        :alt="featuredCourse.course_name"
+        class="w-full h-[400px] object-cover"
+      />
+
+      <!-- Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/30 flex flex-col justify-end p-10 text-white"
+      >
+        <h3 class="text-3xl md:text-4xl font-bold mb-3">
+          {{ featuredCourse.course_name }}
+        </h3>
+
+        <p class="text-gray-200 mb-6 text-sm md:text-base max-w-2xl">
+          {{ featuredCourse.course_desc }}
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4">
+          <router-link
+            :to="`/programs/${featuredCourse.slug}`"
+            class="bg-uniscape-blue hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg font-semibold"
+          >
+            Learn More
+          </router-link>
+
+          <span class="text-gray-300 text-sm">
+            Duration: {{ featuredCourse.course_duration }} |
+            Fee: {{ featuredCourse.course_fee }}
+          </span>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -202,6 +241,10 @@ export default {
 
       showToast: false,
       toastMessage: '',
+
+      courseSlug: '',
+
+      featuredCourse: null
     }
   },
 
@@ -284,12 +327,28 @@ export default {
       if (this.errors[field]) {
         this.errors = ''
       }
+    },
+
+    async fetchFeaturedCourse() {
+      try {
+        const response = await api.get('single_course/tech-for-kids');
+        this.featuredCourse = response.data;
+        console.log('Fatured course fetched successfully!')
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors
+        } else {
+          this.errors.general = "Error while fetching program!"
+        }
+      }
     }
   },
 
   mounted() {
     this.fetchCountrys();
     this.fetchPrograms();
+
+    this.fetchFeaturedCourse();
   }
 }
 </script>

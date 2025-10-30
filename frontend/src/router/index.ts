@@ -18,7 +18,7 @@ const router = createRouter({
   routes: [
     { path: '/', component: MainPage, children: [
       { path: '', redirect: 'home' },
-      { path: 'home', name: 'home', component: HomePage },
+      { path: 'home', name: 'home', component: HomePage, meta: { title: 'Home'} },
 
       // single course page
       {
@@ -26,6 +26,7 @@ const router = createRouter({
         name: 'course',
         component: CoursePage,
         props: true,
+        meta: { title: 'Program Deatils' }
       },
 
       // standalone application form
@@ -33,47 +34,73 @@ const router = createRouter({
         path: '/programs/:slug/apply',
         name: 'course-apply',
         component: StudentApplicationForm,
-        props: true
+        props: true,
+        meta: { title: 'Apply' }
       },
 
       // blog routes
       {
         path: 'blog',
         name: 'blog',
-        component: BlogSection
+        component: BlogSection,
+        meta: { title: 'Blog'}
       },
 
       {
         path: 'blog/:slug',
         name: 'blog-post',
         component: BlogPage,
-        props: true
+        props: true,
+        meta: { title: 'Blog'},
       },
 
       {
         path: 'courses',
         name: 'courses',
-        component: ProgramSection
+        component: ProgramSection,
+        meta: { title: 'Courses' },
       },
 
       {
         path: 'about',
         name: 'about',
-        component: AboutPage
+        component: AboutPage,
+        meta: { title: 'About Us'}
       },
 
       {
         path: 'welcome-page',
         name: 'welcome-page',
-        component: WelcomePage
+        component: WelcomePage,
+        meta: { title: 'Welcome'}
       },
 
-      { path: 'login', name: 'login', component: LoginForm },
-      { path: 'apply', name: 'apply', component: StudentApplicationForm },
-      { path: 'contact', name: 'contact', component: ContactPage },
-      { path: 'faqs', name: 'faqs', component: FAQPage }
+      { path: 'login', name: 'login', component: LoginForm, meta: { title: 'Login' } },
+      { path: 'apply', name: 'apply', component: StudentApplicationForm, meta: { title: 'Application'} },
+      { path: 'contact', name: 'contact', component: ContactPage, meta: { title: 'Contact' } },
+      { path: 'faqs', name: 'faqs', component: FAQPage, meta: { title: 'FAQS' } }
     ] },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const baseTitle = 'Uniscape Technology'
+
+  if (to.name === 'course' && typeof to.params.slug === 'string') {
+  const slugParam = to.params.slug;
+
+  const courseName = slugParam
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (l: string) => l.toUpperCase());
+
+  document.title = `${courseName} – ${baseTitle}`;
+} else {
+  const routeTitle = to.meta.title || 'Uniscape Technology';
+  document.title = `${routeTitle} – ${baseTitle}`;
+}
+
+next()
+
 })
 
 export default router

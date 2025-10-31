@@ -5,8 +5,8 @@
             <!-- Logo and description -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    <img src="/uniscape-tech-logo.png" alt="Uniscape logo" class="h-12">
-                    <h3 class="text-2xl font-bold text-uniscape-yellow">Uniscape</h3>
+                    <img src="/uniscape-footer-logo.png" alt="Uniscape logo" class="h-20">
+                    <h3 class="text-2xl font-bold text-uniscape-yellow"></h3>
                 </div>
                 <p class="text-gray-200 leading-relaxed text-sm">
                     Empowering Africa's next generation of tech talent through hands-on, 

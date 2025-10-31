@@ -84,6 +84,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (!navigator.onLine) {
+    alert("You are offline. Navigation is disabled until you reconnect.");
+    next(false);
+  } else {
+    next();
+  }
+});
+
+
+router.beforeEach((to, from, next) => {
   const baseTitle = 'Uniscape Technology'
 
   if (to.name === 'course' && typeof to.params.slug === 'string') {

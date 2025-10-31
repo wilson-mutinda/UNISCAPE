@@ -323,4 +323,39 @@ RSpec.describe SearchHelper, type: :helper do
       expect(result).to eq(contacts[1])
     end
   end
+
+  describe "#category_search_by_slug" do
+    let(:categories) do
+      [
+        double(id: 1, name: "Ai", slug: "ai"),
+        double(id: 2, name: "Data", slug: "data"),
+        double(id: 3, name: "Design", slug: "design"),
+      ]
+    end
+
+    it "returns an error if id not found" do
+      result = helper.category_search_by_slug(categories, 5)
+      expect(result).to eq({ errors: { category: "Category not found for '5'"}})
+    end
+
+    it "returns an error if name is not found" do
+      result = helper.category_search_by_slug(categories, 'Cybersecurity')
+      expect(result).to eq({ errors: { category: "Category not found for 'cybersecurity'"}})
+    end
+
+    it "returns an error slug is not found" do
+      result = helper.category_search_by_slug(categories, 'cybersecurity')
+      expect(result).to eq({ errors: { category: "Category not found for 'cybersecurity'"}})
+    end
+
+    it "returns a category object if id is found" do
+      result = helper.category_search_by_slug(categories, 1)
+      expect(result).to eq(categories[0])
+    end
+
+    it "returns a category object if slug is found" do
+      result = helper.category_search_by_slug(categories, 'data')
+      expect(result).to eq(categories[1])
+    end
+  end
 end

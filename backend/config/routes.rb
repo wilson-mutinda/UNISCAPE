@@ -54,6 +54,14 @@ Rails.application.routes.draw do
       patch 'update_contact/:slug', to: 'contacts#update_contact'
       delete 'delete_contact/:slug', to: 'contacts#delete_contact'
       get 'restore_contact/:slug', to: 'contacts#restore_contact'
+
+      # category
+      post 'create_category', to: 'categories#create_category'
+      get 'single_category/:slug', to: 'categories#single_category'
+      get 'all_categories', to: 'categories#all_categories'
+      patch 'update_category/:slug', to: 'categories#update_category'
+      delete 'delete_category/:slug', to: 'categories#delete_category'
+      get 'restore_category/:slug', to: 'categories#restore_category'
     end
   end
 end

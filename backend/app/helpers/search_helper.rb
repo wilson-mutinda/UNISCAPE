@@ -585,4 +585,93 @@ module SearchHelper
     { errors: { contact: "Contact not found for #{target_param}"}}
   end
 
+  def category_search_by_slug(categories, target_param)
+
+    target_param = target_param.to_s.gsub(/\s+/, '').downcase
+
+    # Search by ID (binary)
+    if target_param.match?(/^\d+$/)
+      target_id = target_param.to_i
+      sorted_by_id = categories.sort_by(&:id)
+
+      first = 0;
+      last = sorted_by_id.length - 1;
+
+      while first <= last
+        mid = (first + last) / 2;
+        mid_category = sorted_by_id[mid]
+
+        if mid_category.id == target_id
+          return mid_category
+        elsif mid_category.id < target_id
+          first = mid + 1;
+        else
+          last = mid - 1;
+        end
+      end
+    end
+
+    # Search by name (binary)
+    sorted_by_name = categories.sort_by { |c| c.name.downcase }
+    first = 0;
+    last = sorted_by_name.length - 1;
+
+    while first <= last
+      mid = (first + last) / 2
+      mid_category = sorted_by_name[mid]
+
+      if mid_category.name.downcase == target_param
+        return mid_category
+      elsif mid_category.name.downcase < target_param
+        first = mid + 1;
+      else
+        last = mid - 1;
+      end
+    end
+
+    # search by slug (binary)
+    sorted_by_slug = categories.sort_by { |c| c.slug.downcase }
+    first = 0;
+    last = sorted_by_slug.length - 1;
+
+    while first <= last
+      mid = (first + last) / 2;
+      mid_category = sorted_by_slug[mid]
+
+      if mid_category.slug.downcase == target_param
+        return  mid_category
+      elsif mid_category.slug.downcase < target_param
+        first = mid + 1;
+      else
+        last = mid - 1;
+      end
+    end
+
+    { errors: { category: "Category not found for '#{target_param}'"} }
+  end
+
+  def category_name_search(categories, target_name, current_id)
+    target_name = target_name.to_s.downcase
+
+    first_index = 0;
+    last_index = categories.length - 1;
+
+    while first_index <= last_index
+      mid_index = (first_index + last_index) / 2
+      mid_category = categories[mid_index]
+
+      if mid_category.name.downcase == target_name
+        if mid_category.id != current_id
+          return { errors: { name: "Name already exists!"}}
+        end
+        return mid_category.name
+      elsif mid_category.name < target_name
+        first_index = mid_index + 1
+      else
+        last_index = mid_index - 1
+      end
+    end
+    target_name
+  end
+
 end

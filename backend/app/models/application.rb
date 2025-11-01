@@ -28,6 +28,8 @@ class Application < ApplicationRecord
   validates :email, presence: true, uniqueness: true, if: -> { new_record? || email.present? }
   validates :phone, presence: true, uniqueness: true, if: -> { new_record? || phone.present? }
 
+  attribute :email_sent, :boolean, default: false
+
   private
   def generate_slug
     base_slug = "#{first_name}-#{last_name}-#{course.course_name}".parameterize

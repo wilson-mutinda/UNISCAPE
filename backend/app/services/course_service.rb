@@ -38,13 +38,19 @@ class CourseService
       return course_more_info_param
     end
 
+    course_category_id_param = normalize_course_category_id
+    if course_category_id_param.is_a?(Hash) && course_category_id_param.key?(:errors)
+      return course_category_id_param
+    end
+
     # create_course
     created_course = Course.create(
       course_name: course_name_param,
       course_duration: course_duration_param,
       course_fee: course_fee_param,
       course_desc: course_desc_param,
-      course_more_info: course_more_info_param
+      course_more_info: course_more_info_param,
+      category_id: course_category_id_param
     )
 
     if @params[:course_image].present?
@@ -72,7 +78,8 @@ class CourseService
 
     info = @course
     if info
-      { success: true, course_info: @course }
+      course_category = @course.category
+      { success: true, course_info: @course, course_category: course_category }
     else
       { success: false, errors: @course.errors.full_messages }
     end
@@ -146,6 +153,18 @@ class CourseService
       updated_course_params[:course_flyer] = course_flyer_param
       has_updates = true
     end
+
+    # course_category_id_param
+    # course_category_id_param
+    if @params.key?(:category_id) || @params.key?(:category)
+      category_param = normalized_update_category_id
+      if category_param.is_a?(Hash) && category_param.key?(:errors)
+        return category_param
+      end
+      updated_course_params[:category_id] = category_param
+      has_updates = true
+    end
+
 
     return { success: false, errors: "No valid update parameters provided!" } unless has_updates
 
@@ -266,6 +285,32 @@ class CourseService
     end
   end
 
+  # normalized_update_category_id
+  def normalized_update_category_id
+    raw_param = @params[:category_id] || @params[:category]
+    return nil unless raw_param.present?
+
+    raw_param = raw_param.to_s.strip.downcase
+    categories = Category.all.to_a
+
+    # If it's purely numeric, treat it as ID
+    if raw_param.match?(/^\d+$/)
+      category = categories.find { |c| c.id == raw_param.to_i }
+    else
+      # Try matching slug or name
+      category = categories.find do |c|
+        c.slug.downcase == raw_param || c.name.downcase == raw_param
+      end
+    end
+
+    if category
+      category.id
+    else
+      { errors: { category: "Category not found for '#{raw_param}'" } }
+    end
+  end
+
+
   # normalize_course_name
   def normalize_course_name
     # course_name
@@ -327,6 +372,16 @@ class CourseService
     end
 
     course_more_info
+  end
+
+  # normalize_course_category_id
+  def normalize_course_category_id
+    course_category_id = @params[:category_id].to_i
+    if course_category_id.blank?
+      return { errors: { category_id: "Please select course category!"}}
+    end
+
+    course_category_id
   end
 
 end

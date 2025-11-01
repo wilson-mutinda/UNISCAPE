@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_31_065052) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_01_183311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_065052) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.datetime "deleted_at"
+    t.boolean "email_sent"
     t.index ["country_id"], name: "index_applications_on_country_id"
     t.index ["course_id"], name: "index_applications_on_course_id"
   end
@@ -74,6 +75,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_065052) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -107,6 +109,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_065052) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.datetime "deleted_at"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_courses_on_category_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -141,6 +145,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_065052) do
   add_foreign_key "applications", "countries"
   add_foreign_key "applications", "courses"
   add_foreign_key "blog_posts", "users"
+  add_foreign_key "courses", "categories"
   add_foreign_key "students", "countries"
   add_foreign_key "students", "users"
 end

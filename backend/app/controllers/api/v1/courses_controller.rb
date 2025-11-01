@@ -33,11 +33,12 @@ class Api::V1::CoursesController < ApplicationController
 
       if result[:success]
         course_info = result[:course_info]
+        category_info = result[:course_category]
 
         image_url = url_for(course_info.course_image) if course_info.course_image.attached?
         flyer_url = url_for(course_info.course_flyer) if course_info.course_flyer.attached?
 
-        render json: course_info.as_json.merge({ course_image: image_url, course_flyer: flyer_url}), status: :ok
+        render json: course_info.as_json.merge({ course_image: image_url, course_flyer: flyer_url, category_info: category_info}), status: :ok
       else
         render json: { errors: result[:errors] || result[:errors]}, status: :unprocessable_entity
       end
@@ -56,7 +57,8 @@ class Api::V1::CoursesController < ApplicationController
         courses = result[:courses].map do |course|
           image_url = url_for(course.course_image) if course.course_image.attached?
           flyer_url = url_for(course.course_flyer) if course.course_flyer.attached?
-          course.as_json.merge({ course_image: image_url, course_flyer: flyer_url})
+          course_category = course.category
+          course.as_json.merge({ course_image: image_url, course_flyer: flyer_url, course_category: course_category})
         end
 
         render json: courses, status: :ok
@@ -158,6 +160,6 @@ class Api::V1::CoursesController < ApplicationController
   # privately hold course_params
   private
   def course_params
-    params.require(:course).permit(:course_name, :course_duration, :course_fee, :course_desc, :course_more_info, :course_image, :course_flyer)
+    params.require(:course).permit(:course_name, :course_duration, :course_fee, :course_desc, :course_more_info, :course_image, :course_flyer, :category_id)
   end
 end

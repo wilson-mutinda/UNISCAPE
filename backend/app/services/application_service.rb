@@ -48,6 +48,9 @@ class ApplicationService
         course_id: course_param_id,
         country_id: country_param_id
       )
+      ApplicationNotificationMailer.new_application_email(created_application).deliver_now
+      created_application.update(email_sent: true)
+      ApplicationNotificationMailer.notify_admin(created_application).deliver_now
 
       # convert application User and student
       conversion_result = ApplicationToUserService.new(created_application).convert_to_user_and_student

@@ -131,7 +131,7 @@ class CategoryService
       if existing.is_a?(Hash) && existing.key?(:errors)
         return existing
       end
-      name
+      name.titleize
     end
   end
 end

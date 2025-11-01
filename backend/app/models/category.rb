@@ -20,6 +20,8 @@ class Category < ApplicationRecord
 
   before_create :generate_slug
 
+  has_many :courses
+
   # validates
   validates :name, presence: true, uniqueness: true
 

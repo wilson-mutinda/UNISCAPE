@@ -84,4 +84,21 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "mail.uniscape.co.ke",
+    port: 587,
+    domain: "uniscape.co.ke",
+    user_name: "wilson@uniscape.co.ke",
+    password: ENV["EMAIL_PASSWORD"],
+    authentication: :login,
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_options = {
+    from: "wilson@uniscape.co.ke"
+  }
+
+  config.action_mailer.raise_delivery_errors = true
 end

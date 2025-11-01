@@ -110,6 +110,6 @@ class Api::V1::ApplicationsController < ApplicationController
   # privately hold application_params
   private
   def application_params
-    params.require(:application).permit(:first_name, :last_name, :email, :phone, :country_id, :course_id)
+    params.require(:application).permit(:first_name, :last_name, :email, :phone, :country_id, :course_id, :email_sent)
   end
 end

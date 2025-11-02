@@ -18,6 +18,8 @@ class Course < ApplicationRecord
     update(deleted_at: nil)
   end
 
+  before_create :set_slug
+
   # attach image
   has_one_attached :course_image
 

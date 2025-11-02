@@ -14,8 +14,8 @@
 
         <!-- desktop menu -->
         <div class="hidden md:flex items-center gap-4">
-          <router-link to="/welcome-page" class="nav-link">Home</router-link>
-          <router-link to="/about" class="nav-link">About</router-link>
+          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Home</router-link>
+          <router-link to="/about" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">About</router-link>
 
           <!-- Programs dropdown -->
           <div
@@ -26,7 +26,7 @@
             <!-- Combined router-link + toggle -->
             <router-link
               to="/courses"
-              class="nav-link flex items-center gap-2 cursor-pointer"
+              class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition flex items-center gap-2 cursor-pointer"
               @click="showPrograms = !showPrograms"
             >
               Programs
@@ -83,9 +83,9 @@
             </transition>
           </div>
 
-          <router-link to="/blog" class="nav-link">Blog</router-link>
-          <router-link to="/contact" class="nav-link">Contact Us</router-link>
-          <router-link to="/faqs" class="nav-link">FAQs</router-link>
+          <router-link to="/blog" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Blog</router-link>
+          <router-link to="/contact" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Contact Us</router-link>
+          <router-link to="/faqs" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">FAQs</router-link>
 
           <router-link
             to="/apply"
@@ -117,8 +117,8 @@
             <img src="/close.png" alt="close" width="30" />
           </button>
 
-          <router-link to="/welcome-page" class="mobile-link">Home</router-link>
-          <router-link to="/about" class="mobile-link">About Us</router-link>
+          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">Home</router-link>
+          <router-link to="/about" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">About Us</router-link>
 
           <!-- Programs dropdown (mobile) -->
           <div class="w-full">
@@ -151,8 +151,8 @@
             </transition>
           </div>
 
-          <router-link to="/contact" class="mobile-link">Contact Us</router-link>
-          <router-link to="/faqs" class="mobile-link">FAQs</router-link>
+          <router-link to="/contact" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">Contact Us</router-link>
+          <router-link to="/faqs" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">FAQs</router-link>
           <router-link
             to="/apply"
             class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
@@ -223,14 +223,6 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  @apply text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition;
-}
-
-.mobile-link {
-  @apply text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.25s ease;

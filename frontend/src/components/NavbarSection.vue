@@ -1,8 +1,7 @@
 <template>
-  <!-- navbar -->
   <nav class="bg-white fixed inset-x-0 top-0 shadow-md z-50">
     <div class="container mx-auto w-full px-4">
-      <!-- logo and menu -->
+      <!-- logo + desktop menu -->
       <div class="flex items-center justify-between h-20 relative">
         <!-- logo -->
         <div class="flex items-center gap-2">
@@ -15,109 +14,88 @@
 
         <!-- desktop menu -->
         <div class="hidden md:flex items-center gap-4">
-
-          <router-link
-           to="/welcome-page" 
-           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-           >
-           Home
-          </router-link>
-
-          <router-link
-           to="/about" 
-           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-           >
-           About
-          </router-link>
+          <router-link to="/welcome-page" class="nav-link">Home</router-link>
+          <router-link to="/about" class="nav-link">About</router-link>
 
           <!-- Programs dropdown -->
-            <div
+          <div
             class="relative flex items-center gap-2"
             @mouseenter="showPrograms = true"
             @mouseleave="showPrograms = false"
-            >
-            <!-- Main Programs link -->
-
+          >
+            <!-- Combined router-link + toggle -->
             <router-link
-             to="/courses" 
-             class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition flex items-center gap-2 cursor-pointer"
-             >
-            Programs
-            <img
-             src="/down.png" 
-             alt="down"
-             width="18"
-             class="ml-1 transition-transform duration-200"
-             :class="{ 'rotate-180' : showPrograms }"
-             >
-          </router-link>
+              to="/courses"
+              class="nav-link flex items-center gap-2 cursor-pointer"
+              @click="showPrograms = !showPrograms"
+            >
+              Programs
+              <img
+                src="/down.png"
+                alt="down"
+                width="18"
+                class="ml-1 transition-transform duration-200"
+                :class="{ 'rotate-180': showPrograms }"
+              />
+            </router-link>
 
             <!-- Dropdown -->
             <transition name="fade">
-                <div
+              <div
                 v-if="showPrograms"
-                class="absolute top-14 left-0 w-80 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4"
+                class="absolute top-14 left-0 w-96 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4"
+              >
+                <h4 class="text-uniscape-blue text-lg font-semibold mb-3">
+                  Available Programs
+                </h4>
+
+                <div
+                  v-if="Object.keys(groupedCourses).length"
+                  class="max-h-80 overflow-y-auto space-y-3"
                 >
-                <!-- Header -->
-                <div class="flex justify-between items-center mb-3">
-                    <h4 class="text-uniscape-blue text-lg font-roboto font-semibold">
-                    Available Programs
-                    </h4>
-                </div>
-
-                <!-- Program list -->
-                <div v-if="courses.length > 0" class="max-h-60 overflow-y-auto pr-2 space-y-1">
-                    <router-link
-                    v-for="(course, index) in courses"
-                    :key="course.id"
-                    :to="`/programs/${course.slug}`"
-                    class="block px-3 py-2 text-gray-700 font-roboto hover:bg-uniscape-blue hover:text-yellow-300 rounded-lg transition"
-                    @click="showPrograms = false"
+                  <div
+                    v-for="(courses, categoryName) in groupedCourses"
+                    :key="categoryName"
+                  >
+                    <h5 class="font-bold text-uniscape-blue mb-2">
+                      {{ categoryName }}
+                    </h5>
+                    <div
+                      v-for="course in courses"
+                      :key="course.id"
+                      class="pl-3"
                     >
-                    <div class="font-semibold">{{ course.course_name }}</div>
-                    <p class="text-sm font-roboto text-gray-500 truncate">
-                        {{ course.course_duration }}
-                    </p>
-                    </router-link>
+                      <router-link
+                        :to="`/programs/${course.slug}`"
+                        class="block px-3 py-1 text-gray-700 hover:bg-uniscape-blue hover:text-yellow-300 rounded-md transition"
+                        @click="showPrograms = false"
+                      >
+                        {{ course.course_name }}
+                      </router-link>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Loading state -->
-                <div v-else class="px-4 py-3 text-gray-500 font-roboto text-center">
-                    Loading courses...
+                <div v-else class="text-gray-500 text-center py-3">
+                  Loading courses...
                 </div>
-                </div>
+              </div>
             </transition>
-            </div>
+          </div>
 
-            <router-link
-             to="/blog"
-             class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-             >
-            Blog
-          </router-link>
+          <router-link to="/blog" class="nav-link">Blog</router-link>
+          <router-link to="/contact" class="nav-link">Contact Us</router-link>
+          <router-link to="/faqs" class="nav-link">FAQs</router-link>
 
           <router-link
-           to="/contact"
-           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition"
-           >
-          Contact US
-        </router-link>
-
-          <router-link
-           to="/faqs"
-           class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 transition">
-           FAQS
-          </router-link>
-
-          <router-link
-           to="/apply" 
-           class="text-lg font-roboto font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition">
+            to="/apply"
+            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
+          >
             Get Started
           </router-link>
-
         </div>
 
-        <!-- mobile menu toggle -->
+        <!-- mobile toggle -->
         <div class="block md:hidden">
           <button type="button" @click="toggleMenu">
             <img src="/logs.png" alt="logs" width="30" />
@@ -139,18 +117,8 @@
             <img src="/close.png" alt="close" width="30" />
           </button>
 
-          <router-link
-           to="/welcome-page" 
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">
-          Home
-        </router-link>
-
-          <router-link
-           to="/about" 
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-           >
-           About Us
-          </router-link>
+          <router-link to="/welcome-page" class="mobile-link">Home</router-link>
+          <router-link to="/about" class="mobile-link">About Us</router-link>
 
           <!-- Programs dropdown (mobile) -->
           <div class="w-full">
@@ -164,38 +132,32 @@
 
             <transition name="fade">
               <div v-if="showPrograms" class="pl-6 mt-2 space-y-2">
-                <router-link
-                  v-for="course in courses"
-                  :key="course.id"
-                  :to="`/programs/${course.slug}`"
-                  class="block text-uniscape-blue text-base hover:text-yellow-300"
-                  @click="toggleMenu(); showPrograms = false"
+                <div
+                  v-for="(courses, categoryName) in groupedCourses"
+                  :key="categoryName"
                 >
-                  • {{ course.course_name }}
-                </router-link>
+                  <h5 class="font-bold text-uniscape-blue">{{ categoryName }}</h5>
+                  <router-link
+                    v-for="course in courses"
+                    :key="course.id"
+                    :to="`/programs/${course.slug}`"
+                    class="block text-uniscape-blue text-base hover:text-yellow-300"
+                    @click="toggleMenu(); showPrograms = false"
+                  >
+                    • {{ course.course_name }}
+                  </router-link>
+                </div>
               </div>
             </transition>
           </div>
 
+          <router-link to="/contact" class="mobile-link">Contact Us</router-link>
+          <router-link to="/faqs" class="mobile-link">FAQs</router-link>
           <router-link
-           to="/contact" 
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-           >
-           Contact Us
-          </router-link>
-
-          <router-link
-           to="/faqs" 
-           class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
-           >
-           FAQS
-          </router-link>
-
-          <router-link
-           to="/apply" 
-           class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
-           >
-           Get Started
+            to="/apply"
+            class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
+          >
+            Get Started
           </router-link>
         </div>
       </transition>
@@ -203,72 +165,72 @@
   </nav>
 </template>
 
+
 <script>
-import api from '@/services/api';
+import api from "@/services/api";
 
 export default {
-    name: "ProgramDetails",
-
-    data() {
-        return {
-            showMenu: false,
-            showPrograms: false,
-            courses: [],
-            errors: {}
-        }
+  name: "Navbar",
+  data() {
+    return {
+      showMenu: false,
+      showPrograms: false,
+      allCourses: [],
+      allCategories: [],
+      errors: {}
+    };
+  },
+  computed: {
+    groupedCourses() {
+      const grouped = {};
+      this.allCategories.forEach((cat) => {
+        grouped[cat.name] = this.allCourses.filter(
+          (course) => course.category_id === cat.id
+        );
+      });
+      return grouped;
+    }
+  },
+  methods: {
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
     },
-
-    methods: {
-        async allCourses() {
-            try {
-                const response = await api.get('all_courses')
-                this.courses = response.data
-            } catch (error) {
-                if (error.response && error.response.data && error.response.data.errors){
-                    this.errors = error.response.data.errors
-                } else {
-                    this.errors.general = "Something went wrong!"
-                }
-            }
-        },
-
-        toggleMenu() {
-            this.showMenu = !this.showMenu
-        },
-
-        togglePrograms() {
-            this.showPrograms = !this.showPrograms
-        },
-
-        goToSection(id) {
-            if (this.$route.path !== '/home' && this.$route.path !== '/')
-            this.$router.push('/home').then(() => {
-                setTimeout(() => {
-                    const el = document.getElementById(id);
-                    if (el) el.scrollIntoView({ behavior: 'smooth'});
-                }, 500);
-        });
-        else {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth'});
-        }
-        },
-
-        goToMobileSection(id) {
-            this.toggleMenu();
-            setTimeout(() => {
-                this.goToSection(id);
-            }, 300);
-        },
+    togglePrograms() {
+      this.showPrograms = !this.showPrograms;
     },
-
-    mounted() {
-        this.allCourses();
+    async fetchAllCourses() {
+      try {
+        const response = await api.get("all_courses");
+        this.allCourses = response.data;
+      } catch (error) {
+        this.errors.general = "Failed to load courses.";
+      }
     },
-}
+    async fetchAllCategories() {
+      try {
+        const response = await api.get("all_categories");
+        this.allCategories = response.data;
+      } catch (error) {
+        this.errors.general = "Failed to load categories.";
+      }
+    }
+  },
+  mounted() {
+    this.fetchAllCategories();
+    this.fetchAllCourses();
+  }
+};
 </script>
 
 <style scoped>
+.nav-link {
+  @apply text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition;
+}
+
+.mobile-link {
+  @apply text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.25s ease;
@@ -279,10 +241,4 @@ export default {
   opacity: 0;
   transform: translateY(-10px);
 }
-
-/* Optional: shadow polish */
-.shadow-xl {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
 </style>
-

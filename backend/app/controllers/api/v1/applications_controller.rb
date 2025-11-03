@@ -3,6 +3,10 @@ class Api::V1::ApplicationsController < ApplicationController
   # create_application
   def create_application
     begin
+
+      puts ">>> Request format: #{request.format}"
+      puts ">>> Request headers: #{request.headers['Content-Type']}"
+
       service = ApplicationService.new(application_params)
       result = service.create_application
       if result[:success]

@@ -61,7 +61,7 @@ class ApplicationService
       end
     end
   rescue ActiveRecord::RecordInvalid => e
-    { success: false, errors: e.record.errors.full_messages }
+    { success: false, errors: e.record.errors.to_hash(true) }
   rescue StandardError => e
     { success: false, errors: [e.message] }
   end

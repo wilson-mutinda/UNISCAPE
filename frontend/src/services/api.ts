@@ -8,9 +8,10 @@ export const networkError = ref<string | null>(null);
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000/api/v1/',
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     },
-    timeout: 8000,
+    timeout: 15000,
 });
 
 // handle browser online/offline events
@@ -42,20 +43,29 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// response interceptor
+// Response interceptor - FIXED
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        // Clear network errors on successful response
+        networkError.value = null;
+        isSlowNetwork.value = false;
+        return response;
+    },
     (error) => {
+        console.error("API Error:", error);
+        
         if (error.code === "ECONNABORTED") {
             isSlowNetwork.value = true;
             networkError.value = "Slow network detected. Please try again later.";
         } else if (error.response) {
-            networkError.value = `Server Error: ${error.response.statusText}`;
+            networkError.value = `Server Error: ${error.response.status} - ${error.response.statusText}`;
+        } else if (error.request) {
+            networkError.value = "No response from server. Please check your connection.";
         } else {
             networkError.value = "Network error occurred.";
         }
         return Promise.reject(error);
     }
-)
+);
 
 export default api;

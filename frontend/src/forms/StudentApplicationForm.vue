@@ -171,7 +171,7 @@
      </div>
 
      <!-- Featured Course Section -->
-    <section
+    <!-- <section
       v-if="featuredCourse"
       class="w-full max-w-5xl relative rounded-3xl overflow-hidden shadow-2xl"
     >
@@ -179,10 +179,10 @@
         :src="featuredCourse.course_image"
         :alt="featuredCourse.course_name"
         class="w-full h-[400px] object-cover"
-      />
+      /> -->
 
       <!-- Overlay -->
-      <div
+      <!-- <div
         class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/30 flex flex-col justify-end p-10 text-white"
       >
         <h3 class="text-3xl md:text-4xl font-bold mb-3">
@@ -206,8 +206,8 @@
             Fee: {{ featuredCourse.course_fee }}
           </span>
         </div>
-      </div>
-    </section>
+      </div> -->
+    <!-- </section> -->
   </div>
 </template>
 
@@ -217,6 +217,8 @@ import router from '@/router';
 import api from '@/services/api';
 
 export default {
+
+  props: ['slug'],
 
   components: {
     Toast
@@ -242,7 +244,7 @@ export default {
       showToast: false,
       toastMessage: '',
 
-      courseSlug: '',
+      courseSlug: this.slug || '',
 
       featuredCourse: null
     }
@@ -266,18 +268,40 @@ export default {
       };
 
       try {
+        console.log("Sending payload:", payload);
         const response = await api.post('create_application', payload);
-        console.log("Application created:", response.data);
-        this.toastMessage = `Thanks @${this.first_name} for applying to Uniscape. We'll get to you in 24 hours`
-        this.$refs.toast.show()
-        this.showToast = true
-        this.resetForm();
+        console.log("Full response:", response);
+        console.log("Response status:", response.status);
+        console.log("Response data:", response.data);
+        
+        // Check if response indicates success
+        if (response.status === 201 || (response.data && response.data.message)) {
+          this.toastMessage = `Thanks @${this.first_name} for applying to Uniscape. We'll get to you in 24 hours`;
+          this.$refs.toast.show();
+          this.showToast = true;
+          this.resetForm();
 
-        // redirect to programs
-        // this.$router.push('/courses')
+          if (this.courseSlug) {
+          this.$router.push({ name: 'course', params: { slug: this.courseSlug}});
+        } else {
+          this.$router.push({ name: 'courses'});
+        }
+
+        } else {
+          this.errors.general = "Unexpected response from server";
+        }
+        
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors
+        console.error("Full error object:", error);
+        console.error("Error response:", error.response);
+        console.error("Error message:", error.message);
+        console.error("Error code:", error.code);
+        
+        // Check if it's a network error from our interceptor
+        if (error.message === "offline") {
+          this.errors.general = "You are offline. Please check your internet connection.";
+        } else if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors;
         } else {
           this.errors.general = "Something went wrong while submitting!";
         }
@@ -344,11 +368,19 @@ export default {
     }
   },
 
-  mounted() {
-    this.fetchCountrys();
-    this.fetchPrograms();
+  async mounted() {
+    await this.fetchCountrys();
+    await this.fetchPrograms();
 
-    this.fetchFeaturedCourse();
+    await this.fetchFeaturedCourse();
+
+    if (this.courseSlug) {
+      const selected = this.programs.find(p => p.slug === this.courseSlug);
+
+      if (selected) {
+        this.program = selected.id
+      }
+    }
   }
 }
 </script>

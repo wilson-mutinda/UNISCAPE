@@ -14,8 +14,16 @@
 
         <!-- desktop menu -->
         <div class="hidden md:flex items-center gap-4">
-          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Home</router-link>
-          <router-link to="/about" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">About</router-link>
+          <router-link
+            to="/welcome-page"
+            class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition"
+            >Home</router-link
+          >
+          <router-link
+            to="/about"
+            class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition"
+            >About</router-link
+          >
 
           <!-- Programs dropdown -->
           <div
@@ -23,11 +31,8 @@
             @mouseenter="showPrograms = true"
             @mouseleave="showPrograms = false"
           >
-            <!-- Combined router-link + toggle -->
-            <router-link
-              to="/courses"
+            <button
               class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition flex items-center gap-2 cursor-pointer"
-              @click="showPrograms = !showPrograms"
             >
               Programs
               <img
@@ -37,13 +42,13 @@
                 class="ml-1 transition-transform duration-200"
                 :class="{ 'rotate-180': showPrograms }"
               />
-            </router-link>
+            </button>
 
             <!-- Dropdown -->
             <transition name="fade">
               <div
                 v-if="showPrograms"
-                class="absolute top-14 left-0 w-96 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4"
+                class="absolute top-14 left-0 w-[40rem] bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4"
               >
                 <h4 class="text-uniscape-blue text-lg font-semibold mb-3">
                   Available Programs
@@ -56,23 +61,42 @@
                   <div
                     v-for="(courses, categoryName) in groupedCourses"
                     :key="categoryName"
+                    class="flex flex-col border-b border-gray-100 pb-2 mb-2"
                   >
-                    <h5 class="font-bold text-uniscape-blue mb-2">
-                      {{ categoryName }}
-                    </h5>
+                    <!-- Category Header -->
                     <div
-                      v-for="course in courses"
-                      :key="course.id"
-                      class="pl-3"
+                      class="flex items-center justify-between cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-lg transition"
+                      @click="toggleCategory(categoryName)"
                     >
-                      <router-link
-                        :to="`/programs/${course.slug}`"
-                        class="block px-3 py-1 text-gray-700 hover:bg-uniscape-blue hover:text-yellow-300 rounded-md transition"
-                        @click="showPrograms = false"
-                      >
-                        {{ course.course_name }}
-                      </router-link>
+                      <div class="flex items-center gap-2">
+                        <h5 class="font-bold text-uniscape-blue">{{ categoryName }}</h5>
+                      </div>
+                      <img
+                        src="/right-arrow.png"
+                        alt="arrow-right"
+                        width="20"
+                        class="transition-transform duration-200"
+                        :class="{ 'rotate-90': openCategory === categoryName }"
+                      />
                     </div>
+
+                    <!-- Courses shown only when arrow clicked -->
+                    <transition name="fade">
+                      <div
+                        v-if="openCategory === categoryName"
+                        class="flex flex-wrap gap-2 mt-2 pl-6"
+                      >
+                        <router-link
+                          v-for="course in courses"
+                          :key="course.id"
+                          :to="`/programs/${course.slug}`"
+                          class="px-3 py-1 text-gray-700 hover:bg-uniscape-blue hover:text-yellow-300 rounded-md transition"
+                          @click="showPrograms = false"
+                        >
+                          {{ course.course_name }}
+                        </router-link>
+                      </div>
+                    </transition>
                   </div>
                 </div>
 
@@ -83,9 +107,21 @@
             </transition>
           </div>
 
-          <router-link to="/blog" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Blog</router-link>
-          <router-link to="/contact" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">Contact Us</router-link>
-          <router-link to="/faqs" class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition">FAQs</router-link>
+          <router-link
+            to="/blog"
+            class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition"
+            >Blog</router-link
+          >
+          <router-link
+            to="/contact"
+            class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition"
+            >Contact Us</router-link
+          >
+          <router-link
+            to="/faqs"
+            class="text-uniscape-blue text-lg font-roboto font-semibold hover:text-uniscape-yellow hover:bg-uniscape-blue px-4 py-2 rounded-md transition"
+            >FAQs</router-link
+          >
 
           <router-link
             to="/apply"
@@ -117,8 +153,16 @@
             <img src="/close.png" alt="close" width="30" />
           </button>
 
-          <router-link to="/welcome-page" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">Home</router-link>
-          <router-link to="/about" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">About Us</router-link>
+          <router-link
+            to="/welcome-page"
+            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+            >Home</router-link
+          >
+          <router-link
+            to="/about"
+            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+            >About Us</router-link
+          >
 
           <!-- Programs dropdown (mobile) -->
           <div class="w-full">
@@ -151,8 +195,16 @@
             </transition>
           </div>
 
-          <router-link to="/contact" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">Contact Us</router-link>
-          <router-link to="/faqs" class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left">FAQs</router-link>
+          <router-link
+            to="/contact"
+            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+            >Contact Us</router-link
+          >
+          <router-link
+            to="/faqs"
+            class="text-uniscape-blue text-lg font-semibold hover:text-uniscape-yellow rounded-md hover:bg-uniscape-blue px-4 py-2 w-full text-left"
+            >FAQs</router-link
+          >
           <router-link
             to="/apply"
             class="text-lg font-semibold text-uniscape-yellow rounded-md bg-uniscape-blue px-4 py-2 transition"
@@ -165,7 +217,6 @@
   </nav>
 </template>
 
-
 <script>
 import api from "@/services/api";
 
@@ -177,7 +228,8 @@ export default {
       showPrograms: false,
       allCourses: [],
       allCategories: [],
-      errors: {}
+      openCategory: null, // 👈 added to track which arrow is open
+      errors: {},
     };
   },
   computed: {
@@ -189,7 +241,7 @@ export default {
         );
       });
       return grouped;
-    }
+    },
   },
   methods: {
     toggleMenu() {
@@ -197,6 +249,11 @@ export default {
     },
     togglePrograms() {
       this.showPrograms = !this.showPrograms;
+    },
+    toggleCategory(categoryName) {
+      // 👇 toggle courses visibility for that category
+      this.openCategory =
+        this.openCategory === categoryName ? null : categoryName;
     },
     async fetchAllCourses() {
       try {
@@ -213,12 +270,12 @@ export default {
       } catch (error) {
         this.errors.general = "Failed to load categories.";
       }
-    }
+    },
   },
   mounted() {
     this.fetchAllCategories();
     this.fetchAllCourses();
-  }
+  },
 };
 </script>
 
@@ -232,5 +289,10 @@ export default {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
 }
 </style>

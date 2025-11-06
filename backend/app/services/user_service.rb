@@ -169,9 +169,9 @@ class UserService
         token = JsonWebToken.new
         access_token = token.encode_token(user.id, user.flag, 30.minutes.from_now)
         refresh_token = token.encode_token(user.id, user.flag, 24.hours.from_now)
-        { success: true, message: "Login Successful!", user: user, access_token: access_token, refresh_token: refresh_token }
+        return { success: true, message: "Login Successful!", user: user, access_token: access_token, refresh_token: refresh_token }
       else
-        { success: false, errors: auth.errors.full_messages }
+        return { success: false, errors: { password: "Incorrect password for '#{email_param}'!"} }
       end
     end
   end
@@ -343,7 +343,7 @@ class UserService
   def normalize_login_password
     password_param = @params[:password].to_s
     if password_param.blank?
-      return { errors: { errors: "Please input password"}}
+      return { errors: { password: "Please input password"}}
     end
     password_param
   end

@@ -4,6 +4,7 @@ import { ref } from "vue";
 export const isOnline = ref(navigator.onLine);
 export const isSlowNetwork = ref(false);
 export const networkError = ref<string | null>(null);
+export const wasOffline = ref(false);
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000/api/v1/',
@@ -16,17 +17,15 @@ const api = axios.create({
 
 // handle browser online/offline events
 window.addEventListener("online", () => {
-    isOnline.value = true;
-    isSlowNetwork.value = false;
-    networkError.value = null;
-
-    // automatically reload
-    setTimeout(() => {
-        window.location.reload();
-    }, 1500);
-});
+    if (wasOffline.value) {
+        isOnline.value = true;
+        networkError.value = null;
+    }
+    wasOffline.value = false;
+})
 
 window.addEventListener("offline", () => {
+    wasOffline.value = true;
     isOnline.value = false;
     networkError.value = "You are offline. Please check your internet connection."
 });
@@ -34,6 +33,11 @@ window.addEventListener("offline", () => {
 // request interceptor
 api.interceptors.request.use(
     (config) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
         if (!navigator.onLine) {
             networkError.value = "No internet connection."
             return Promise.reject(new Error("offline"));
@@ -43,7 +47,7 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// Response interceptor - FIXED
+// Response interceptor
 api.interceptors.response.use(
     (response) => {
         // Clear network errors on successful response
@@ -51,9 +55,41 @@ api.interceptors.response.use(
         isSlowNetwork.value = false;
         return response;
     },
-    (error) => {
-        console.error("API Error:", error);
-        
+    
+    async (error) => {
+        if (error.response && error.response.status === 401) {
+            const originalRequest = error.config;
+
+            // prevent infinite loop
+            if (!originalRequest._retry) {
+                originalRequest._retry = true;
+
+                try {
+                    const refreshToken = localStorage.getItem('refresh_token');
+                    if (!refreshToken) {
+                        throw new Error("No refresh token found!");
+                    }
+                    const refreshResponse = await api.post('refresh_token', {}, {
+                        headers: {
+                            Authorization: `Bearer ${refreshToken}`
+                        }
+                    } );
+    
+                    const newAccessToken = refreshResponse.data.new_access_token;
+    
+                    localStorage.setItem('access_token', newAccessToken);
+    
+                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                    return api(originalRequest);
+                } catch (refreshError) {
+                    console.error("Refresh token failed:", refreshError);
+                    localStorage.clear();
+                    window.location.href = '/login'
+                }
+            }
+        }
+
+        // network errors
         if (error.code === "ECONNABORTED") {
             isSlowNetwork.value = true;
             networkError.value = "Slow network detected. Please try again later.";
@@ -64,6 +100,7 @@ api.interceptors.response.use(
         } else {
             networkError.value = "Network error occurred.";
         }
+
         return Promise.reject(error);
     }
 );

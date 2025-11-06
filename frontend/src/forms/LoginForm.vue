@@ -3,10 +3,16 @@
         <div class="p-8 bg-uniscape-yellow rounded-md w-full max-w-md">
             <form @submit.prevent="userLogin" action="" method="post">
 
+                <!-- general error -->
+                 <span v-if="errors.general" class="text-red-600 text-sm text-center">{{ errors.general }}</span>
+
                 <!-- email -->
                 <div class="">
                     <label class="block text-uniscape-blue font-bold mb-2 text-xl" for="email">Email</label>
                     <input v-model="email" class="rounded-md p-2 w-full outline-none mb-2" type="email" name="email" id="email">
+
+                    <!-- email error -->
+                     <span v-if="errors.email" class="text-red-600 text-center text-sm">{{ errors.email }}</span>
                 </div>
 
                 <!-- password -->
@@ -18,6 +24,8 @@
                      <button @click="togglePassword" type="button" class="absolute right-2 top-12">
                         <img :src="showPassword ? '/show.png' : '/hide.png'" alt="show" width="20">
                      </button>
+
+                     <span v-if="errors.password" class="text-red-600 text-center text-sm">{{ errors.password }}</span>
                 </div>
 
                 <!-- forgot password -->
@@ -80,8 +88,23 @@ export default {
                     email: this.email,
                     password: this.password
                 }
-                const response = await api.post('user_login', payload)
-                console.log("Login Successful.")
+                const response = await api.post('user_login', payload);
+                const { user, access_token, refresh_token } = response.data;
+
+                console.log("Login Successful.");
+
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('access_token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+
+                // redirection based on role
+                if (user.flag === 'Admin') {
+                    this.$router.push('/admin/dashboard');
+                } else if (user.role === 'Student') {
+                    this.$router.push('/student/dashboard');
+                } else {
+                    alert('Unauthorized role.');
+                }
 
                 this.clearForm();
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isOnline, isSlowNetwork, networkError } from '@/services/api';
+import { isOnline, isSlowNetwork, networkError, wasOffline } from '@/services/api';
 
 </script>
 
@@ -17,7 +17,7 @@ import { isOnline, isSlowNetwork, networkError } from '@/services/api';
             {{ networkError }}
         </div>
 
-        <div v-else-if="isOnline && networkError === null" class="bg-green-600 text-white text-center py-3 fixed top-0 left-0 right-0 z-50">
+        <div v-else-if="isOnline && networkError === null && wasOffline" class="bg-green-600 text-white text-center py-3 fixed top-0 left-0 right-0 z-50">
             Connection restored. Reloading...
         </div>
     </transition>

@@ -12,6 +12,8 @@ import AboutPage from '@/pages/AboutPage.vue'
 import WelcomePage from '@/pages/WelcomePage.vue'
 import ContactPage from '@/pages/ContactPage.vue'
 import FAQPage from '@/pages/FAQPage.vue'
+import AdminDashboard from '@/components/dashboards/AdminDashboard.vue'
+import StudentDashboard from '@/components/dashboards/StudentDashboard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +82,21 @@ const router = createRouter({
       { path: 'contact', name: 'contact', component: ContactPage, meta: { title: 'Contact' } },
       { path: 'faqs', name: 'faqs', component: FAQPage, meta: { title: 'FAQS' } }
     ] },
+
+    // dashboards (private routes)
+    {
+      path: '/admin/dashboard',
+      name: 'admin-dashboard',
+      component: AdminDashboard,
+      meta: { title: 'Admin Dashboard', requiresAuth: true, role: 'admin' }
+    },
+
+    { 
+      path: '/student/dashboard',
+      name: 'student-dashboard',
+      component: StudentDashboard,
+      meta: { title: 'Student Dashboard', requiresAuth: true, role: 'student' }
+    }
   ],
 });
 
@@ -87,6 +104,21 @@ router.beforeEach((to, from, next) => {
   if (!navigator.onLine) {
     alert("You are offline. Navigation is disabled until you reconnect.");
     next(false);
+  } else {
+    next();
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+  if (to.meta.requiresAuth) {
+    if (!user) {
+      alert('Please login first!');
+      next('/');
+    } else {
+      next();
+    }
   } else {
     next();
   }
